@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Entity
 public class Url {
-
     @Id
     private String shortUrl;
 
@@ -23,6 +22,4 @@ public class Url {
     private int total_clicks ;
     @Column(nullable = false)
     private int lest_clicked;
-
-
 }
