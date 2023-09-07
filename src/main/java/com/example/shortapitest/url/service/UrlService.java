@@ -46,12 +46,12 @@ public class UrlService {
             .destination_url(testAddress)
             .shortUrl("http://localhpst:8989/" +str)
             .build();
-ß
+
         urlRepository.save(url);
 
         return ResponseUrl.builder()
+                .destination_url(url.getDestination_url())
                 .shortUrl(url.getShortUrl())
-                .destination_url(testAddress)
                 .build();
     }
 
