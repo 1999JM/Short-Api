@@ -9,10 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 @SpringBootApplication
 public class ShortApiTestApplication {
-	@PersistenceContext
-	private EntityManager entityManager;
 	public static void main(String[] args) {
-
 
 		SpringApplication.run(ShortApiTestApplication.class, args);
 	}
