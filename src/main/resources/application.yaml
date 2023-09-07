@@ -19,7 +19,7 @@ spring:
           generate_statistics: false
           format_sql: true
       hibernate:
-        ddl-auto: create
+        ddl-auto: update
 
 springdoc:
   swagger-ui:
