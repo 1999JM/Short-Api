@@ -1,6 +1,6 @@
 package com.example.shortapitest;
 
-import com.example.shortapitest.access.repository.UrlRepository;
+import com.example.shortapitest.url.repository.UrlRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,14 +1,20 @@
-package com.example.shortapitest.access.entity;
+package com.example.shortapitest.url.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.Date;
 
 @Entity
+@Getter
+@Builder
 public class Url {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String shortUrl;
 
     @Column(nullable = false)
@@ -22,4 +28,8 @@ public class Url {
     private int total_clicks ;
     @Column(nullable = false)
     private int lest_clicked;
+
+    public Url() {
+
+    }
 }
