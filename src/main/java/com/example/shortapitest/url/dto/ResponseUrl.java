@@ -15,6 +15,6 @@ public class ResponseUrl {
 
     private Long id;
     private String shortUrl;
-    private String destination_url;
+    private String destinationUrl;
 
 }

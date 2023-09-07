@@ -5,7 +5,6 @@ import com.example.shortapitest.url.dto.RequestUrlDetail;
 import com.example.shortapitest.url.dto.ResponseUrl;
 import com.example.shortapitest.url.entity.Url;
 import com.example.shortapitest.url.repository.UrlRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +23,13 @@ public class UrlService {
 
         Long count = urlRepository.count();
 
+        //pk 값을 가져오고 문자열로
+
         LocalDateTime now = LocalDateTime.now();
         String str = now.toString().replaceAll("[-,.:]", "")+String.valueOf(count);
 
         Url url  = Url.builder()
-                .destination_url(res.getUrl())
+                .destinationUrl(res.getUrl())
                 .shortUrl("http://localhpst:8989/" +str)
                 .build();
 
@@ -36,13 +37,9 @@ public class UrlService {
 
         return ResponseUrl.builder()
                 .id(url.getId())
-                .destination_url(url.getDestination_url())
+                .destinationUrl(url.getDestinationUrl())
                 .shortUrl(url.getShortUrl())
                 .build();
     }
 
-    public void searchUrlDetail(RequestUrlDetail req) {
-       Url url = urlRepository.findById(req.getId()).orElseThrow(() -> new EntityNotFoundException("url "));
-
-    }
 }

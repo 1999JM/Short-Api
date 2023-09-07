@@ -13,7 +13,6 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @ToString
 public class Url {
 
@@ -25,16 +24,15 @@ public class Url {
     private String shortUrl;    //변경된 url
 
     @Column(nullable = false)
-    private String destination_url; //기존 url
+    private String destinationUrl; //기존 url
 
-    @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime created_date;  //생성 날짜는 오늘 날짜로 자동 생성됩니다.
+    private LocalDateTime createdDate;  //생성 날짜는 오늘 날짜로 자동 생성됩니다.
 
     @Column(columnDefinition = "integer default 0")
-    private int total_clicks ;  //클릭 횟수는 0회가 기본 값입니다.
+    private int totalClicks ;  //클릭 횟수는 0회가 기본 값입니다.
 
     @Column(columnDefinition = "Null")
-    private LocalDateTime lest_clicked; //마지막으로 클릭한 날짜
+    private LocalDateTime lestClicked; //마지막으로 클릭한 날짜
 
 }

@@ -23,13 +23,4 @@ public class UrlController {
     public ResponseEntity<ResponseUrl> changeUrl(@RequestBody @Validated RequestUrl req){
         return ResponseEntity.ok(urlService.createUrl(req));
     }
-
-    //url의 pk id
-    @GetMapping("/detail")
-    public void detailUrl(@RequestBody RequestUrlDetail req){
-        urlService.searchUrlDetail(req);
-        return;
-    }
-
-
 }
