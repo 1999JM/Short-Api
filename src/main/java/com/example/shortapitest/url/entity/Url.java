@@ -29,10 +29,10 @@ public class Url {
     @Column(updatable = false)
     private LocalDateTime createdDate;  //생성 날짜는 오늘 날짜로 자동 생성됩니다.
 
-    @Column(columnDefinition = "integer default 0")
+    @Column()
     private int totalClicks ;  //클릭 횟수는 0회가 기본 값입니다.
 
-    @Column(columnDefinition = "Null")
+    @Column()
     private LocalDateTime lestClicked; //마지막으로 클릭한 날짜
 
 }
