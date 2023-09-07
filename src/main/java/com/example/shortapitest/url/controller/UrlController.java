@@ -19,7 +19,8 @@ public class UrlController {
 
     //사용자가 url 변경 요청을 했습니다.
     @PostMapping("/change")
-    public ResponseEntity<ResponseUrl> changeUrl(@RequestBody @Valid RequestUrl req){
-        return ResponseEntity.ok().build(urlService.searchUrl(req));
+    public ResponseEntity<ResponseUrl> changeUrl(@RequestBody RequestUrl req){
+        return ResponseEntity.ok(urlService.searchUrl(req));
+
     }
 }
