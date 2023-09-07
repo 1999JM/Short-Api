@@ -50,8 +50,8 @@ public class UrlService {
         urlRepository.save(url);
 
         return ResponseUrl.builder()
+                .destination_url(url.getDestination_url())
                 .shortUrl(url.getShortUrl())
-                .destination_url(testAddress)
                 .build();
     }
 
