@@ -1,18 +1,15 @@
 package com.example.shortapitest.url.controller;
 
 import com.example.shortapitest.url.dto.RequestUrl;
-import com.example.shortapitest.url.dto.RequestUrlDetail;
 import com.example.shortapitest.url.dto.ResponseUrl;
 import com.example.shortapitest.url.service.UrlService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/url")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UrlController {
 
