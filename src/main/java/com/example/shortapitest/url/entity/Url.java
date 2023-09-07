@@ -27,6 +27,7 @@ public class Url {
     private String destination_url; //기존 url
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime created_date;  //생성 날짜는 오늘 날짜로 자동 생성됩니다.
 
     @Column(columnDefinition = "integer default 0")

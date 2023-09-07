@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseUrl {
+
+    private Long id;
     private String shortUrl;
     private String destination_url;
 

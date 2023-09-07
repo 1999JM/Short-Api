@@ -21,6 +21,5 @@ public class UrlController {
     @PostMapping("/change")
     public ResponseEntity<ResponseUrl> changeUrl(@RequestBody RequestUrl req){
         return ResponseEntity.ok(urlService.searchUrl(req));
-
     }
 }

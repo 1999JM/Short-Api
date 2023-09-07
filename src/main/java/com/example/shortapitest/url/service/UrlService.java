@@ -19,14 +19,15 @@ public class UrlService {
     //url이 데이터 베이스에 존재하는 확인합니다.
     public ResponseUrl searchUrl(RequestUrl res) {
 
-        String testAddress = "https://www.google.com/search?q=%E3%85%8E&oq=%E3%85%8E&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBBzY1N2owajeoAgCwAgA&sourceid=chrome&ie=UTF-8";
+        String address = res.getUrl();
 
-        Url url = urlRepository.findByUrl(testAddress);
+        Url url = urlRepository.findByUrl(address);
 
         if (url == null) {
-            return createUrl(testAddress);
+            return createUrl(address);
         }else {
             return ResponseUrl.builder()
+                    .id(url.getId())
                     .destination_url(url.getDestination_url())
                     .shortUrl(url.getShortUrl())
                     .build();
@@ -46,10 +47,10 @@ public class UrlService {
             .destination_url(testAddress)
             .shortUrl("http://localhpst:8989/" +str)
             .build();
-
         urlRepository.save(url);
 
         return ResponseUrl.builder()
+                .id(url.getId())
                 .destination_url(url.getDestination_url())
                 .shortUrl(url.getShortUrl())
                 .build();
