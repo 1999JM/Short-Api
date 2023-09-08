@@ -2,7 +2,6 @@ package com.example.shortapitest.urlApi.url.service;
 
 import com.example.shortapitest.urlApi.access.entity.AccessLog;
 import com.example.shortapitest.urlApi.access.repository.AccessLogRepository;
-import com.example.shortapitest.urlApi.access.service.AccessService;
 import com.example.shortapitest.urlApi.url.dto.RequestUrl;
 import com.example.shortapitest.urlApi.url.dto.ResponseUrl;
 import com.example.shortapitest.urlApi.url.entity.Url;
@@ -21,8 +20,6 @@ public class UrlService {
 
     private final UrlRepository urlRepository;
     private final AccessLogRepository accessLogRepository;
-
-    private final AccessService accessService;
 
     //url을 생성합니다.
     @Transactional

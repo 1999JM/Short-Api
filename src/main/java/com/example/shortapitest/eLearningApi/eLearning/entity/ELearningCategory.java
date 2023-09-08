@@ -6,23 +6,24 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class eLearning {
+public class ELearningCategory {
 
     @Id
-    @Column(name = "eLearning_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "e_Learning_category_id")
     private Long id;
 
-    @Column(name = "eLearning_name", nullable = false)
-    private String name;
+    @Column(nullable = false)
+    private String categoryName;
 
-    @Column(name = "eLearning_alias", nullable = false)
-    private String alias;
-
-
+    @Column(nullable = false)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "eLearningCategory")
+    private List<ELearningMenu> menuName;
 }

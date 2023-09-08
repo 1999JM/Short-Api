@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class image {
+public class ELearningImage {
 
     @Id
     @Column(name = "image_id")
