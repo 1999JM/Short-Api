@@ -1,12 +1,11 @@
-package com.example.shortapitest.eLearningApi.entity;
+package com.example.shortapitest.eLearningApi.entity.eLearning;
 
+import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -35,9 +34,7 @@ public class ELearning {
     @Column(nullable = false)
     private int TestPassScore;          //eLearning 수료 기준 0~100 소숫점은 반올림 수료시 Certification
 
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "e_learning_menu_id")
-    private ELearningImage coverImage;  //cover 이미지는 1건
+    @OneToOne
+    private CoverImage coverImage;
 
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "e_learning_menu_id")
-    private ELearningImage logoImage;   //logo 이미지는 1건
 }

@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.entity;
+package com.example.shortapitest.eLearningApi.entity.eLearning;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,17 +13,18 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ELearningMenu {
+public class ELearningCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "e_learning_menu_id")
+    @Column(name = "e_Learning_category_id")
     private Long id;
 
     @Column(nullable = false)
-    private String menuName;
+    private String categoryName;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ELearningMenu")
-    private List<ELearningImage> menuImage;
+    @Column(nullable = false)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "eLearningCategory")
+    private List<ELearningMenu> menuName;
 
 }
