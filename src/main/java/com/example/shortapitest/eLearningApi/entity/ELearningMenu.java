@@ -1,10 +1,13 @@
-package com.example.shortapitest.eLearningApi.eLearning.entity;
+package com.example.shortapitest.eLearningApi.entity;
 
+import com.example.shortapitest.eLearningApi.eLearning.entity.ELearningImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,6 +24,7 @@ public class ELearningMenu {
     @Column(nullable = false)
     private String menuName;
 
-    //이미지
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ELearningMenu")
+    private List<ELearningImage> menuImage;
 
 }

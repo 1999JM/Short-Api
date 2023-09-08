@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.eLearning.entity;
+package com.example.shortapitest.eLearningApi.entity;
 
 import com.example.shortapitest.eLearningApi.eLearning.discriminator.ImageDiscriminator;
 import jakarta.persistence.*;
