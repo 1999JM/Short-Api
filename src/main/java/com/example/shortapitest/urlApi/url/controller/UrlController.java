@@ -1,8 +1,8 @@
-package com.example.shortapitest.url.controller;
+package com.example.shortapitest.urlApi.url.controller;
 
-import com.example.shortapitest.url.dto.RequestUrl;
-import com.example.shortapitest.url.dto.ResponseUrl;
-import com.example.shortapitest.url.service.UrlService;
+import com.example.shortapitest.urlApi.url.dto.RequestUrl;
+import com.example.shortapitest.urlApi.url.dto.ResponseUrl;
+import com.example.shortapitest.urlApi.url.service.UrlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

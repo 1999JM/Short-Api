@@ -1,6 +1,6 @@
-package com.example.shortapitest.url.repository;
+package com.example.shortapitest.urlApi.url.repository;
 
-import com.example.shortapitest.url.entity.Url;
+import com.example.shortapitest.urlApi.url.entity.Url;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,21 +1,19 @@
-package com.example.shortapitest.url.service;
+package com.example.shortapitest.urlApi.url.service;
 
-import com.example.shortapitest.access.entity.AccessLog;
-import com.example.shortapitest.access.repository.AccessLogRepository;
-import com.example.shortapitest.access.service.AccessService;
-import com.example.shortapitest.url.dto.RequestUrl;
-import com.example.shortapitest.url.dto.ResponseUrl;
-import com.example.shortapitest.url.entity.Url;
-import com.example.shortapitest.url.repository.UrlRepository;
+import com.example.shortapitest.urlApi.access.entity.AccessLog;
+import com.example.shortapitest.urlApi.access.repository.AccessLogRepository;
+import com.example.shortapitest.urlApi.access.service.AccessService;
+import com.example.shortapitest.urlApi.url.dto.RequestUrl;
+import com.example.shortapitest.urlApi.url.dto.ResponseUrl;
+import com.example.shortapitest.urlApi.url.entity.Url;
+import com.example.shortapitest.urlApi.url.repository.UrlRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +33,7 @@ public class UrlService {
                 .build();
         Url savedUrl = urlRepository.save(url);
         
-        //문자열 랜덤
+        //인코딩
         String generatedString = RandomStringUtils.randomAlphanumeric(10);
         String str = "http://localhost:9033/jmApi/" + generatedString + savedUrl.getId();
 
@@ -60,6 +58,7 @@ public class UrlService {
                 .ip(map.get("ip"))
                 .referrerUrl(destinationUrl)
                 .userAgent(map.get("header"))
+                .url(url)
                 .build();
 
         AccessLog saveAccessLog = accessLogRepository.save(accessLog);

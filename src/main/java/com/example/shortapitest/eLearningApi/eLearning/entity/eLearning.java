@@ -1,4 +1,4 @@
-package com.example.shortapitest.access.entity;
+package com.example.shortapitest.eLearningApi.eLearning.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,20 +11,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccessLog {
+public class eLearning {
 
     @Id
-    @Column(name = "ACCESS_LOG_ID")
+    @Column(name = "eLearning_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String ip;
+    @Column(name = "eLearning_name", nullable = false)
+    private String name;
 
-    @Column(nullable = false)
-    private String userAgent;
+    @Column(name = "eLearning_alias", nullable = false)
+    private String alias;
 
-    @Column(nullable = false)
-    private String referrerUrl;
 
 }

@@ -1,16 +1,13 @@
-package com.example.shortapitest.access.controller;
+package com.example.shortapitest.urlApi.access.controller;
 
-import com.example.shortapitest.url.service.UrlService;
+import com.example.shortapitest.urlApi.url.service.UrlService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.net.*;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 

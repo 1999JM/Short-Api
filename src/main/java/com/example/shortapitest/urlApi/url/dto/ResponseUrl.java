@@ -1,7 +1,5 @@
-package com.example.shortapitest.url.dto;
+package com.example.shortapitest.urlApi.url.dto;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

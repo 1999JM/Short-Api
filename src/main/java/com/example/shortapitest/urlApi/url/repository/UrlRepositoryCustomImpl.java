@@ -1,11 +1,8 @@
-package com.example.shortapitest.url.repository;
+package com.example.shortapitest.urlApi.url.repository;
 
-import com.example.shortapitest.url.entity.QUrl;
-import com.example.shortapitest.url.entity.Url;
+import com.example.shortapitest.shortUrlTest.url.entity.QUrl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public class UrlRepositoryCustomImpl implements UrlRepositoryCustom {

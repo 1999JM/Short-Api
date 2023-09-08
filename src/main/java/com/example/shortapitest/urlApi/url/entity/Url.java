@@ -1,10 +1,9 @@
-package com.example.shortapitest.url.entity;
+package com.example.shortapitest.urlApi.url.entity;
 
-import com.example.shortapitest.access.entity.AccessLog;
+import com.example.shortapitest.urlApi.access.entity.AccessLog;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -39,8 +38,7 @@ public class Url {
     @Column
     private LocalDateTime lestClicked; //마지막으로 클릭한 날짜
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ACCESS_LOG_ID")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "url")
     private List<AccessLog> accessLog;
 
     public void setShortUrl(String creatUrl){
@@ -48,6 +46,7 @@ public class Url {
     }
     public void setClicked(long totalClicks, AccessLog accessLog){
         this.totalClicks = totalClicks + 1;
+       // this.totalClicks += 1;
         this.lestClicked = LocalDateTime.now();
         this.accessLog.add(accessLog);
     }
