@@ -1,6 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity;
 
-import com.example.shortapitest.eLearningApi.eLearning.discriminator.ImageDiscriminator;
+import com.example.shortapitest.eLearningApi.discriminator.ImageDiscriminator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
