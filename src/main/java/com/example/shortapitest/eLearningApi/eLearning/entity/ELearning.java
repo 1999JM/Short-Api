@@ -35,6 +35,6 @@ public class ELearning {
     @Column(nullable = false)
     private int TestPassScore;          //eLearning 수료 기준 0~100 소숫점은 반올림 수료시 Certification
 
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "ELearning")
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "e_learning_menu_id")
     private ELearningImage coverImage;
 }
