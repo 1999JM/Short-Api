@@ -1,9 +1,9 @@
 package com.example.shortapitest.eLearningApi.entity.image;
-import com.example.shortapitest.eLearningApi.entity.eLearning.ELearning;
-import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningMenu;
+
+import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningQuestion;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +11,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Builder
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LogoImage extends BaseImage {
+public class QuestionImage extends BaseImage{
 
     @OneToOne(fetch = FetchType.LAZY)
-    private ELearning eLearning;
+    private ELearningQuestion eLearningQuestion;
 
 }

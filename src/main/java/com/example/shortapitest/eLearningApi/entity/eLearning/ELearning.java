@@ -1,11 +1,14 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning;
 
 import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
+import com.example.shortapitest.eLearningApi.entity.image.LogoImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,7 +37,35 @@ public class ELearning {
     @Column(nullable = false)
     private int TestPassScore;          //eLearning 수료 기준 0~100 소숫점은 반올림 수료시 Certification
 
-    @OneToOne
-    private CoverImage coverImage;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            mappedBy = "eLearning",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private CoverImage coverImage;      //커버 이미지 1건
 
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            mappedBy = "eLearning",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private LogoImage logoImage;        //로고 이미지 1건
+
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "eLearning",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ELearningCategory> eLearningCategory;  //카테고리
+
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "eLearning",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ELearningQuestion> eLearningQuestion;  //문제
 }

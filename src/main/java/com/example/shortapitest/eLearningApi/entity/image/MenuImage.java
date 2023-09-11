@@ -1,6 +1,6 @@
+package com.example.shortapitest.eLearningApi.entity.image;
 
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningMenu;
-import com.example.shortapitest.eLearningApi.entity.image.BaseImage;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;

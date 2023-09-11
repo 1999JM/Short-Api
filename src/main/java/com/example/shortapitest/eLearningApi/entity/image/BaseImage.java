@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@MappedSuperclass
 public class BaseImage {
 
     @Id

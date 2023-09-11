@@ -23,8 +23,17 @@ public class ELearningCategory {
     @Column(nullable = false)
     private String categoryName;
 
-    @Column(nullable = false)
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "eLearningCategory")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ELearning eLearning;
+
+    @OneToMany(
+            mappedBy = "eLearningCategory",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<ELearningMenu> menuName;
+
+
 
 }

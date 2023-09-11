@@ -11,18 +11,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ELearningMenu {
+public class ELearningChoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "e_learning_menu_id")
+    @Column(name = "E_Learning_Choice")
     private Long id;
 
     @Column(nullable = false)
-    private String menuName;
+    private String choiceContent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "e_learning_category_id")
-    private ELearningCategory eLearningCategory;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ELearningQuestion eLearningQuestion;
 }
