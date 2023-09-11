@@ -22,7 +22,7 @@ public class QELearningQuestion extends EntityPathBase<ELearningQuestion> {
 
     public static final QELearningQuestion eLearningQuestion = new QELearningQuestion("eLearningQuestion");
 
-    public final StringPath Answer = createString("Answer");
+    public final EnumPath<com.example.shortapitest.eLearningApi.constant.AnswerType> answerType = createEnum("answerType", com.example.shortapitest.eLearningApi.constant.AnswerType.class);
 
     public final QELearning eLearning;
 

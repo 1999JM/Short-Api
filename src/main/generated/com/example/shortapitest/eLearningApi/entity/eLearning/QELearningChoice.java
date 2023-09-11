@@ -22,6 +22,8 @@ public class QELearningChoice extends EntityPathBase<ELearningChoice> {
 
     public static final QELearningChoice eLearningChoice = new QELearningChoice("eLearningChoice");
 
+    public final BooleanPath answer = createBoolean("answer");
+
     public final StringPath choiceContent = createString("choiceContent");
 
     public final QELearningQuestion eLearningQuestion;

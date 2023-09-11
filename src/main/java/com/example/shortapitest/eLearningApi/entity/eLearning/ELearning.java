@@ -29,10 +29,10 @@ public class ELearning {
     private String alias;
 
     @Column(nullable = false)
-    private Boolean wrongAnswerSkip;    //오답시 다음 문제 진행 여부 기본값: false
+    private boolean wrongAnswerSkip;    //오답시 다음 문제 진행 여부 기본값: false
 
     @Column(nullable = false)
-    private Boolean displayAnswer;      // 정답 공개 여부 설정 기본값: false
+    private boolean displayAnswer;      // 정답 공개 여부 설정 기본값: false
 
     @Column(nullable = false)
     private int TestPassScore;          //eLearning 수료 기준 0~100 소숫점은 반올림 수료시 Certification

@@ -34,6 +34,4 @@ public class ELearningCategory {
     )
     private List<ELearningMenu> menuName;
 
-
-
 }
