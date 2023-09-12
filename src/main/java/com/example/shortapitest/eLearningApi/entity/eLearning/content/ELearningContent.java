@@ -33,7 +33,14 @@ public class ELearningContent {
     )
     private ELearningSetting eLearningSetting;
 
-    public void setELearningCategory(List<ELearningCategory> eLearningCategories) {
-        this.eLearningCategory.add((ELearningCategory) eLearningCategories);
+    public void setELearningCategory(ELearningCategory eLearningCategory) {
+        this.eLearningCategory.add(eLearningCategory);
+    }
+
+    public static ELearningContent createELearningContent(ELearningSetting eLearningSetting) {
+        ELearningContent eLearningContent = ELearningContent.builder()
+                .eLearningSetting(eLearningSetting)
+                .build();
+        return eLearningContent;
     }
 }

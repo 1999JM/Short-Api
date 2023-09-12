@@ -35,7 +35,11 @@ public class ELearningCategory {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningMenu> menuName;
+    private List<ELearningMenu> eLearningMenu;
+
+    public void setELearningName(ELearningMenu eLearningMenu){
+        this.eLearningMenu.add(eLearningMenu);
+    }
 
     public static ELearningCategory createCategory(ELearningCategoryDto eLearningCategoryDto, ELearningContent eLearningContent) {
 

@@ -1,5 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning;
 
+import com.example.shortapitest.eLearningApi.dto.ELearningSettingDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningContent;
 import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
 import com.example.shortapitest.eLearningApi.entity.image.LogoImage;
@@ -63,5 +64,21 @@ public class ELearningSetting extends BaseELearning {
 
     public void setELearningContent (ELearningContent eLearningContent){
         this.eLearningContent = eLearningContent;
+    }
+
+    public static ELearningSetting createELearningSetting(ELearningSettingDto ELearningSettingDto, LogoImage logoImage, CoverImage coverImage){
+
+        ELearningSetting eLearningSetting = ELearningSetting.builder()
+                .name(ELearningSettingDto.getELearningName())
+                .alias(ELearningSettingDto.getELearningAlias())
+                .TestPassScore(ELearningSettingDto.getTestPassScore())
+                .displayAnswer(ELearningSettingDto.isDisplayAnswer())
+                .wrongAnswerSkip(ELearningSettingDto.isWrongAnswerSkip())
+                .logoImage(logoImage)
+                .coverImage(coverImage)
+                .build();
+
+        return eLearningSetting;
+
     }
 }

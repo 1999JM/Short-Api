@@ -38,5 +38,4 @@ public class ELearningController {
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImage){
         eLearningService.eLearningContentsCreate(eLearningContentsDto, menuImage);
     }
-
 }

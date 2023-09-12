@@ -12,6 +12,7 @@ import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
 import com.example.shortapitest.eLearningApi.entity.image.LogoImage;
 import com.example.shortapitest.eLearningApi.repository.eLearning.ELearningCategoryRepository;
 import com.example.shortapitest.eLearningApi.repository.eLearning.ELearningContentRepository;
+import com.example.shortapitest.eLearningApi.repository.eLearning.ELearningMenuRepository;
 import com.example.shortapitest.eLearningApi.repository.eLearning.ELearningSettingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -34,12 +35,14 @@ public class ELearningService {
 
     private final ELearningCategoryRepository eLearningCategoryRepository;
 
+    private final ELearningMenuRepository eLearningMenuRepository;
+
 
     @Transactional
     public void eLearningSettingCreate(ELearningSettingDto ELearningSettingDto, MultipartFile logoImage, MultipartFile coverImage){
         LogoImage createLogoImage = eLearningImageService.createLogoImage(logoImage);
         CoverImage createCoverImage = eLearningImageService.createCoverImage(coverImage);
-        ELearningSetting eLearningSetting = ELearningSettingDto.createELearningSetting(ELearningSettingDto, createLogoImage, createCoverImage);
+        ELearningSetting eLearningSetting = ELearningSetting.createELearningSetting(ELearningSettingDto, createLogoImage, createCoverImage);
         eLearningSettingRepository.save(eLearningSetting);
     }
 
@@ -51,30 +54,32 @@ public class ELearningService {
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
 
         // 2번 ELearningContent 생성
-        ELearningContent eLearningContent = ELearningContent.builder()
-                .eLearningSetting(eLearningSetting)
-                .build();
-
+        ELearningContent eLearningContent = ELearningContent.createELearningContent(eLearningSetting);
         ELearningContent saveELearningContent = eLearningContentRepository.save(eLearningContent);
-
-        // 3번 ELearningCategory 생성 및 해당하는 ELearningMenu 생성
-        List<ELearningCategory> eLearningCategories = new ArrayList<>();
-
-        for (ELearningCategoryDto eLearningCategoryDto : eLearningContentsDto.getELearningCategoryDtos()) {
-
-            ELearningCategory eLearningCategory = ELearningCategory.createCategory(eLearningCategoryDto,eLearningContent);
-            eLearningCategories.add(eLearningCategoryRepository.save(eLearningCategory));
-
-            for (ELearningMenuDto eLearningMenuDto : eLearningCategoryDto.getMenu()) {
-
-
-            }
-        }
-
         //Setting에 Content 연결
         eLearningSetting.setELearningContent(saveELearningContent);
 
-        //Content에 Category 연결
-        saveELearningContent.setELearningCategory(eLearningCategories);
+        // 3번 ELearningCategory 생성 및 해당 하는 ELearningMenu 생성
+        for (ELearningCategoryDto eLearningCategoryDto : eLearningContentsDto.getELearningCategoryDtos()) {
+
+            //Content에 Category 연결
+            ELearningCategory eLearningCategory = ELearningCategory.createCategory(eLearningCategoryDto,eLearningContent);
+            ELearningCategory saveELearningCategory = eLearningCategoryRepository.save(eLearningCategory);
+            saveELearningContent.setELearningCategory(eLearningCategory);
+
+            //메뉴
+            for (ELearningMenuDto eLearningMenuDto : eLearningCategoryDto.getMenu()) {
+                for(int i = 0; i < eLearningMenuDto.getMenuImageCount(); i++ ){
+                    //이미지 저장 로직
+                    //이미지를 저장하고 이미지 n건을 eLeanringMenu에 넣어줍니다.
+                }
+
+                ELearningMenu eLearningMenu = ELearningMenu.createManu(eLearningMenuDto);
+                ELearningMenu saveELearningMenu = eLearningMenuRepository.save(eLearningMenu);
+                //Category와 menu 연걸
+                eLearningCategory.setELearningName(saveELearningMenu);
+                saveELearningMenu.setELearningCategory(eLearningCategory);
+            }
+        }
     }
 }

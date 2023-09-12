@@ -1,11 +1,14 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.content;
 
+import com.example.shortapitest.eLearningApi.dto.ELearningMenuDto;
 import com.example.shortapitest.eLearningApi.entity.image.MenuImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,16 +30,26 @@ public class ELearningMenu {
     private Long menuSequence;
 
 
-    @OneToOne(
+    @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     @JoinColumn(name = "menu_image_id")
-    private MenuImage menuImage;
+    private List<MenuImage> menuImage;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ELearningCategory eLearningCategory;
 
+    public void setELearningCategory(ELearningCategory eLearningCategory){
+        this.eLearningCategory = eLearningCategory;
+    }
+
+    public static ELearningMenu createManu(ELearningMenuDto eLearningMenuDto) {
+        ELearningMenu eLearningMenu = ELearningMenu.builder()
+                .menuName(eLearningMenuDto.getMenuName())
+                .build();
+        return eLearningMenu;
+    }
 }

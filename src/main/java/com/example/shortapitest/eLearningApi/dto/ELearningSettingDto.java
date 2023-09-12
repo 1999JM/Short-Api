@@ -31,20 +31,4 @@ public class ELearningSettingDto {
     @NotNull(message = "수료 기준을 설정해 주세요.")
     private int testPassScore;
 
-    public ELearningSetting createELearningSetting(ELearningSettingDto ELearningSettingDto, LogoImage logoImage, CoverImage coverImage){
-
-        ELearningSetting eLearningSetting = ELearningSetting.builder()
-                .name(ELearningSettingDto.getELearningName())
-                .alias(ELearningSettingDto.getELearningAlias())
-                .TestPassScore(ELearningSettingDto.getTestPassScore())
-                .displayAnswer(ELearningSettingDto.isDisplayAnswer())
-                .wrongAnswerSkip(ELearningSettingDto.isWrongAnswerSkip())
-                .logoImage(logoImage)
-                .coverImage(coverImage)
-                .build();
-
-        return eLearningSetting;
-
-    }
-
 }
