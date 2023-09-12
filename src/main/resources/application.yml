@@ -1,4 +1,9 @@
+coverImage: "/users/june/eLearning/eLearningCoverImage/"
+logoImage: "/users/june/eLearning/eLearningLogoImage/"
+menuImage: "/users/june/eLearning/eLearningMenu/"
+questionImage: "/users/june/eLearning/eLearningQuestionImage/"
 
+#이미지 저장 경로
 server:
   port: 9033
   servlet:

@@ -5,11 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class RequestELearningQuestion {
 
     //eLearningCategory, Menu 설정
@@ -19,13 +21,10 @@ public class RequestELearningQuestion {
     private String questionName;
 
     @Schema(description = "문제에 대한 정답 항목 설정")
-    @NotNull(message = "정답 항목을 설정해 주세요.")
-    private boolean answer;
+    @NotNull(message = "정답 항목을 선택해 주세요.")
+    private List<Boolean> answer;
 
     @Schema(description = "문제에 대한 항목")
     @NotBlank(message = "문제에 대한 보기를 작성해 주세요.")
     private List<String> questionChoice;
-
-    //문제 사진은 1장만 들어옵니다.
-
 }

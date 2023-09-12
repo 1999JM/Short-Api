@@ -68,4 +68,8 @@ public class ELearning {
             orphanRemoval = true
     )
     private List<ELearningQuestion> eLearningQuestion;  //문제
+
+    public void setELearningCategory(ELearningCategory eLearningCategory){
+        this.eLearningCategory.add(eLearningCategory);
+    }
 }

@@ -5,10 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class RequestELearning {
 
     @Schema(description = "이러닝 이름")
@@ -20,11 +21,9 @@ public class RequestELearning {
     private String eLearningAlias;
 
     @Schema(description = "오답시 다음 문제 진행 여부")
-    @NotNull(message = "오답시 다음 문제 진행 여부를 체크해 주세요.")
     private boolean wrongAnswerSkip;
 
     @Schema(description = "오답시 문제 정답 공개 여부")
-    @NotNull(message = "오답시 문제 정답 공개 여부를 체크해 주세요.")
     private boolean displayAnswer;
 
     @Schema(description = "수료 판별 기준 점수")

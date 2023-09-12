@@ -9,12 +9,15 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
+///*@Parameter(schema = @Schema(name = "json", type = "string", format = "binary"))*/
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/eLearning")
@@ -25,12 +28,18 @@ public class ELearningController {
 
     @Operation(summary = "이러닝 등록")
     @PostMapping("/create")
-    public void createELearning( @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary"))  RequestELearning requestELearning,
-                                //@RequestPart List<RequestELearningCategory> requestELearningCategories,
-                                //@RequestPart  List<RequestELearningQuestion> requestELearningQuestion,
-                                @RequestPart  List<MultipartFile> multipartFile){
+    public void createELearning(@RequestPart RequestELearning requestELearning
+                                ,@RequestPart List<RequestELearningCategory> requestELearningCategories
+                                ,@RequestPart List<RequestELearningQuestion> requestELearningQuestion
+                                ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile logoImage
+                                //,@RequestPart MultipartFile coverImage
+                                ){
 
-        System.out.printf("요청이 들어왔습니다.");
+        System.out.println("요청이 들어왔습니다.");
+        System.out.println(requestELearning.toString());
+        System.out.println(requestELearningCategories.toString());
+        System.out.println(requestELearningQuestion.toString());
+        eLearningService.eLearningCreate(requestELearning, requestELearningCategories, requestELearningQuestion, logoImage);
     }
 
 }
