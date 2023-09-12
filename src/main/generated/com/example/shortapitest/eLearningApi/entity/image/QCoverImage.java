@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,13 +17,9 @@ public class QCoverImage extends EntityPathBase<CoverImage> {
 
     private static final long serialVersionUID = 1935094904L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QCoverImage coverImage = new QCoverImage("coverImage");
 
     public final QBaseImage _super = new QBaseImage(this);
-
-    public final com.example.shortapitest.eLearningApi.entity.eLearning.QELearning eLearning;
 
     //inherited
     public final StringPath filename = _super.filename;
@@ -35,28 +30,18 @@ public class QCoverImage extends EntityPathBase<CoverImage> {
     //inherited
     public final StringPath fileUrl = _super.fileUrl;
 
-    //inherited
-    public final NumberPath<Long> id = _super.id;
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public QCoverImage(String variable) {
-        this(CoverImage.class, forVariable(variable), INITS);
+        super(CoverImage.class, forVariable(variable));
     }
 
     public QCoverImage(Path<? extends CoverImage> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QCoverImage(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QCoverImage(PathMetadata metadata, PathInits inits) {
-        this(CoverImage.class, metadata, inits);
-    }
-
-    public QCoverImage(Class<? extends CoverImage> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.eLearning = inits.isInitialized("eLearning") ? new com.example.shortapitest.eLearningApi.entity.eLearning.QELearning(forProperty("eLearning"), inits.get("eLearning")) : null;
+        super(CoverImage.class, metadata);
     }
 
 }

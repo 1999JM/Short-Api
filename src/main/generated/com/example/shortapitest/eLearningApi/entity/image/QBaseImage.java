@@ -25,8 +25,6 @@ public class QBaseImage extends EntityPathBase<BaseImage> {
 
     public final StringPath fileUrl = createString("fileUrl");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
-
     public QBaseImage(String variable) {
         super(BaseImage.class, forVariable(variable));
     }

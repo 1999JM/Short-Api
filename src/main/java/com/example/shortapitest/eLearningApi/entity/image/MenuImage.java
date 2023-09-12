@@ -1,22 +1,23 @@
 package com.example.shortapitest.eLearningApi.entity.image;
 
-import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningMenu;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningMenu;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Builder
 @Getter
-@NoArgsConstructor
+@SuperBuilder
 @AllArgsConstructor
+@NoArgsConstructor
 public class MenuImage extends BaseImage {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ELearningMenu eLearningMenu;    //메뉴에 대한 이미지 설정
+    @Id
+    @Column(name = "menu_image_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 }

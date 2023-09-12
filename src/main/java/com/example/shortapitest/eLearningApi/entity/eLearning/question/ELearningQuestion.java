@@ -1,6 +1,8 @@
-package com.example.shortapitest.eLearningApi.entity.eLearning;
+package com.example.shortapitest.eLearningApi.entity.eLearning.question;
 
 import com.example.shortapitest.eLearningApi.constant.AnswerType;
+import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
+import com.example.shortapitest.eLearningApi.entity.eLearning.question.ELearningChoice;
 import com.example.shortapitest.eLearningApi.entity.image.QuestionImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,14 +28,14 @@ public class ELearningQuestion {
     private String questionName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ELearning eLearning;
+    private ELearningSetting eLearningSetting;
 
     @OneToOne(
             fetch = FetchType.LAZY,
-            mappedBy = "eLearningQuestion",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JoinColumn(name = "question_image_id")
     private QuestionImage questionImage;
 
     @Enumerated(EnumType.STRING)
@@ -41,8 +43,8 @@ public class ELearningQuestion {
     private AnswerType answerType;
 
     @OneToMany(
-            fetch = FetchType.LAZY,
             mappedBy = "eLearningQuestion",
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )

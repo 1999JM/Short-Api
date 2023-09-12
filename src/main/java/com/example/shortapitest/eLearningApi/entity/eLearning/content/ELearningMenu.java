@@ -1,5 +1,6 @@
-package com.example.shortapitest.eLearningApi.entity.eLearning;
+package com.example.shortapitest.eLearningApi.entity.eLearning.content;
 
+import com.example.shortapitest.eLearningApi.entity.image.MenuImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,8 +22,21 @@ public class ELearningMenu {
     @Column(nullable = false)
     private String menuName;
 
+    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long menuSequence;
+
+
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "menu_image_id")
+    private MenuImage menuImage;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "e_learning_category_id")
     private ELearningCategory eLearningCategory;
 
 }

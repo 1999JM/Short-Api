@@ -1,23 +1,23 @@
 package com.example.shortapitest.eLearningApi.entity.image;
 
-import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningQuestion;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import com.example.shortapitest.eLearningApi.entity.eLearning.question.ELearningQuestion;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
-@Builder
-@NoArgsConstructor
+@SuperBuilder
 @AllArgsConstructor
+@NoArgsConstructor
 public class QuestionImage extends BaseImage{
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private ELearningQuestion eLearningQuestion;
+    @Id
+    @Column(name = "question_image_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 }

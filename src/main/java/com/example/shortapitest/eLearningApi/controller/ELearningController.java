@@ -1,8 +1,7 @@
 package com.example.shortapitest.eLearningApi.controller;
 
-import com.example.shortapitest.eLearningApi.dto.RequestELearning;
-import com.example.shortapitest.eLearningApi.dto.RequestELearningCategory;
-import com.example.shortapitest.eLearningApi.dto.RequestELearningQuestion;
+import com.example.shortapitest.eLearningApi.dto.ELearningContentsDto;
+import com.example.shortapitest.eLearningApi.dto.ELearningSettingDto;
 import com.example.shortapitest.eLearningApi.service.ELearningService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,29 +16,27 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-///*@Parameter(schema = @Schema(name = "json", type = "string", format = "binary"))*/
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/eLearning")
 @Tag(name = "이러닝 API", description = "이러닝 등록")
 public class ELearningController {
-
     private final ELearningService eLearningService;
 
-    @Operation(summary = "이러닝 등록")
-    @PostMapping("/create")
-    public void createELearning(@RequestPart RequestELearning requestELearning
-                                ,@RequestPart List<RequestELearningCategory> requestELearningCategories
-                                ,@RequestPart List<RequestELearningQuestion> requestELearningQuestion
+    @Operation(summary = "이러닝 Setting 등록")
+    @PostMapping("/create-setting")
+    public void createELearningSetting(@RequestPart ELearningSettingDto ELearningSettingDto
                                 ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile logoImage
-                                //,@RequestPart MultipartFile coverImage
+                                ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile coverImage
                                 ){
+        eLearningService.eLearningSettingCreate(ELearningSettingDto, logoImage, coverImage);
+    }
 
-        System.out.println("요청이 들어왔습니다.");
-        System.out.println(requestELearning.toString());
-        System.out.println(requestELearningCategories.toString());
-        System.out.println(requestELearningQuestion.toString());
-        eLearningService.eLearningCreate(requestELearning, requestELearningCategories, requestELearningQuestion, logoImage);
+    @Operation(summary = "이러닝 Contents 등록")
+    @PostMapping("/create-contents")
+    public void createELearningContents(@RequestPart ELearningContentsDto eLearningContentsDto
+            , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImage){
+        eLearningService.eLearningContentsCreate(eLearningContentsDto, menuImage);
     }
 
 }

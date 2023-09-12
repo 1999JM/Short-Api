@@ -1,5 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning;
 
+import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningContent;
 import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
 import com.example.shortapitest.eLearningApi.entity.image.LogoImage;
 import jakarta.persistence.*;
@@ -8,24 +9,22 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ELearning {
+public class ELearningSetting extends BaseELearning {
 
     @Id
-    @Column(name = "e_learning_id")
+    @Column(name = "e_learning_Setting_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "e_learning_name", nullable = false)
+    @Column(name = "e_learning_Setting_name", nullable = false)
     private String name;
 
-    @Column(name = "e_learning_alias", nullable = false)
+    @Column(name = "e_learning_Setting_alias", nullable = false)
     private String alias;
 
     @Column(nullable = false)
@@ -39,37 +38,30 @@ public class ELearning {
 
     @OneToOne(
             fetch = FetchType.LAZY,
-            mappedBy = "eLearning",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JoinColumn(name = "cover_image_id")
     private CoverImage coverImage;      //커버 이미지 1건
 
     @OneToOne(
             fetch = FetchType.LAZY,
-            mappedBy = "eLearning",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JoinColumn(name = "logo_image_id")
     private LogoImage logoImage;        //로고 이미지 1건
 
-    @OneToMany(
+    @OneToOne(
+            mappedBy = "eLearningSetting",
             fetch = FetchType.LAZY,
-            mappedBy = "eLearning",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningCategory> eLearningCategory;  //카테고리
+    @JoinColumn(name = "id")
+    private ELearningContent eLearningContent;
 
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "eLearning",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<ELearningQuestion> eLearningQuestion;  //문제
-
-    public void setELearningCategory(ELearningCategory eLearningCategory){
-        this.eLearningCategory.add(eLearningCategory);
+    public void setELearningContent (ELearningContent eLearningContent){
+        this.eLearningContent = eLearningContent;
     }
 }

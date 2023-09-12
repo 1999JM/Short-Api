@@ -1,6 +1,5 @@
-package com.example.shortapitest.eLearningApi.entity.eLearning;
+package com.example.shortapitest.eLearningApi.entity.eLearning.question;
 
-import com.example.shortapitest.eLearningApi.constant.AnswerType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +15,6 @@ public class ELearningChoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "E_Learning_Choice")
     private Long id;
 
     @Column(nullable = false)
