@@ -26,8 +26,7 @@ public class ELearningMenu {
     private String menuName;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long menuSequence;
+    private int menuSequence;
 
 
     @OneToMany(
@@ -46,9 +45,10 @@ public class ELearningMenu {
         this.eLearningCategory = eLearningCategory;
     }
 
-    public static ELearningMenu createManu(ELearningMenuDto eLearningMenuDto) {
+    public static ELearningMenu createManu(ELearningMenuDto eLearningMenuDto, int menuSequence) {
         ELearningMenu eLearningMenu = ELearningMenu.builder()
                 .menuName(eLearningMenuDto.getMenuName())
+                .menuSequence(menuSequence)
                 .build();
         return eLearningMenu;
     }

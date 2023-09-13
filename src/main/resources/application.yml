@@ -28,7 +28,7 @@ spring:
     open-in-view: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

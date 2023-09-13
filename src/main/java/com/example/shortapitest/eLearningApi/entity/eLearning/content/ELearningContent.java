@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +19,7 @@ public class ELearningContent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "e_learning_content_id")
     private Long id;
 
     @OneToMany(
@@ -26,11 +28,10 @@ public class ELearningContent {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningCategory> eLearningCategory;
+    private List<ELearningCategory> eLearningCategory = new ArrayList<ELearningCategory>();
 
-    @OneToOne(
-            fetch = FetchType.LAZY
-    )
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "e_learning_Setting_id")
     private ELearningSetting eLearningSetting;
 
     public void setELearningCategory(ELearningCategory eLearningCategory) {
@@ -42,5 +43,9 @@ public class ELearningContent {
                 .eLearningSetting(eLearningSetting)
                 .build();
         return eLearningContent;
+    }
+
+    public void setELearningCategories(List<ELearningCategory> eLearningCategories) {
+        this.eLearningCategory = eLearningCategories;
     }
 }

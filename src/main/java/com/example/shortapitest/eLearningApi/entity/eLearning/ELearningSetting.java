@@ -54,12 +54,11 @@ public class ELearningSetting extends BaseELearning {
     private LogoImage logoImage;        //로고 이미지 1건
 
     @OneToOne(
-            mappedBy = "eLearningSetting",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "e_learning_content_id")
     private ELearningContent eLearningContent;
 
     public void setELearningContent (ELearningContent eLearningContent){
@@ -79,6 +78,5 @@ public class ELearningSetting extends BaseELearning {
                 .build();
 
         return eLearningSetting;
-
     }
 }

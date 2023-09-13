@@ -20,4 +20,13 @@ public class MenuImage extends BaseImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public static MenuImage setMenuImage(String newImageName, String oriImageName, String imageUrl) {
+
+        MenuImage menuImage = MenuImage.builder()
+                .filename(newImageName)
+                .fileOriName(oriImageName)
+                .fileUrl(imageUrl)
+                .build();
+        return menuImage;
+    }
 }

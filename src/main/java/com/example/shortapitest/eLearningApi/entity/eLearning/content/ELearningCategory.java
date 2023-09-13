@@ -23,8 +23,7 @@ public class ELearningCategory {
     private String categoryName;
 
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categorySequence;
+    private int categorySequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ELearningContent eLearningContent;
@@ -41,10 +40,11 @@ public class ELearningCategory {
         this.eLearningMenu.add(eLearningMenu);
     }
 
-    public static ELearningCategory createCategory(ELearningCategoryDto eLearningCategoryDto, ELearningContent eLearningContent) {
+    public static ELearningCategory createCategory(ELearningCategoryDto eLearningCategoryDto, ELearningContent eLearningContent, int categorySequence) {
 
         ELearningCategory eLearningCategory = ELearningCategory.builder()
                 .categoryName(eLearningCategoryDto.getCategoryName())
+                .categorySequence(categorySequence)
                 .eLearningContent(eLearningContent)
                 .build();
 
