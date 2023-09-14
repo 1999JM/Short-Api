@@ -41,7 +41,7 @@ public class ELearningSetting extends BaseELearning {
     private int TestPassScore;          //eLearning 수료 기준 0~100 소숫점은 반올림 수료시 Certification
 
     @Column(nullable = false)
-    private boolean viewPage = true;    //Delete 요청시 값을 false로 하여 웹페이지에 보여지지 않도록 합니다.
+    private boolean viewPage;       //Delete 요청시 값을 false로 하여 웹페이지에 보여지지 않도록 합니다.
 
     @OneToOne(
             fetch = FetchType.LAZY,
@@ -89,6 +89,7 @@ public class ELearningSetting extends BaseELearning {
                 .wrongAnswerSkip(ELearningSettingDto.isWrongAnswerSkip())
                 .logoImage(logoImage)
                 .coverImage(coverImage)
+                .viewPage(true)
                 .build();
 
         return eLearningSetting;

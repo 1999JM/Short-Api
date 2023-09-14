@@ -37,6 +37,8 @@ public class QMenuImage extends EntityPathBase<MenuImage> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final NumberPath<Long> menuImageSequence = createNumber("menuImageSequence", Long.class);
+
     public QMenuImage(String variable) {
         this(MenuImage.class, forVariable(variable), INITS);
     }

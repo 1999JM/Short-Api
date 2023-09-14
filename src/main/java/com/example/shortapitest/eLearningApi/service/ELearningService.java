@@ -15,6 +15,7 @@ import com.example.shortapitest.eLearningApi.repository.eLearning.ELearningMenuR
 import com.example.shortapitest.eLearningApi.repository.eLearning.ELearningSettingRepository;
 import com.example.shortapitest.eLearningApi.repository.image.CoverImageRepository;
 import com.example.shortapitest.eLearningApi.repository.image.LogoImageRepository;
+import com.example.shortapitest.eLearningApi.repository.image.MenuImageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -37,9 +40,8 @@ public class ELearningService {
 
     @Value("${menuImage}")
     private String menuImageLocation;
-
-    private final ELearningImageService eLearningImageService;
-
+    @Value("${questionImage}")
+    private String questionImageLocation;
 
     private final ELearningSettingRepository eLearningSettingRepository;
 
@@ -52,7 +54,7 @@ public class ELearningService {
 
     private final CoverImageRepository coverImageRepository;
     private final LogoImageRepository logoImageRepository;
-    private final FileUploadService fileUploadService;
+    private final MenuImageRepository menuImageRepository;
 
 
     @Transactional
@@ -63,11 +65,11 @@ public class ELearningService {
 
         try {
             //파일 업로드
-            String newLogoImageName = fileUploadService.uploadFile(logoImageLocation, logoOriImageName, logoImage.getBytes());
+            String newLogoImageName = uploadFile(logoImageLocation, logoOriImageName, logoImage.getBytes());
             LogoImage createLogoImage = LogoImage.setLogoImage(newLogoImageName, logoOriImageName, logoImageLocation);
             logoImageRepository.save(createLogoImage);
 
-            String newCoverImageName = fileUploadService.uploadFile(coverImageLocation, logoOriImageName, logoImage.getBytes());
+            String newCoverImageName = uploadFile(coverImageLocation, logoOriImageName, logoImage.getBytes());
             CoverImage createCoverImage = CoverImage.setCoverImage(newCoverImageName, coverOriImageName, coverImageLocation);
             coverImageRepository.save(createCoverImage);
 
@@ -113,32 +115,22 @@ public class ELearningService {
                 eLearningCategory.setELearningMenu(eLearningMenu);
 
                 for(int i = 0; i < eLearningMenuDto.getMenuImageCount(); i++ ){
-                    //조건식 수정 필요
                     //이미지 저장 로직
                     //이미지를 저장하고 이미지 n건을 eLeanringMenu에 넣어줍니다.
-                    MenuImage createMenuImage = eLearningImageService.createMenuImage(menuImage.get(count), eLearningMenu);
-
-
-                   /* MenuImage saveMenuImage = new MenuImage();
-                    String oriImageName = menuImage.getOriginalFilename();
-
+                    String oriMenuImageName = menuImage.get(count).getOriginalFilename();
                     try {
                         //파일 업로드
-                        if(!StringUtils.isEmpty(oriImageName)){//이름이 있으면 업로드
-                            String newImageName = fileUploadService.uploadFile(coverImageLocation, oriImageName, menuImage.getBytes());
-                            String imageUrl = coverImageLocation + oriImageName;
-                            saveMenuImage = saveMenuImage.setMenuImage(newImageName, oriImageName, imageUrl, eLearningMenu);
+                        if(!StringUtils.isEmpty(oriMenuImageName)){//이름이 있으면 업로드
+                            String newMenuImageName = uploadFile(questionImageLocation, oriMenuImageName, menuImage.get(count).getBytes());
+                            MenuImage saveMenuImage = MenuImage.setMenuImage(newMenuImageName, oriMenuImageName, questionImageLocation, eLearningMenu, (long) i+1);
+                            menuImageRepository.save(saveMenuImage);
                         }
                     }
                     catch (Exception e){
                         e.printStackTrace();
                     }
-                    return menuImageRepository.save(saveMenuImage);*/
-
-
                     count++;
                 }
-
                 menuSequence++;
             }
            categorySequence++;
@@ -165,6 +157,23 @@ public class ELearningService {
 
 
 
+    }
+
+    // 이미지 저장 및 새로운 이미지 이름을 만듭니다.
+    public String uploadFile(String upLoadPath, String originalFileName,byte[] fileData) throws Exception{
+        UUID uuid = UUID.randomUUID();
+        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        String savedFileName=uuid.toString()+extension;
+
+        String fileUploadFullUrl= upLoadPath+"/"+savedFileName;
+
+        FileOutputStream fos = new FileOutputStream(fileUploadFullUrl);
+
+        fos.write(fileData);
+
+        fos.close();
+
+        return savedFileName;
     }
 
 }

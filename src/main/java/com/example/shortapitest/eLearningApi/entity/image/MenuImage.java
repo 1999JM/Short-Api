@@ -20,17 +20,21 @@ public class MenuImage extends BaseImage {
     private Long id;
 
 
+    @Column(nullable = false)
+    private long menuImageSequence;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "e_learning_menu_id", updatable = false)
     private ELearningMenu eLearningMenu;
 
-    public MenuImage setMenuImage(String newImageName, String oriImageName, String imageUrl, ELearningMenu eLearningMenu) {
+    public static MenuImage setMenuImage(String newMenuImageName, String oriMenuImageName, String questionImageLocation, ELearningMenu eLearningMenu, long menuImageSequence) {
 
         MenuImage menuImage = MenuImage.builder()
-                .filename(newImageName)
-                .fileOriName(oriImageName)
-                .fileUrl(imageUrl)
+                .filename(newMenuImageName)
+                .fileOriName(oriMenuImageName)
+                .fileUrl(questionImageLocation)
                 .eLearningMenu(eLearningMenu)
+                .menuImageSequence(menuImageSequence)
                 .build();
         return menuImage;
     }
