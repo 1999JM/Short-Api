@@ -1,6 +1,8 @@
 package com.example.shortapitest.eLearningApi.controller;
 
 import com.example.shortapitest.eLearningApi.dto.ELearningContentsDto;
+import com.example.shortapitest.eLearningApi.dto.ELearningQuestionDto;
+import com.example.shortapitest.eLearningApi.dto.ELearningQuestionSetDto;
 import com.example.shortapitest.eLearningApi.dto.ELearningSettingDto;
 import com.example.shortapitest.eLearningApi.service.ELearningService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,5 +39,14 @@ public class ELearningController {
     public void createELearningContents(@RequestPart ELearningContentsDto eLearningContentsDto
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImage){
         eLearningService.eLearningContentsCreate(eLearningContentsDto, menuImage);
+    }
+
+    @Operation(summary = "이러닝 Question 등록")
+    @PostMapping("/create-question")
+    public void createELearningQuestion(@RequestPart ELearningQuestionDto eLearningQuestionDto
+            , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> questionImages){
+
+        System.out.println("통신 성공");
+        eLearningService.eLearningQuestionCreate(eLearningQuestionDto, questionImages);
     }
 }

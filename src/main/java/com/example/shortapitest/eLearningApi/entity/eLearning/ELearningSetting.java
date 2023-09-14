@@ -2,6 +2,7 @@ package com.example.shortapitest.eLearningApi.entity.eLearning;
 
 import com.example.shortapitest.eLearningApi.dto.ELearningSettingDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningContent;
+import com.example.shortapitest.eLearningApi.entity.eLearning.question.ELearningQuestion;
 import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
 import com.example.shortapitest.eLearningApi.entity.image.LogoImage;
 import jakarta.persistence.*;
@@ -9,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -43,7 +46,7 @@ public class ELearningSetting extends BaseELearning {
             orphanRemoval = true
     )
     @JoinColumn(name = "cover_image_id")
-    private CoverImage coverImage;      //커버 이미지 1건
+    private CoverImage coverImage;      //커버 이미지 1건 (수정완료)
 
     @OneToOne(
             fetch = FetchType.LAZY,
@@ -51,7 +54,7 @@ public class ELearningSetting extends BaseELearning {
             orphanRemoval = true
     )
     @JoinColumn(name = "logo_image_id")
-    private LogoImage logoImage;        //로고 이미지 1건
+    private LogoImage logoImage;        //로고 이미지 1건 (수정완료)
 
     @OneToOne(
             fetch = FetchType.LAZY,
@@ -59,7 +62,15 @@ public class ELearningSetting extends BaseELearning {
             orphanRemoval = true
     )
     @JoinColumn(name = "e_learning_content_id")
-    private ELearningContent eLearningContent;
+    private ELearningContent eLearningContent;  //(수정완료)
+
+    @OneToMany(
+            mappedBy = "eLearningSetting",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ELearningQuestion> eLearningQuestion;  //수정 완료.
 
     public void setELearningContent (ELearningContent eLearningContent){
         this.eLearningContent = eLearningContent;

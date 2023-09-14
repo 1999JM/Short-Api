@@ -7,13 +7,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class ELearningContent {
 
@@ -22,15 +23,20 @@ public class ELearningContent {
     @Column(name = "e_learning_content_id")
     private Long id;
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "eLearningContent",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningCategory> eLearningCategory = new ArrayList<ELearningCategory>();
+    private List<ELearningCategory> eLearningCategory = new ArrayList<ELearningCategory>(); //수정완료.
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JoinColumn(name = "e_learning_Setting_id")
     private ELearningSetting eLearningSetting;
 
@@ -39,13 +45,8 @@ public class ELearningContent {
     }
 
     public static ELearningContent createELearningContent(ELearningSetting eLearningSetting) {
-        ELearningContent eLearningContent = ELearningContent.builder()
+        return ELearningContent.builder()
                 .eLearningSetting(eLearningSetting)
                 .build();
-        return eLearningContent;
-    }
-
-    public void setELearningCategories(List<ELearningCategory> eLearningCategories) {
-        this.eLearningCategory = eLearningCategories;
     }
 }

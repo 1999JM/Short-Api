@@ -11,7 +11,6 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Getter
 @SuperBuilder
-@AllArgsConstructor
 @NoArgsConstructor
 public class MenuImage extends BaseImage {
 
@@ -20,13 +19,20 @@ public class MenuImage extends BaseImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public static MenuImage setMenuImage(String newImageName, String oriImageName, String imageUrl) {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "e_learning_menu_id", updatable = false)
+    private ELearningMenu eLearningMenu;
+
+    public MenuImage setMenuImage(String newImageName, String oriImageName, String imageUrl, ELearningMenu eLearningMenu) {
 
         MenuImage menuImage = MenuImage.builder()
                 .filename(newImageName)
                 .fileOriName(oriImageName)
                 .fileUrl(imageUrl)
+                .eLearningMenu(eLearningMenu)
                 .build();
         return menuImage;
     }
+
 }

@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseImage {
-
     @Column(nullable = false)
     private String filename;    //변경시킨 이미지 이름
 

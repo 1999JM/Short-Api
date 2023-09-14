@@ -1,5 +1,6 @@
 package com.example.shortapitest.eLearningApi.service;
 
+import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningMenu;
 import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
 import com.example.shortapitest.eLearningApi.entity.image.LogoImage;
 import com.example.shortapitest.eLearningApi.entity.image.MenuImage;
@@ -41,8 +42,8 @@ public class ELearningImageService {
         try {
             //파일 업로드
             if(!StringUtils.isEmpty(oriImageName)){//이름이 있으면 업로드
-                String newImageName = fileUploadService.uploadFile(logoImageLocation, oriImageName, logoImage.getBytes());
-                String imageUrl = logoImageLocation + oriImageName;
+                String newImageName = fileUploadService.uploadFile(menuImageLocation, oriImageName, logoImage.getBytes());
+                String imageUrl = menuImageLocation + oriImageName;
 
                 saveLogoImage = saveLogoImage.setLogoImage(newImageName, oriImageName, imageUrl);
             }
@@ -72,7 +73,7 @@ public class ELearningImageService {
         return coverImageRepository.save(saveCoverImage);
     }
 
-    public MenuImage createMenuImage(MultipartFile menuImage) {
+    public MenuImage createMenuImage(MultipartFile menuImage, ELearningMenu eLearningMenu) {
 
         MenuImage saveMenuImage = new MenuImage();
         String oriImageName = menuImage.getOriginalFilename();
@@ -80,9 +81,9 @@ public class ELearningImageService {
         try {
             //파일 업로드
             if(!StringUtils.isEmpty(oriImageName)){//이름이 있으면 업로드
-                String newImageName = fileUploadService.uploadFile(menuImageLocation, oriImageName, menuImage.getBytes());
-                String imageUrl = menuImageLocation + oriImageName;
-                saveMenuImage = MenuImage.setMenuImage(newImageName, oriImageName, imageUrl);
+                String newImageName = fileUploadService.uploadFile(coverImageLocation, oriImageName, menuImage.getBytes());
+                String imageUrl = coverImageLocation + oriImageName;
+                saveMenuImage = saveMenuImage.setMenuImage(newImageName, oriImageName, imageUrl, eLearningMenu);
             }
         }
         catch (Exception e){

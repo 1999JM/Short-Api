@@ -28,27 +28,24 @@ public class ELearningMenu {
     @Column(nullable = false)
     private int menuSequence;
 
-
     @OneToMany(
+            mappedBy = "eLearningMenu",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "menu_image_id")
     private List<MenuImage> menuImage;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "e_Learning_category_id", updatable = false)
     private ELearningCategory eLearningCategory;
 
-    public void setELearningCategory(ELearningCategory eLearningCategory){
-        this.eLearningCategory = eLearningCategory;
-    }
 
-    public static ELearningMenu createManu(ELearningMenuDto eLearningMenuDto, int menuSequence) {
+    public static ELearningMenu createManu(ELearningMenuDto eLearningMenuDto, int menuSequence, ELearningCategory eLearningCategory) {
         ELearningMenu eLearningMenu = ELearningMenu.builder()
                 .menuName(eLearningMenuDto.getMenuName())
                 .menuSequence(menuSequence)
+                .eLearningCategory(eLearningCategory)
                 .build();
         return eLearningMenu;
     }

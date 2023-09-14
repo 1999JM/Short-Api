@@ -2,8 +2,6 @@ package com.example.shortapitest.eLearningApi.entity.image;
 
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -11,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Getter
 @SuperBuilder
-@AllArgsConstructor
 @NoArgsConstructor
 public class CoverImage extends BaseImage {
 
@@ -19,6 +16,11 @@ public class CoverImage extends BaseImage {
     @Column(name = "cover_image_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
+    @OneToOne(mappedBy = "coverImage", fetch = FetchType.LAZY)
+    @JoinColumn(name = "e_learning_Setting_id", insertable = false, updatable = false)
+    private ELearningSetting eLearningSetting;
 
     public CoverImage setCoverImage(String newImageName, String oriImageName, String imageUrl){
 

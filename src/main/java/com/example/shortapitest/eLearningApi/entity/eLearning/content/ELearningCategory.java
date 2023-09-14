@@ -5,6 +5,7 @@ import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningM
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,18 +27,20 @@ public class ELearningCategory {
     private int categorySequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "e_learning_content_id", updatable = false)
     private ELearningContent eLearningContent;
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "eLearningCategory",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningMenu> eLearningMenu;
+    private List<ELearningMenu> eLearningMenuList = new ArrayList<>();  //수정완료.
 
-    public void setELearningName(ELearningMenu eLearningMenu){
-        this.eLearningMenu.add(eLearningMenu);
+    public void setELearningMenu(ELearningMenu eLearningMenu){
+        this.eLearningMenuList.add(eLearningMenu);
     }
 
     public static ELearningCategory createCategory(ELearningCategoryDto eLearningCategoryDto, ELearningContent eLearningContent, int categorySequence) {

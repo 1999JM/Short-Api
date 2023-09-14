@@ -21,13 +21,14 @@ public class ELearningQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "E_Learning_Question")
+    @Column(name = "e_learning_question_id")
     private Long id;
 
     @Column(nullable = false)
     private String questionName;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "e_learning_Setting_id", insertable = false, updatable = false)
     private ELearningSetting eLearningSetting;
 
     @OneToOne(

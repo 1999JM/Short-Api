@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,9 +18,13 @@ public class QQuestionImage extends EntityPathBase<QuestionImage> {
 
     private static final long serialVersionUID = -1504464895L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QQuestionImage questionImage = new QQuestionImage("questionImage");
 
     public final QBaseImage _super = new QBaseImage(this);
+
+    public final com.example.shortapitest.eLearningApi.entity.eLearning.question.QELearningQuestion eLearningQuestion;
 
     //inherited
     public final StringPath filename = _super.filename;
@@ -33,15 +38,24 @@ public class QQuestionImage extends EntityPathBase<QuestionImage> {
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public QQuestionImage(String variable) {
-        super(QuestionImage.class, forVariable(variable));
+        this(QuestionImage.class, forVariable(variable), INITS);
     }
 
     public QQuestionImage(Path<? extends QuestionImage> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QQuestionImage(PathMetadata metadata) {
-        super(QuestionImage.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QQuestionImage(PathMetadata metadata, PathInits inits) {
+        this(QuestionImage.class, metadata, inits);
+    }
+
+    public QQuestionImage(Class<? extends QuestionImage> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.eLearningQuestion = inits.isInitialized("eLearningQuestion") ? new com.example.shortapitest.eLearningApi.entity.eLearning.question.QELearningQuestion(forProperty("eLearningQuestion"), inits.get("eLearningQuestion")) : null;
     }
 
 }
