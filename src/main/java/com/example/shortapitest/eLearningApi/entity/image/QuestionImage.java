@@ -22,4 +22,12 @@ public class QuestionImage extends BaseImage{
     @JoinColumn(name = "e_learning_question_id", insertable = false, updatable = false)
     private ELearningQuestion eLearningQuestion;
 
+    public static QuestionImage createLogoImage(String newQuestionImageName, String originalFilename, String questionImageLocation) {
+        QuestionImage questionImage = QuestionImage.builder()
+                .filename(newQuestionImageName)
+                .fileUrl(originalFilename)
+                .fileUrl(questionImageLocation)
+                .build();
+        return questionImage;
+    }
 }

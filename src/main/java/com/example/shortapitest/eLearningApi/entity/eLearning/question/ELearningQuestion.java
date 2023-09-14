@@ -11,7 +11,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Getter
@@ -44,20 +46,32 @@ public class ELearningQuestion {
     @Column(nullable = false)
     private AnswerType answerType;
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "eLearningQuestion",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningChoice> eLearningChoice;
+    private List<ELearningChoice> eLearningChoice = new ArrayList<>();
 
-    public static ELearningQuestion setELearningQuestion(ELearningQuestionSetDto eLearningQuestionSetDto) {
+    public void setQuestionImage(QuestionImage questionImage) {
+        this.questionImage = questionImage;
+    }
 
-        //ELearningQuestion eLearningQuestion = ELearningQuestion.builder()
-                //.questionName();
 
+    public static ELearningQuestion createELearningQuestion(ELearningQuestionSetDto eLearningQuestionSetDto) {
 
-        return null;
+        String answerType = eLearningQuestionSetDto.getAnswer().toUpperCase();
+
+        ELearningQuestion eLearningQuestion = ELearningQuestion.builder()
+                .questionName(eLearningQuestionSetDto.getQuestionName())
+                .answerType((answerType.equals(AnswerType.RADIO) ? AnswerType.RADIO : AnswerType.CHECKBOX))
+                .build();
+        return eLearningQuestion;
+    }
+
+    public void setChoice(ELearningChoice eLearningChoice) {
+        this.eLearningChoice.add(eLearningChoice);
     }
 }
