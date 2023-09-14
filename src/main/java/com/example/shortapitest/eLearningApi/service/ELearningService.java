@@ -157,7 +157,7 @@ public class ELearningService {
     }
 
     public void selectELearningSettingPage(Pageable pageable) {
-        Page<ResponseSetting> responseSettings = eLearningSettingRepository.selectELearningSetting(pageable);
+        Page<ELearningSetting> responseSettings = eLearningSettingRepository.selectELearningSetting(pageable);
         System.out.println(responseSettings.getTotalPages());
         responseSettings.getContent().forEach(dto -> {
             System.out.println(dto.toString());
