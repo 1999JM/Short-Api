@@ -21,9 +21,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/testapi?serverTimezone=Asia/Seoul
     username: root
-    password: mysql
-#    username: root
-#    password: 9722
+    password: 9722
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true

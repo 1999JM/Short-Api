@@ -9,7 +9,8 @@ import lombok.ToString;
 @ToString
 public class ResponseSetting {
 
+    private Long id;
     private String eLearningName;
     private String eLearningAlias;
-    private String deleted;
+    private boolean deleted;
 }
