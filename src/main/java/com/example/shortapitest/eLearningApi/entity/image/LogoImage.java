@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.beans.factory.annotation.Value;
 
 
 @Entity
@@ -23,12 +24,12 @@ public class LogoImage extends BaseImage {
     @JoinColumn(name = "e_learning_Setting_id", insertable = false, updatable = false)
     private ELearningSetting eLearningSetting;
 
-    public static LogoImage setLogoImage(String newImageName, String oriImageName, String imageUrl){
+    public static LogoImage setLogoImage(String newLogoImageName, String logoOriImageName, String logoImageLocation){
 
         LogoImage saveLogoImage = LogoImage.builder()
-                .filename(newImageName)
-                .fileOriName(oriImageName)
-                .fileUrl(imageUrl)
+                .filename(newLogoImageName)
+                .fileOriName(logoOriImageName)
+                .fileUrl(logoImageLocation)
                 .build();
 
         return saveLogoImage;

@@ -22,12 +22,12 @@ public class CoverImage extends BaseImage {
     @JoinColumn(name = "e_learning_Setting_id", insertable = false, updatable = false)
     private ELearningSetting eLearningSetting;
 
-    public CoverImage setCoverImage(String newImageName, String oriImageName, String imageUrl){
+    public static CoverImage setCoverImage(String newCoverImageName, String coverOriImageName, String coverImageLocation){
 
         CoverImage saveCoverImage = CoverImage.builder()
-                .filename(newImageName)
-                .fileOriName(oriImageName)
-                .fileUrl(imageUrl)
+                .filename(newCoverImageName)
+                .fileOriName(coverOriImageName)
+                .fileUrl(coverImageLocation)
                 .build();
 
         return saveCoverImage;

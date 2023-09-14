@@ -1,6 +1,7 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.question;
 
 import com.example.shortapitest.eLearningApi.constant.AnswerType;
+import com.example.shortapitest.eLearningApi.dto.ELearningQuestionSetDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import com.example.shortapitest.eLearningApi.entity.eLearning.question.ELearningChoice;
 import com.example.shortapitest.eLearningApi.entity.image.QuestionImage;
@@ -28,7 +29,7 @@ public class ELearningQuestion {
     private String questionName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "e_learning_Setting_id", insertable = false, updatable = false)
+    @JoinColumn(name = "e_learning_Setting_id", updatable = false)
     private ELearningSetting eLearningSetting;
 
     @OneToOne(
@@ -51,4 +52,12 @@ public class ELearningQuestion {
     )
     private List<ELearningChoice> eLearningChoice;
 
+    public static ELearningQuestion setELearningQuestion(ELearningQuestionSetDto eLearningQuestionSetDto) {
+
+        //ELearningQuestion eLearningQuestion = ELearningQuestion.builder()
+                //.questionName();
+
+
+        return null;
+    }
 }

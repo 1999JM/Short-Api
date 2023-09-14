@@ -40,6 +40,9 @@ public class ELearningSetting extends BaseELearning {
     @Column(nullable = false)
     private int TestPassScore;          //eLearning 수료 기준 0~100 소숫점은 반올림 수료시 Certification
 
+    @Column(nullable = false)
+    private boolean viewPage = true;    //Delete 요청시 값을 false로 하여 웹페이지에 보여지지 않도록 합니다.
+
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
