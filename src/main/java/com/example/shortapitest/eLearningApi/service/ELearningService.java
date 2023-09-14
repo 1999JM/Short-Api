@@ -143,23 +143,17 @@ public class ELearningService {
         // 1번 이미지 생성 및 문제 생성
         System.out.println(eLearningQuestionDto.toString());
 
-
-
-
-
         for (ELearningQuestionSetDto eLearningQuestionSetDto : eLearningQuestionDto.getELearningQuestionSetDtos()){
 
             ELearningQuestion eLearningQuestion = ELearningQuestion.setELearningQuestion(eLearningQuestionSetDto);
         }
-
         // 선택 항목을 등록
-
-
-
-
     }
 
     // 이미지 저장 및 새로운 이미지 이름을 만듭니다.
+    // 매개 변수는 적을수록 좋음,
+    // 파일 업로드 같은 경우는 다양한 곳에서 사용할 수 있음으로 유틸 패키지를 따로 만들어서 관리
+    // 또한 매개변수를 객체로 넘겨준다면 로직이나 다른 변수가 추가 되었을때 쉽게 적용이 가능하다
     public String uploadFile(String upLoadPath, String originalFileName,byte[] fileData) throws Exception{
         UUID uuid = UUID.randomUUID();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
