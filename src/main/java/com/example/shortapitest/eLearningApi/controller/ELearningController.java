@@ -10,10 +10,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,15 +52,16 @@ public class ELearningController {
     // 페이징처리는 제외 하였습니다. 만약 페이지 네이션을 구현할경우 rows의 값과 현재 페이지 정보를 받아 페이지징 처리할 것.
     // 리스트로 리턴해줘야 하는 값들 이러닝 네임, 이러닝 별칭, 이러닝, 삭제 처리 여부
     @Operation(summary = "이러닝 전체 조회")
-    @PostMapping("/select-setting/{page}")
-    public List<responseSetting> selectSettingAll(@RequestParam("page") int page, @RequestPart int rows){
+    @PostMapping(value = {"/select-setting","/select-setting/{page}"})
+    public List<responseSetting> selectELearningSettingPage(@PathVariable("page") Optional<Integer> page, @RequestPart int rows){
         // page = 현재 페이지 번호를 받습니다.
         // rows = 한 페이지에 보여지는 행의 개수
 
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : )
+        eLearningService.selectELearningSettingPage(page,rows);
+
         return null;
     }
-
-
 
 
 

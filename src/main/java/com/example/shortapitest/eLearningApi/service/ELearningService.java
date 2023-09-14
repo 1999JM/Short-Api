@@ -153,6 +153,10 @@ public class ELearningService {
         );
     }
 
+    public void selectELearningSettingPage(int page, int rows) {
+        eLearningSettingRepository.selectELearningSetting(page, rows);
+    }
+
     @Transactional
     public void eLearningSettingDelete(long eLearningSettingId) {
         //해당하는 이러닝에 대한 정보를 가져옵니다.
