@@ -16,9 +16,11 @@ import com.example.shortapitest.eLearningApi.repository.eLearning.ELearningSetti
 import com.example.shortapitest.eLearningApi.repository.image.CoverImageRepository;
 import com.example.shortapitest.eLearningApi.repository.image.LogoImageRepository;
 import com.example.shortapitest.eLearningApi.repository.image.MenuImageRepository;
+import com.example.shortapitest.eLearningApi.utill.ImageUpload;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,43 +36,31 @@ public class ELearningService {
 
     @Value("${logoImage}")
     private String logoImageLocation;
-
     @Value("${coverImage}")
     private String coverImageLocation;
-
     @Value("${menuImage}")
     private String menuImageLocation;
     @Value("${questionImage}")
     private String questionImageLocation;
-
     private final ELearningSettingRepository eLearningSettingRepository;
-
     private final ELearningContentRepository eLearningContentRepository;
-
     private final ELearningCategoryRepository eLearningCategoryRepository;
-
     private final ELearningMenuRepository eLearningMenuRepository;
-
-
     private final CoverImageRepository coverImageRepository;
     private final LogoImageRepository logoImageRepository;
     private final MenuImageRepository menuImageRepository;
 
-
     @Transactional
     public void eLearningSettingCreate(ELearningSettingDto ELearningSettingDto, MultipartFile logoImage, MultipartFile coverImage){
 
-        String logoOriImageName = logoImage.getOriginalFilename();
-        String coverOriImageName = coverImage.getOriginalFilename();
-
         try {
             //파일 업로드
-            String newLogoImageName = uploadFile(logoImageLocation, logoOriImageName, logoImage.getBytes());
-            LogoImage createLogoImage = LogoImage.setLogoImage(newLogoImageName, logoOriImageName, logoImageLocation);
+            String newLogoImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(logoImageLocation,logoImage)));
+            LogoImage createLogoImage = LogoImage.createLogoImage(newLogoImageName, logoImage.getOriginalFilename(), logoImageLocation);
             logoImageRepository.save(createLogoImage);
 
-            String newCoverImageName = uploadFile(coverImageLocation, logoOriImageName, logoImage.getBytes());
-            CoverImage createCoverImage = CoverImage.setCoverImage(newCoverImageName, coverOriImageName, coverImageLocation);
+            String newCoverImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(coverImageLocation,coverImage)));
+            CoverImage createCoverImage = CoverImage.createCoverImage(newCoverImageName, coverImage.getOriginalFilename(), coverImageLocation);
             coverImageRepository.save(createCoverImage);
 
             ELearningSetting eLearningSetting = ELearningSetting.createELearningSetting(ELearningSettingDto, createLogoImage, createCoverImage);
@@ -98,12 +88,12 @@ public class ELearningService {
         eLearningSetting.setELearningContent(eLearningContent);
 
         // 3번 ELearningCategory 생성 및 해당 하는 ELearningMenu 생성
-       for (ELearningCategoryDto eLearningCategoryDto : eLearningContentsDto.getELearningCategoryDtos()) {
-           int menuSequence = 1;
-           //Content에 Category 연결
-           ELearningCategory eLearningCategory = ELearningCategory.createCategory(eLearningCategoryDto, eLearningContent, categorySequence);
-           eLearningCategoryRepository.save(eLearningCategory);
-           eLearningContent.setELearningCategory(eLearningCategory);
+        for (ELearningCategoryDto eLearningCategoryDto : eLearningContentsDto.getELearningCategoryDtos()) {
+            int menuSequence = 1;
+            //Content에 Category 연결
+            ELearningCategory eLearningCategory = ELearningCategory.createCategory(eLearningCategoryDto, eLearningContent, categorySequence);
+            eLearningCategoryRepository.save(eLearningCategory);
+            eLearningContent.setELearningCategory(eLearningCategory);
 
             //메뉴
             for (ELearningMenuDto eLearningMenuDto : eLearningCategoryDto.getMenu()) {
@@ -121,8 +111,8 @@ public class ELearningService {
                     try {
                         //파일 업로드
                         if(!StringUtils.isEmpty(oriMenuImageName)){//이름이 있으면 업로드
-                            String newMenuImageName = uploadFile(questionImageLocation, oriMenuImageName, menuImage.get(count).getBytes());
-                            MenuImage saveMenuImage = MenuImage.setMenuImage(newMenuImageName, oriMenuImageName, questionImageLocation, eLearningMenu, (long) i+1);
+                            String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, menuImage.get(count))));
+                            MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImage.get(count).getOriginalFilename(), questionImageLocation, eLearningMenu,(long) i+1);
                             menuImageRepository.save(saveMenuImage);
                         }
                     }
@@ -133,7 +123,7 @@ public class ELearningService {
                 }
                 menuSequence++;
             }
-           categorySequence++;
+        categorySequence++;
         }
     }
 
@@ -143,31 +133,23 @@ public class ELearningService {
         // 1번 이미지 생성 및 문제 생성
         System.out.println(eLearningQuestionDto.toString());
 
+        //해당하는 이러닝에 대한 정보를 가져옵니다.
+        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningQuestionDto.getELearningId())
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+
+        // 1번 로직 이미지가 존재하는지 확인합니다.
+        eLearningQuestionDto
+            .getELearningQuestionSetDtos().forEach(questionDto ->{
+                if (questionDto.isQuestionImage()) {    //이미지가 존재할 경우
+
+                }
+            }
+        );
+
         for (ELearningQuestionSetDto eLearningQuestionSetDto : eLearningQuestionDto.getELearningQuestionSetDtos()){
 
             ELearningQuestion eLearningQuestion = ELearningQuestion.setELearningQuestion(eLearningQuestionSetDto);
         }
         // 선택 항목을 등록
     }
-
-    // 이미지 저장 및 새로운 이미지 이름을 만듭니다.
-    // 매개 변수는 적을수록 좋음,
-    // 파일 업로드 같은 경우는 다양한 곳에서 사용할 수 있음으로 유틸 패키지를 따로 만들어서 관리
-    // 또한 매개변수를 객체로 넘겨준다면 로직이나 다른 변수가 추가 되었을때 쉽게 적용이 가능하다
-    public String uploadFile(String upLoadPath, String originalFileName,byte[] fileData) throws Exception{
-        UUID uuid = UUID.randomUUID();
-        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-        String savedFileName=uuid.toString()+extension;
-
-        String fileUploadFullUrl= upLoadPath+"/"+savedFileName;
-
-        FileOutputStream fos = new FileOutputStream(fileUploadFullUrl);
-
-        fos.write(fileData);
-
-        fos.close();
-
-        return savedFileName;
-    }
-
 }

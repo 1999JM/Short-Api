@@ -24,7 +24,7 @@ public class LogoImage extends BaseImage {
     @JoinColumn(name = "e_learning_Setting_id", insertable = false, updatable = false)
     private ELearningSetting eLearningSetting;
 
-    public static LogoImage setLogoImage(String newLogoImageName, String logoOriImageName, String logoImageLocation){
+    public static LogoImage createLogoImage(String newLogoImageName, String logoOriImageName, String logoImageLocation){
 
         LogoImage saveLogoImage = LogoImage.builder()
                 .filename(newLogoImageName)
