@@ -21,7 +21,7 @@ public class MenuImage extends BaseImage {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "e_learning_menu_id", updatable = false)
+    @JoinColumn(name = "e_learning_menu_id")
     private ELearningMenu eLearningMenu;
 
     public MenuImage setMenuImage(String newImageName, String oriImageName, String imageUrl, ELearningMenu eLearningMenu) {

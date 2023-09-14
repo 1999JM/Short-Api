@@ -1,7 +1,7 @@
-coverImage: "/users/june/eLearning/eLearningCoverImage/"
-logoImage: "/users/june/eLearning/eLearningLogoImage/"
-menuImage: "/users/june/eLearning/eLearningMenu/"
-questionImage: "/users/june/eLearning/eLearningQuestionImage/"
+coverImage: "/Users/geumjiun/Downloads/"
+logoImage: "/Users/geumjiun/Downloads/"
+menuImage: "/Users/geumjiun/Downloads/"
+questionImage: "/Users/geumjiun/Downloads/"
 
 #이미지 저장 경로
 server:
@@ -28,7 +28,7 @@ spring:
     open-in-view: true
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
