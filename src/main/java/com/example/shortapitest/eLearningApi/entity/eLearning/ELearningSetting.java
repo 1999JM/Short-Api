@@ -1,6 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning;
 
-import com.example.shortapitest.eLearningApi.dto.ELearningSettingDto;
+import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningSettingDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningContent;
 import com.example.shortapitest.eLearningApi.entity.eLearning.question.ELearningQuestion;
 import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,10 +39,10 @@ public class ELearningSetting extends BaseELearning {
     private boolean displayAnswer;      // 정답 공개 여부 설정 기본값: false
 
     @Column(nullable = false)
-    private int TestPassScore;          //eLearning 수료 기준 0~100 소숫점은 반올림 수료시 Certification
+    private int testPassScore;          //eLearning 수료 기준 0~100 소숫점은 반올림 수료시 Certification
 
     @Column(nullable = false)
-    private boolean viewPage;       //Delete 요청시 값을 false로 하여 웹페이지에 보여지지 않도록 합니다.
+    private boolean deleted;            //Delete 삭제 여부
 
     @OneToOne(
             fetch = FetchType.LAZY,
@@ -67,29 +68,43 @@ public class ELearningSetting extends BaseELearning {
     @JoinColumn(name = "e_learning_content_id")
     private ELearningContent eLearningContent;  //(수정완료)
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "eLearningSetting",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningQuestion> eLearningQuestion;  //수정 완료.
+    private List<ELearningQuestion> eLearningQuestion = new ArrayList<>();  //수정 완료.
 
     public void setELearningContent (ELearningContent eLearningContent){
         this.eLearningContent = eLearningContent;
     }
 
-    public static ELearningSetting createELearningSetting(ELearningSettingDto ELearningSettingDto, LogoImage logoImage, CoverImage coverImage){
+    public void addQuestion(ELearningQuestion eLearningQuestion) {
+        this.eLearningQuestion.add(eLearningQuestion);
+
+    }
+
+    public void setDeletedFalse() {
+        this.deleted = false;
+    }
+
+    public void setDeletedTrue() {
+        this.deleted = true;
+    }
+
+    public static ELearningSetting createELearningSetting(ELearningSettingDto ELearningSettingDto, LogoImage logoImage, CoverImage coverImage) {
 
         ELearningSetting eLearningSetting = ELearningSetting.builder()
                 .name(ELearningSettingDto.getELearningName())
                 .alias(ELearningSettingDto.getELearningAlias())
-                .TestPassScore(ELearningSettingDto.getTestPassScore())
+                .testPassScore(ELearningSettingDto.getTestPassScore())
                 .displayAnswer(ELearningSettingDto.isDisplayAnswer())
                 .wrongAnswerSkip(ELearningSettingDto.isWrongAnswerSkip())
                 .logoImage(logoImage)
                 .coverImage(coverImage)
-                .viewPage(true)
+                .deleted(false)
                 .build();
 
         return eLearningSetting;

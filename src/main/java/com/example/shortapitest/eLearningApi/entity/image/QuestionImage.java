@@ -19,14 +19,15 @@ public class QuestionImage extends BaseImage{
 
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "e_learning_question_id", insertable = false, updatable = false)
+    @JoinColumn(name = "e_learning_question_id", updatable = false)
     private ELearningQuestion eLearningQuestion;
 
-    public static QuestionImage createLogoImage(String newQuestionImageName, String originalFilename, String questionImageLocation) {
+    public static QuestionImage createLogoImage(String newQuestionImageName, String originalFilename, String questionImageLocation, ELearningQuestion eLearningQuestion) {
         QuestionImage questionImage = QuestionImage.builder()
                 .filename(newQuestionImageName)
-                .fileUrl(originalFilename)
+                .fileOriName(originalFilename)
                 .fileUrl(questionImageLocation)
+                .eLearningQuestion(eLearningQuestion)
                 .build();
         return questionImage;
     }

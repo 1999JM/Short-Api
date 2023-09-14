@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.dto;
+package com.example.shortapitest.eLearningApi.dto.requestDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -11,14 +11,10 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class ELearningContentsDto {
+public class ELearningQuestionDto {
 
     @Schema(description = "ELearning Id")
     @NotBlank(message = "ELearning Id 값을 입력해 주세요.")
     private Long eLearningId;
-
-    @Schema(description = "카테고리 정보")
-    @NotBlank(message = "카테고리 정보를 입력해 주세요.")
-    private List<ELearningCategoryDto> eLearningCategoryDtos;
-
+    private List<ELearningQuestionSetDto> eLearningQuestionSetDtos;
 }

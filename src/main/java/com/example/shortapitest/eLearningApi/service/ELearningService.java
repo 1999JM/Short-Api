@@ -1,6 +1,6 @@
 package com.example.shortapitest.eLearningApi.service;
 
-import com.example.shortapitest.eLearningApi.dto.*;
+import com.example.shortapitest.eLearningApi.dto.requestDto.*;
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningCategory;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningContent;
@@ -20,16 +20,12 @@ import com.example.shortapitest.eLearningApi.utill.ImageUpload;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileOutputStream;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -130,21 +126,18 @@ public class ELearningService {
 
     @Transactional
     public void eLearningQuestionCreate(ELearningQuestionDto eLearningQuestionDto, List<MultipartFile> questionImages) {
-
-        // 1번 이미지 생성 및 문제 생성
-        System.out.println(eLearningQuestionDto.toString());
-
         //해당하는 이러닝에 대한 정보를 가져옵니다.
         ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningQuestionDto.getELearningId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
 
-        // 1번 로직 이미지가 존재하는지 확인합니다.
+        // Question 생성후 이미지 검사 로직을 통하여 이미지 저장 여부를 확인합니다.
         eLearningQuestionDto.getELearningQuestionSetDtos().forEach(questionDto -> {
-            ELearningQuestion eLearningQuestion = eLearningQuestionRepository.save(ELearningQuestion.createELearningQuestion(questionDto));
+            ELearningQuestion eLearningQuestion = eLearningQuestionRepository.save(ELearningQuestion.createELearningQuestion(questionDto, eLearningSetting));
+            eLearningSetting.addQuestion(eLearningQuestion);
                 if (questionDto.isQuestionImage()) {
                     MultipartFile questionImage = questionImages.get(0);
                     try {
                         String newQuestionImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, questionImage)));
-                        QuestionImage saveQuestionImage = QuestionImage.createLogoImage(newQuestionImageName, questionImage.getOriginalFilename(), questionImageLocation);
+                        QuestionImage saveQuestionImage = QuestionImage.createLogoImage(newQuestionImageName, questionImage.getOriginalFilename(), questionImageLocation, eLearningQuestion);
                         questionImageRepository.save(saveQuestionImage);
                         eLearningQuestion.setQuestionImage(saveQuestionImage);
                         questionImages.remove(0);
@@ -158,5 +151,19 @@ public class ELearningService {
                 }
             }
         );
+    }
+
+    @Transactional
+    public void eLearningSettingDelete(long eLearningSettingId) {
+        //해당하는 이러닝에 대한 정보를 가져옵니다.
+        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningSettingId).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+        eLearningSetting.setDeletedTrue();
+    }
+
+    @Transactional
+    public void eLearningSettingRecovery(long eLearningSettingId) {
+        //해당하는 이러닝에 대한 정보를 가져옵니다.
+        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningSettingId).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+        eLearningSetting.setDeletedFalse();
     }
 }

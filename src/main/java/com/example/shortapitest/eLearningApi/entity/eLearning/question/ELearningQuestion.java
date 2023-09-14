@@ -1,9 +1,8 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.question;
 
 import com.example.shortapitest.eLearningApi.constant.AnswerType;
-import com.example.shortapitest.eLearningApi.dto.ELearningQuestionSetDto;
+import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningQuestionSetDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
-import com.example.shortapitest.eLearningApi.entity.eLearning.question.ELearningChoice;
 import com.example.shortapitest.eLearningApi.entity.image.QuestionImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Entity
 @Getter
@@ -60,13 +58,14 @@ public class ELearningQuestion {
     }
 
 
-    public static ELearningQuestion createELearningQuestion(ELearningQuestionSetDto eLearningQuestionSetDto) {
+    public static ELearningQuestion createELearningQuestion(ELearningQuestionSetDto eLearningQuestionSetDto, ELearningSetting eLearningSetting) {
 
         String answerType = eLearningQuestionSetDto.getAnswer().toUpperCase();
 
         ELearningQuestion eLearningQuestion = ELearningQuestion.builder()
                 .questionName(eLearningQuestionSetDto.getQuestionName())
-                .answerType((answerType.equals(AnswerType.RADIO) ? AnswerType.RADIO : AnswerType.CHECKBOX))
+                .answerType((answerType.equals(AnswerType.RADIO.toString()) ? AnswerType.RADIO : AnswerType.CHECKBOX))
+                .eLearningSetting(eLearningSetting)
                 .build();
         return eLearningQuestion;
     }

@@ -1,6 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.content;
 
-import com.example.shortapitest.eLearningApi.dto.ELearningMenuDto;
+import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningMenuDto;
 import com.example.shortapitest.eLearningApi.entity.image.MenuImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.dto;
+package com.example.shortapitest.eLearningApi.dto.requestDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

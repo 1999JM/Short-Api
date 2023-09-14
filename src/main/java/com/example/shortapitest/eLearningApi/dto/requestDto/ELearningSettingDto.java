@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.dto;
+package com.example.shortapitest.eLearningApi.dto.requestDto;
 
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import com.example.shortapitest.eLearningApi.entity.image.CoverImage;

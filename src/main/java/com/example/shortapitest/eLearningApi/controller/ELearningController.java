@@ -1,19 +1,16 @@
 package com.example.shortapitest.eLearningApi.controller;
 
-import com.example.shortapitest.eLearningApi.dto.ELearningContentsDto;
-import com.example.shortapitest.eLearningApi.dto.ELearningQuestionDto;
-import com.example.shortapitest.eLearningApi.dto.ELearningQuestionSetDto;
-import com.example.shortapitest.eLearningApi.dto.ELearningSettingDto;
+import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningContentsDto;
+import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningQuestionDto;
+import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningSettingDto;
+import com.example.shortapitest.eLearningApi.dto.responseDto.responseSetting;
 import com.example.shortapitest.eLearningApi.service.ELearningService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -45,8 +42,36 @@ public class ELearningController {
     @PostMapping("/create-question")
     public void createELearningQuestion(@RequestPart ELearningQuestionDto eLearningQuestionDto
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> questionImages){
-
-        System.out.println("통신 성공");
         eLearningService.eLearningQuestionCreate(eLearningQuestionDto, questionImages);
+    }
+
+    // 이러닝 전체 조회 최신 생성순으로 조회 합니다.
+    // 페이징처리는 제외 하였습니다. 만약 페이지 네이션을 구현할경우 rows의 값과 현재 페이지 정보를 받아 페이지징 처리할 것.
+    // 리스트로 리턴해줘야 하는 값들 이러닝 네임, 이러닝 별칭, 이러닝, 삭제 처리 여부
+    @Operation(summary = "이러닝 전체 조회")
+    @PostMapping("/select-setting/{page}")
+    public List<responseSetting> selectSettingAll(@RequestParam("page") int page, @RequestPart int rows){
+        // page = 현재 페이지 번호를 받습니다.
+        // rows = 한 페이지에 보여지는 행의 개수
+
+        return null;
+    }
+
+
+
+
+
+
+
+    @Operation(summary = "이러닝 Setting 삭제")
+    @DeleteMapping("/delete-setting")
+    public void deleteELearningSetting(@RequestPart long eLearningSettingId){
+        eLearningService.eLearningSettingDelete(eLearningSettingId);
+    }
+
+    @Operation(summary = "이러닝 Setting 복구")
+    @PostMapping("/Recovery-setting")
+    public void createELearningQuestion(@RequestPart long eLearningSettingId){
+        eLearningService.eLearningSettingRecovery(eLearningSettingId);
     }
 }

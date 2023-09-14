@@ -1,6 +1,6 @@
 package com.example.shortapitest.eLearningApi.utill;
 
-import com.example.shortapitest.eLearningApi.dto.ImageUploadDto;
+import com.example.shortapitest.eLearningApi.dto.requestDto.ImageUploadDto;
 
 import java.io.FileOutputStream;
 import java.util.UUID;

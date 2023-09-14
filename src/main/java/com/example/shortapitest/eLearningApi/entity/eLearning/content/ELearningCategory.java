@@ -1,7 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.content;
 
-import com.example.shortapitest.eLearningApi.dto.ELearningCategoryDto;
-import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningMenu;
+import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningCategoryDto;
 import jakarta.persistence.*;
 import lombok.*;
 
