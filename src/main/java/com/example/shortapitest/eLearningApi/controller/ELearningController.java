@@ -3,7 +3,7 @@ package com.example.shortapitest.eLearningApi.controller;
 import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningContentsDto;
 import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningQuestionDto;
 import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningSettingDto;
-import com.example.shortapitest.eLearningApi.dto.responseDto.responseSetting;
+import com.example.shortapitest.eLearningApi.dto.responseDto.ResponseSetting;
 import com.example.shortapitest.eLearningApi.service.ELearningService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -53,12 +53,12 @@ public class ELearningController {
     // 리스트로 리턴해줘야 하는 값들 이러닝 네임, 이러닝 별칭, 이러닝, 삭제 처리 여부
     @Operation(summary = "이러닝 전체 조회")
     @PostMapping(value = {"/select-setting","/select-setting/{page}"})
-    public List<responseSetting> selectELearningSettingPage(@PathVariable("page") Optional<Integer> page, @RequestPart int rows){
+    public List<ResponseSetting> selectELearningSettingPage(@PathVariable("page") Optional<Integer> page, @RequestPart int rows){
         // page = 현재 페이지 번호를 받습니다.
         // rows = 한 페이지에 보여지는 행의 개수
 
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : )
-        eLearningService.selectELearningSettingPage(page,rows);
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, rows);
+        eLearningService.selectELearningSettingPage(pageable);
 
         return null;
     }

@@ -1,12 +1,13 @@
 package com.example.shortapitest.eLearningApi.dto.responseDto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-public class responseSetting {
+@ToString
+public class ResponseSetting {
 
     private String eLearningName;
     private String eLearningAlias;

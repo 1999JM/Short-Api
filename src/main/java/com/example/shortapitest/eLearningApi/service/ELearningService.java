@@ -1,6 +1,7 @@
 package com.example.shortapitest.eLearningApi.service;
 
 import com.example.shortapitest.eLearningApi.dto.requestDto.*;
+import com.example.shortapitest.eLearningApi.dto.responseDto.ResponseSetting;
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningCategory;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningContent;
@@ -21,6 +22,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -153,8 +156,12 @@ public class ELearningService {
         );
     }
 
-    public void selectELearningSettingPage(int page, int rows) {
-        eLearningSettingRepository.selectELearningSetting(page, rows);
+    public void selectELearningSettingPage(Pageable pageable) {
+        Page<ResponseSetting> responseSettings = eLearningSettingRepository.selectELearningSetting(pageable);
+        System.out.println(responseSettings.getTotalPages());
+        responseSettings.getContent().forEach(dto -> {
+            System.out.println(dto.toString());
+        });
     }
 
     @Transactional
