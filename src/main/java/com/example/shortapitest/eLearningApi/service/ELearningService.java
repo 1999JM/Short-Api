@@ -51,28 +51,23 @@ public class ELearningService {
         ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningContentsDto.getELearningId())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
 
-        // 2번 ELearningContent 생성
         ELearningContent eLearningContent = ELearningContent.createELearningContent(eLearningSetting);
         eLearningContentRepository.save(eLearningContent);
-        //Setting에 Content 연결
         eLearningSetting.setELearningContent(eLearningContent);
-
         eLearningContentsDto
                 .getELearningCategoryDtos()
                 .forEach(dto -> {
                             ELearningCategory category = ELearningCategory.createCategory(dto, eLearningContent);
                             eLearningCategoryRepository.save(category);
                             dto.getMenu()
-                                    .forEach(
-                                            menuDto -> {
+                                    .forEach(menuDto -> {
                                                 ELearningMenu eLearningMenu = ELearningMenu.createManu(menuDto, category);
                                                 eLearningMenuRepository.save(eLearningMenu);
                                                 menuImage.subList(0, menuDto.getMenuImageCount())
-                                                        .forEach(
-                                                                image -> {
-                                                    eLearningImageService.createMenuImage(image,eLearningMenu);
-                                                }
-                                                );
+                                                        .forEach(image -> {
+                                                                    eLearningImageService.createMenuImage(image, eLearningMenu);
+                                                                }
+                                                        );
                                                 ;
                                                 menuImage.subList(0, menuDto.getMenuImageCount()).clear();
                                             }
