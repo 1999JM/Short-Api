@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,7 +38,7 @@ public class ELearningService {
 
 
     @Transactional
-    public void eLearningSettingCreate(ELearningSettingDto ELearningSettingDto, MultipartFile logoImage, MultipartFile coverImage){
+    public void eLearningSettingCreate(ELearningSettingDto ELearningSettingDto, MultipartFile logoImage, MultipartFile coverImage) {
         LogoImage createLogoImage = eLearningImageService.createLogoImage(logoImage);
         CoverImage createCoverImage = eLearningImageService.createCoverImage(coverImage);
         ELearningSetting eLearningSetting = ELearningSetting.createELearningSetting(ELearningSettingDto, createLogoImage, createCoverImage);
@@ -60,13 +61,43 @@ public class ELearningService {
         //Setting에 Content 연결
         eLearningSetting.setELearningContent(eLearningContent);
 
+        List<ELearningCategory> eLearningCategories = new ArrayList<>();
+        List<ELearningMenu> eLearningMenuList = new ArrayList<>();
+
+        eLearningContentsDto
+                .getELearningCategoryDtos()
+                .forEach(dto -> {
+                            ELearningCategory category = ELearningCategory.createCategory(dto, eLearningContent);
+                            dto.getMenu()
+                                    .forEach(
+                                            menuDto -> {
+                                                ELearningMenu eLearningMenu = ELearningMenu.createManu(menuDto, category);
+                                                int imageCount = menuDto.getMenuImageCount();
+                                                List.of(menuImage.subList(0, imageCount)).forEach(image -> {
+                                                    eLearningImageService.createMenuImage((MultipartFile)image,eLearningMenu);
+                                                });
+                                                ;
+                                                menuImage.subList(0, imageCount).clear();
+                                            }
+                                    );
+                            eLearningCategories.add(category);
+                        }
+                );
+
+//                .stream()
+//                .map(e -> ELearningCategory.createCategory(e,eLearningContent))
+//                .toList();
+//
+
+
         // 3번 ELearningCategory 생성 및 해당 하는 ELearningMenu 생성
-       for (ELearningCategoryDto eLearningCategoryDto : eLearningContentsDto.getELearningCategoryDtos()) {
-           int menuSequence = 1;
-           //Content에 Category 연결
-           ELearningCategory eLearningCategory = ELearningCategory.createCategory(eLearningCategoryDto, eLearningContent, categorySequence);
-           eLearningCategoryRepository.save(eLearningCategory);
-           eLearningContent.setELearningCategory(eLearningCategory);
+        for (ELearningCategoryDto eLearningCategoryDto : eLearningContentsDto.getELearningCategoryDtos()) {
+            int menuSequence = 1;
+            //Content에 Category 연결
+            ELearningCategory eLearningCategory = ELearningCategory.createCategory(eLearningCategoryDto, eLearningContent, categorySequence);
+            eLearningCategoryRepository.save(eLearningCategory);
+            eLearningContent.setELearningCategory(eLearningCategory);
+
 
             //메뉴
             for (ELearningMenuDto eLearningMenuDto : eLearningCategoryDto.getMenu()) {
@@ -77,7 +108,7 @@ public class ELearningService {
                 //Category와 menu 연걸
                 eLearningCategory.setELearningMenu(eLearningMenu);
 
-                for(int i = 0; i < eLearningMenuDto.getMenuImageCount(); i++ ){
+                for (int i = 0; i < eLearningMenuDto.getMenuImageCount(); i++) {
                     //조건식 수정 필요
                     //이미지 저장 로직
                     //이미지를 저장하고 이미지 n건을 eLeanringMenu에 넣어줍니다.
@@ -87,7 +118,7 @@ public class ELearningService {
 
                 menuSequence++;
             }
-           categorySequence++;
+            categorySequence++;
         }
     }
 
@@ -97,17 +128,15 @@ public class ELearningService {
         // 1번 문제 등록
         System.out.println(eLearningQuestionDto.toString());
 
-        for (ELearningQuestionSetDto eLearningQuestionSetDto : eLearningQuestionDto.getELearningQuestionSetDtos()){
+        for (ELearningQuestionSetDto eLearningQuestionSetDto : eLearningQuestionDto.getELearningQuestionSetDtos()) {
 
-            ELearningQuestion
+            //  ELearningQuestion
         }
 
 
         // 2번 이미지 등록
 
         // 선택 항목을 등록
-
-
 
 
     }

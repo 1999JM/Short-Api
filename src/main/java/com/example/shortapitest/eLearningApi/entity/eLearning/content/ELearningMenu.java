@@ -49,4 +49,13 @@ public class ELearningMenu {
                 .build();
         return eLearningMenu;
     }
+
+    public static ELearningMenu createManu(ELearningMenuDto eLearningMenuDto, ELearningCategory eLearningCategory) {
+        ELearningMenu eLearningMenu = ELearningMenu.builder()
+                .menuName(eLearningMenuDto.getMenuName())
+                .eLearningCategory(eLearningCategory)
+                .build();
+        eLearningCategory.setELearningMenu(eLearningMenu);
+        return eLearningMenu;
+    }
 }

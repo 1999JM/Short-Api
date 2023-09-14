@@ -53,4 +53,14 @@ public class ELearningCategory {
 
         return eLearningCategory;
     }
+
+    public static ELearningCategory createCategory(ELearningCategoryDto eLearningCategoryDto, ELearningContent eLearningContent) {
+
+        ELearningCategory eLearningCategory = ELearningCategory.builder()
+                .categoryName(eLearningCategoryDto.getCategoryName())
+                .eLearningContent(eLearningContent)
+                .build();
+        eLearningContent.setELearningCategory(eLearningCategory);
+        return eLearningCategory;
+    }
 }
