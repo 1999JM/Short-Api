@@ -28,11 +28,11 @@ public class ELearningController {
 
     @Operation(summary = "이러닝 Setting 등록")
     @PostMapping("/create-setting")
-    public void createELearningSetting(@RequestPart ELSettingCreateDto ELearningSettingDto
+    public void createELearningSetting(@RequestPart ELSettingCreateDto elSettingCreateDto
                                 ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile logoImage
                                 ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile coverImage
                                 ){
-        eLearningService.eLearningSettingCreate(ELearningSettingDto, logoImage, coverImage);
+        eLearningService.eLearningSettingCreate(elSettingCreateDto, logoImage, coverImage);
     }
 
     @Operation(summary = "이러닝 Contents 등록")

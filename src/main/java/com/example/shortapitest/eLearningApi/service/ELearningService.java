@@ -56,7 +56,7 @@ public class ELearningService {
     private final QuestionImageRepository questionImageRepository;
 
     @Transactional
-    public void eLearningSettingCreate(ELSettingCreateDto ELearningSettingDto, MultipartFile logoImage, MultipartFile coverImage) {
+    public void eLearningSettingCreate(ELSettingCreateDto elSettingCreateDto, MultipartFile logoImage, MultipartFile coverImage) {
 
         try {
             //파일 업로드
@@ -68,7 +68,7 @@ public class ELearningService {
             CoverImage createCoverImage = CoverImage.createCoverImage(newCoverImageName, coverImage.getOriginalFilename(), coverImageLocation);
             coverImageRepository.save(createCoverImage);
 
-            ELearningSetting eLearningSetting = ELearningSetting.createELearningSetting(ELearningSettingDto, createLogoImage, createCoverImage);
+            ELearningSetting eLearningSetting = ELearningSetting.createELearningSetting(elSettingCreateDto, createLogoImage, createCoverImage);
             eLearningSettingRepository.save(eLearningSetting);
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,13 +76,13 @@ public class ELearningService {
     }
 
     @Transactional
-    public void eLearningContentsCreate(ELContentsCreateDto eLearningContentsDto, List<MultipartFile> menuImage) {
+    public void eLearningContentsCreate(ELContentsCreateDto eLearningContentsDto, List<MultipartFile> menuImageList) {
 
         int categorySequence = 1;
         int count = 0;
 
         // 1번 Dto에서 id 값을 추출하여 ELearningSetting에 해당하는 값이 있는지 조회
-        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningContentsDto.getELearningId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningContentsDto.getELearningSettingId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
 
         // 2번 ELearningContent 생성
         ELearningContent eLearningContent = ELearningContent.createELearningContent(eLearningSetting);
@@ -110,12 +110,12 @@ public class ELearningService {
                 for (int i = 0; i < eLearningMenuDto.getMenuImageCount(); i++) {
                     //이미지 저장 로직
                     //이미지를 저장하고 이미지 n건을 eLeanringMenu에 넣어줍니다.
-                    String oriMenuImageName = menuImage.get(count).getOriginalFilename();
+                    String oriMenuImageName = menuImageList.get(count).getOriginalFilename();
                     try {
                         //파일 업로드
                         if (!StringUtils.isEmpty(oriMenuImageName)) {//이름이 있으면 업로드
-                            String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, menuImage.get(count))));
-                            MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImage.get(count).getOriginalFilename(), questionImageLocation, eLearningMenu, (long) i + 1);
+                            String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, menuImageList.get(count))));
+                            MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImageList.get(count).getOriginalFilename(), questionImageLocation, eLearningMenu, (long) i + 1);
                             menuImageRepository.save(saveMenuImage);
                         }
                     } catch (Exception e) {

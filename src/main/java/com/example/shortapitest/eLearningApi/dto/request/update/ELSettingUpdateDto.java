@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ELSettingUpdateDto {
+
+    @Schema(description = "이러닝 id")
     private Long eLearningSettingId;
 
     @Schema(description = "이러닝 이름")
