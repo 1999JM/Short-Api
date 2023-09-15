@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.dto.requestDto;
+package com.example.shortapitest.eLearningApi.dto.request.create;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;

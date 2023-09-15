@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+@Getter
 @MappedSuperclass
 @SuperBuilder
 @AllArgsConstructor
@@ -18,4 +19,8 @@ public class BaseImage {
     @Column(nullable = false)
     private String fileUrl;    //저장소 경로
 
+    protected void updateLogoImage(String newLogoImageName, String originalFilename) {
+        this.filename = newLogoImageName;
+        this.fileOriName = originalFilename;
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.dto.requestDto;
+package com.example.shortapitest.eLearningApi.dto.request.create;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -25,5 +25,5 @@ public class ELearningQuestionSetDto {
     @NotBlank(message = "이미지가 존재하는지 설정해 주세요.")
     private boolean questionImage;  //해당 문제에 이미지가 존재하는지 판별하는 판별기
 
-    private List<ELearningChoiceDto> choiceDtoList;
+    private List<ELChoiceCreateDto> choiceDtoList;
 }

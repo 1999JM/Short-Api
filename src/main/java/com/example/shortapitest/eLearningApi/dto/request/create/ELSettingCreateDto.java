@@ -1,8 +1,5 @@
-package com.example.shortapitest.eLearningApi.dto.requestDto;
+package com.example.shortapitest.eLearningApi.dto.request.create;
 
-import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
-import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
-import com.example.shortapitest.eLearningApi.entity.image.LogoImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +8,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ELearningSettingDto {
+public class ELSettingCreateDto {
+
+    private Long eLearningSettingId;
 
     @Schema(description = "이러닝 이름")
     @NotBlank(message = "이름을 작성해 주세요.")

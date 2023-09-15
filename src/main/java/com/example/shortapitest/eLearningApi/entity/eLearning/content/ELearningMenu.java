@@ -1,6 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.content;
 
-import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningMenuDto;
+import com.example.shortapitest.eLearningApi.dto.request.create.ELMenuCreateDto;
 import com.example.shortapitest.eLearningApi.entity.image.MenuImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,7 +41,7 @@ public class ELearningMenu {
     private ELearningCategory eLearningCategory;
 
 
-    public static ELearningMenu createManu(ELearningMenuDto eLearningMenuDto, int menuSequence, ELearningCategory eLearningCategory) {
+    public static ELearningMenu createManu(ELMenuCreateDto eLearningMenuDto, int menuSequence, ELearningCategory eLearningCategory) {
         ELearningMenu eLearningMenu = ELearningMenu.builder()
                 .menuName(eLearningMenuDto.getMenuName())
                 .menuSequence(menuSequence)

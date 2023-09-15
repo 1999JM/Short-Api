@@ -1,6 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.question;
 
-import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningChoiceDto;
+import com.example.shortapitest.eLearningApi.dto.request.create.ELChoiceCreateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +32,7 @@ public class ELearningChoice {
     @JoinColumn(name = "e_learning_question_id")
     private ELearningQuestion eLearningQuestion;
 
-    public static ELearningChoice createELearningChoice(ELearningChoiceDto choiceDto, ELearningQuestion eLearningQuestion, int count) {
+    public static ELearningChoice createELearningChoice(ELChoiceCreateDto choiceDto, ELearningQuestion eLearningQuestion, int count) {
 
         ELearningChoice eLearningChoice = ELearningChoice.builder()
                 .choiceContent(choiceDto.getChoiceName())

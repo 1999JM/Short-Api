@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.dto.requestDto;
+package com.example.shortapitest.eLearningApi.dto.request.create;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ELearningChoiceDto {
+public class ELChoiceCreateDto {
 
     @Schema(description = "문제에 대한 보기")
     @NotBlank(message = "보기를 작성해 주세요.")

@@ -1,7 +1,7 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.question;
 
 import com.example.shortapitest.eLearningApi.constant.AnswerType;
-import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningQuestionSetDto;
+import com.example.shortapitest.eLearningApi.dto.request.create.ELearningQuestionSetDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import com.example.shortapitest.eLearningApi.entity.image.QuestionImage;
 import jakarta.persistence.*;

@@ -1,6 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.content;
 
-import com.example.shortapitest.eLearningApi.dto.requestDto.ELearningCategoryDto;
+import com.example.shortapitest.eLearningApi.dto.request.create.ELCategoryCreateDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,7 +42,7 @@ public class ELearningCategory {
         this.eLearningMenuList.add(eLearningMenu);
     }
 
-    public static ELearningCategory createCategory(ELearningCategoryDto eLearningCategoryDto, ELearningContent eLearningContent, int categorySequence) {
+    public static ELearningCategory createCategory(ELCategoryCreateDto eLearningCategoryDto, ELearningContent eLearningContent, int categorySequence) {
 
         ELearningCategory eLearningCategory = ELearningCategory.builder()
                 .categoryName(eLearningCategoryDto.getCategoryName())

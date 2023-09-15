@@ -35,4 +35,7 @@ public class LogoImage extends BaseImage {
         return saveLogoImage;
     }
 
+    public void updateLogoImage(String newLogoImageName, String originalFilename) {
+        super.updateLogoImage(newLogoImageName,originalFilename );
+    }
 }

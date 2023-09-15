@@ -1,0 +1,51 @@
+{
+    "elearningId": 1,
+    "elearningCategoryDtos": [
+        {
+            "categoryName": "카테고리 이름",
+            "categorySequence": 1,
+            "menu": [{
+                    "menuName": "메뉴01",
+                    "menuSequence": 1,
+                    "menuImageCount": 1,
+                }]
+        },
+        {
+            "categoryName": "카테고리 이름2",
+            "categorySequence": 2,
+            "menu": [{
+                "menuName": "메뉴02",
+                "menuSequence": 2,
+                "menuImageCount": 1,
+            }]
+        }
+    ]
+}
+
+{
+    "elearningId": 1,
+    "elearningCategoryDtos": [
+      {
+        "categoryName": "카테고리1번,
+        "categorySequence": 0,
+        "menu": [
+          {
+            "menuName": "졸",
+            "menuSequence": 0,
+            "menuImageCount": 0
+          }
+        ]
+      },
+      {
+              "categoryName": "카테고리2번,
+              "categorySequence": 0,
+              "menu": [
+                {
+                  "menuName": "려",
+                  "menuSequence": 0,
+                  "menuImageCount": 0
+                }
+              ]
+            }
+    ]
+  }
