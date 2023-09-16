@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 public class PageELSettingReturnDto {
 
+    //필요한 정보만
     private int totalPage;  //총 페이지
 
     private int currentPage; //현재 페이지

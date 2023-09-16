@@ -52,12 +52,11 @@ public class ELearningController {
     // 이러닝 전체 조회 최신 생성순으로 조회 합니다.
     // 리스트로 리턴해줘야 하는 값들 이러닝 네임, 이러닝 별칭, 이러닝, 삭제 처리 여부
     @Operation(summary = "이러닝 전체 조회")
-    @PostMapping(value = {"/select-setting","/select-setting/{page}"})
-    public PageELSettingReturnDto selectELearningSettingPage(@RequestParam("page") Optional<Integer> page, @RequestPart int rows){
+    @GetMapping(value = "/select-setting")
+    public PageELSettingReturnDto selectELearningSettingPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int rows) {
         // page = 현재 페이지 번호를 받습니다.
         // rows = 한 페이지에 보여지는 행의 개수
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, rows);
-        return eLearningService.selectELearningSettingPage(pageable);
+        return eLearningService.selectELearningSettingPage(PageRequest.of(page,rows));
     }
 
     //해당 ELearning Setting 수정
@@ -80,8 +79,8 @@ public class ELearningController {
     }
 
     @Operation(summary = "이러닝 Setting 삭제")
-    @DeleteMapping("/delete-setting")
-    public void deleteELearningSetting(@RequestPart long eLearningSettingId){
+    @DeleteMapping("/delete-setting/{}")
+    public void deleteELearningSetting(@RequestParam() long eLearningSettingId){
         eLearningService.eLearningSettingDelete(eLearningSettingId);
     }
 

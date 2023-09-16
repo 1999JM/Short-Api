@@ -78,6 +78,8 @@ public class ELearningService {
     @Transactional
     public void eLearningContentsCreate(ELContentsCreateDto eLearningContentsDto, List<MultipartFile> menuImageList) {
 
+        System.out.println(eLearningContentsDto.getELearningSettingId());
+
         int categorySequence = 1;
         int count = 0;
 
@@ -138,37 +140,37 @@ public class ELearningService {
         eLearningQuestionDto.getELearningQuestionSetDtos().forEach(questionDto -> {
             ELearningQuestion eLearningQuestion = eLearningQuestionRepository.save(ELearningQuestion.createELearningQuestion(questionDto, eLearningSetting));
             eLearningSetting.addQuestion(eLearningQuestion);
-                if (questionDto.isQuestionImage()) {
-                    MultipartFile questionImage = questionImages.get(0);
-                    try {
-                        String newQuestionImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, questionImage)));
-                        QuestionImage saveQuestionImage = QuestionImage.createLogoImage(newQuestionImageName, questionImage.getOriginalFilename(), questionImageLocation, eLearningQuestion);
-                        questionImageRepository.save(saveQuestionImage);
-                        eLearningQuestion.setQuestionImage(saveQuestionImage);
-                        questionImages.remove(0);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                int count = 1;
-                for (ELChoiceCreateDto choiceDto: questionDto.getChoiceDtoList()){
-                    eLearningQuestion.setChoice(eLearningChoiceRepository.save(ELearningChoice.createELearningChoice(choiceDto, eLearningQuestion, count)));
+            if (questionDto.isQuestionImage()) {
+                MultipartFile questionImage = questionImages.get(0);
+                try {
+                    String newQuestionImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, questionImage)));
+                    QuestionImage saveQuestionImage = QuestionImage.createLogoImage(newQuestionImageName, questionImage.getOriginalFilename(), questionImageLocation, eLearningQuestion);
+                    questionImageRepository.save(saveQuestionImage);
+                    eLearningQuestion.setQuestionImage(saveQuestionImage);
+                    questionImages.remove(0);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
-        );
+            int count = 1;
+            for (ELChoiceCreateDto choiceDto : questionDto.getChoiceDtoList()) {
+                eLearningQuestion.setChoice(eLearningChoiceRepository.save(ELearningChoice.createELearningChoice(choiceDto, eLearningQuestion, count)));
+            }
+        });
     }
 
     public PageELSettingReturnDto selectELearningSettingPage(Pageable pageable) {
 
         PageImpl<ELearningSetting> eLearningSettingResult = eLearningSettingRepository.selectELearningSetting(pageable);
 
+        // stream 사용
+        // 검색 기능 추가
+        // 검색 항목 2개 이상
+        // 항목 합쳐서 검색
+        // 생성 날짜 검색
+        // 페이징 처리 리턴 dto공용화 가능하도록 설계
+        // 프론트가 받기 좋은 데이터란...
         PageELSettingReturnDto pageELearningSetting = PageELSettingReturnDto.createPageELearningSetting(eLearningSettingResult);
-
-        eLearningSettingResult.getContent().forEach(
-                dto ->{
-                    pageELearningSetting.addResponseSetting(ELSettingReturnDto.createResponseSetting(dto));
-                }
-        );
 
         return pageELearningSetting;
     }
@@ -204,11 +206,15 @@ public class ELearningService {
         //로직 순서
 
         //id의 값으로 Contents 확인.
-        ELearningContent eLearningContent = eLearningContentRepository
-                .findById(elContentsUpdateDto.getELearningContentId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningContents가 없습니다."));
+        ELearningContent eLearningContent = eLearningContentRepository.findById(elContentsUpdateDto.getELearningContentId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningContents가 없습니다."));
 
-        // 예상 시나리오
-        // 카테고리 순서를 변경하거나 메뉴의 순서를 변경하거나 이미지의 순서 변경
+        elContentsUpdateDto.getELearningCategoryDtos().forEach(categoryDto -> {
+                  /*  if (elContentsUpdateDto.getDeleteCategoryId() == categoryDto.g) {
+
+                    }*/
+        });
+        // step 1 : 삭제되는 카테고리의 id 값을 찾
+
         // 또는 메뉴 삭제 또는 메뉴 생성의 경우가 있다.
         // 수정의 개념이 있지만 행삭제 이미지 삭제등이 내장되어 있다.
 

@@ -20,8 +20,11 @@ public class ELContentsUpdateDto {
     @Schema(description = "ELearningContent Id")
     private Long eLearningContentId;
 
+    @Schema(description = "카테고리 삭제할 카테고리 id")
+    private int deleteCategoryId;
+
     @Schema(description = "카테고리 정보")
     @NotBlank(message = "카테고리 정보를 입력해 주세요.")
-    private List<ELCategoryCreateDto> eLearningCategoryDtos;
+    private List<ELContentsUpdateDto> eLearningCategoryDtos;
 
 }
