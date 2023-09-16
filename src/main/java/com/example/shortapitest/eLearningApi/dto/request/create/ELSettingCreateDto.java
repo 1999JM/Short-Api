@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class ELSettingCreateDto {
 
-    private Long eLearningSettingId;
-
     @Schema(description = "이러닝 이름")
     @NotBlank(message = "이름을 작성해 주세요.")
     private String eLearningName;

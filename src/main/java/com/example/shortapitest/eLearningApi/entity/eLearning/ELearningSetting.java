@@ -75,14 +75,14 @@ public class ELearningSetting extends BaseELearning {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningQuestion> eLearningQuestion = new ArrayList<>();  //수정 완료.
+    private List<ELearningQuestion> eLearningQuestionList = new ArrayList<>();  //수정 완료.
 
     public void setELearningContent (ELearningContent eLearningContent){
         this.eLearningContent = eLearningContent;
     }
 
     public void addQuestion(ELearningQuestion eLearningQuestion) {
-        this.eLearningQuestion.add(eLearningQuestion);
+        this.eLearningQuestionList.add(eLearningQuestion);
 
     }
 
@@ -94,14 +94,14 @@ public class ELearningSetting extends BaseELearning {
         this.deleted = true;
     }
 
-    public static ELearningSetting createELearningSetting(ELSettingCreateDto ELearningSettingDto, LogoImage logoImage, CoverImage coverImage) {
+    public static ELearningSetting createELearningSetting(ELSettingCreateDto eLSettingCreateDto, LogoImage logoImage, CoverImage coverImage) {
 
         ELearningSetting eLearningSetting = ELearningSetting.builder()
-                .name(ELearningSettingDto.getELearningName())
-                .alias(ELearningSettingDto.getELearningAlias())
-                .testPassScore(ELearningSettingDto.getTestPassScore())
-                .displayAnswer(ELearningSettingDto.isDisplayAnswer())
-                .wrongAnswerSkip(ELearningSettingDto.isWrongAnswerSkip())
+                .name(eLSettingCreateDto.getELearningName())
+                .alias(eLSettingCreateDto.getELearningAlias())
+                .testPassScore(eLSettingCreateDto.getTestPassScore())
+                .displayAnswer(eLSettingCreateDto.isDisplayAnswer())
+                .wrongAnswerSkip(eLSettingCreateDto.isWrongAnswerSkip())
                 .logoImage(logoImage)
                 .coverImage(coverImage)
                 .deleted(false)
@@ -110,13 +110,12 @@ public class ELearningSetting extends BaseELearning {
         return eLearningSetting;
     }
 
-    public void updateELearningSetting(ELSettingCreateDto eLearningSettingDto) {
+    public void updateELearningSetting(ELSettingCreateDto elSettingCreateDto) {
 
-        this.name = eLearningSettingDto.getELearningName();
-        this.alias = eLearningSettingDto.getELearningAlias();
-        this.wrongAnswerSkip = eLearningSettingDto.isWrongAnswerSkip();
-        this.displayAnswer = eLearningSettingDto.isDisplayAnswer();
-        this.testPassScore = eLearningSettingDto.getTestPassScore();
+        this.name = elSettingCreateDto.getELearningName();
+        this.alias = elSettingCreateDto.getELearningAlias();
+        this.wrongAnswerSkip = elSettingCreateDto.isWrongAnswerSkip();
+        this.displayAnswer = elSettingCreateDto.isDisplayAnswer();
+        this.testPassScore = elSettingCreateDto.getTestPassScore();
     }
-
 }

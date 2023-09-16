@@ -30,7 +30,7 @@ public class ELearningContent {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningCategory> eLearningCategory = new ArrayList<ELearningCategory>(); //수정완료.
+    private List<ELearningCategory> eLearningCategoryList = new ArrayList<ELearningCategory>(); //수정완료.
 
     @OneToOne(
             fetch = FetchType.LAZY,
@@ -41,7 +41,7 @@ public class ELearningContent {
     private ELearningSetting eLearningSetting;
 
     public void setELearningCategory(ELearningCategory eLearningCategory) {
-        this.eLearningCategory.add(eLearningCategory);
+        this.eLearningCategoryList.add(eLearningCategory);
     }
 
     public static ELearningContent createELearningContent(ELearningSetting eLearningSetting) {

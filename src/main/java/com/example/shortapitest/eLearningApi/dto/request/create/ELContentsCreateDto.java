@@ -19,6 +19,6 @@ public class ELContentsCreateDto {
 
     @Schema(description = "카테고리 정보")
     @NotBlank(message = "카테고리 정보를 입력해 주세요.")
-    private List<ELCategoryCreateDto> eLearningCategoryDtos;
+    private List<ELCategoryCreateDto> eLearningCategoryDtoList;
 
 }

@@ -51,7 +51,7 @@ public class ELearningQuestion {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningChoice> eLearningChoice = new ArrayList<>();
+    private List<ELearningChoice> eLearningChoiceList = new ArrayList<>();
 
     public void setQuestionImage(QuestionImage questionImage) {
         this.questionImage = questionImage;
@@ -70,7 +70,7 @@ public class ELearningQuestion {
         return eLearningQuestion;
     }
 
-    public void setChoice(ELearningChoice eLearningChoice) {
-        this.eLearningChoice.add(eLearningChoice);
+    public void addChoice(ELearningChoice eLearningChoice) {
+        this.eLearningChoiceList.add(eLearningChoice);
     }
 }

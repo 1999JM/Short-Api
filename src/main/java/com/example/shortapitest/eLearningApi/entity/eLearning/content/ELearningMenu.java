@@ -34,7 +34,7 @@ public class ELearningMenu {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<MenuImage> menuImage;
+    private List<MenuImage> menuImageList;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "e_Learning_category_id", updatable = false)

@@ -56,7 +56,7 @@ public class ELearningService {
     private final QuestionImageRepository questionImageRepository;
 
     @Transactional
-    public void eLearningSettingCreate(ELSettingCreateDto elSettingCreateDto, MultipartFile logoImage, MultipartFile coverImage) {
+    public void eLearningSettingCreate(ELSettingCreateDto eLSettingCreateDto, MultipartFile logoImage, MultipartFile coverImage) {
 
         try {
             //파일 업로드
@@ -68,7 +68,7 @@ public class ELearningService {
             CoverImage createCoverImage = CoverImage.createCoverImage(newCoverImageName, coverImage.getOriginalFilename(), coverImageLocation);
             coverImageRepository.save(createCoverImage);
 
-            ELearningSetting eLearningSetting = ELearningSetting.createELearningSetting(elSettingCreateDto, createLogoImage, createCoverImage);
+            ELearningSetting eLearningSetting = ELearningSetting.createELearningSetting(eLSettingCreateDto, createLogoImage, createCoverImage);
             eLearningSettingRepository.save(eLearningSetting);
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,24 +76,24 @@ public class ELearningService {
     }
 
     @Transactional
-    public void eLearningContentsCreate(ELContentsCreateDto eLearningContentsDto, List<MultipartFile> menuImageList) {
+    public void eLearningContentsCreate(ELContentsCreateDto eLContentsCreateDto, List<MultipartFile> menuImageList) {
 
-        System.out.println(eLearningContentsDto.getELearningSettingId());
+        System.out.println(eLContentsCreateDto.getELearningSettingId());
 
         int categorySequence = 1;
         int count = 0;
 
         // 1번 Dto에서 id 값을 추출하여 ELearningSetting에 해당하는 값이 있는지 조회
-        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningContentsDto.getELearningSettingId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+        /*ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLContentsCreateDto.getELearningSettingId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
 
         // 2번 ELearningContent 생성
         ELearningContent eLearningContent = ELearningContent.createELearningContent(eLearningSetting);
         eLearningContentRepository.save(eLearningContent);
         //Setting에 Content 연결
-        eLearningSetting.setELearningContent(eLearningContent);
+        eLearningSetting.setELearningContent(eLearningContent);*/
 
         // 3번 ELearningCategory 생성 및 해당 하는 ELearningMenu 생성
-        for (ELCategoryCreateDto eLearningCategoryDto : eLearningContentsDto.getELearningCategoryDtos()) {
+        /*for (ELCategoryCreateDto eLearningCategoryDto : eLearningContentsDto.getELearningCategoryDtos()) {
             int menuSequence = 1;
             //Content에 Category 연결
             ELearningCategory eLearningCategory = ELearningCategory.createCategory(eLearningCategoryDto, eLearningContent, categorySequence);
@@ -107,7 +107,7 @@ public class ELearningService {
                 eLearningMenuRepository.save(eLearningMenu);
 
                 //Category와 menu 연걸
-                eLearningCategory.setELearningMenu(eLearningMenu);
+                eLearningCategory.addELearningMenu(eLearningMenu);
 
                 for (int i = 0; i < eLearningMenuDto.getMenuImageCount(); i++) {
                     //이미지 저장 로직
@@ -128,13 +128,13 @@ public class ELearningService {
                 menuSequence++;
             }
             categorySequence++;
-        }
+        }*/
     }
 
     @Transactional
     public void eLearningQuestionCreate(ELearningQuestionDto eLearningQuestionDto, List<MultipartFile> questionImages) {
         //해당하는 이러닝에 대한 정보를 가져옵니다.
-        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningQuestionDto.getELearningId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+       /* ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningQuestionDto.getELearningId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
 
         // Question 생성후 이미지 검사 로직을 통하여 이미지 저장 여부를 확인합니다.
         eLearningQuestionDto.getELearningQuestionSetDtos().forEach(questionDto -> {
@@ -156,7 +156,7 @@ public class ELearningService {
             for (ELChoiceCreateDto choiceDto : questionDto.getChoiceDtoList()) {
                 eLearningQuestion.setChoice(eLearningChoiceRepository.save(ELearningChoice.createELearningChoice(choiceDto, eLearningQuestion, count)));
             }
-        });
+        });*/
     }
 
     public PageELSettingReturnDto selectELearningSettingPage(Pageable pageable) {
@@ -177,7 +177,7 @@ public class ELearningService {
 
     @Transactional
     public void eLearningSettingUpdate(ELSettingCreateDto eLearningSettingDto, MultipartFile logoImage, MultipartFile coverImage) {
-        Long eLearningSettingId = eLearningSettingDto.getELearningSettingId();
+        /*Long eLearningSettingId = eLearningSettingDto.getELearningSettingId();
 
         ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningSettingId).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
         LogoImage existingLogoImage = logoImageRepository.findById(eLearningSettingId).orElseThrow(() -> new EntityNotFoundException("ELearning에 이미지가 존재하지 않습니다."));
@@ -199,7 +199,7 @@ public class ELearningService {
             eLearningSetting.updateELearningSetting(eLearningSettingDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     public void eLearningContentsUpdate(ELContentsUpdateDto elContentsUpdateDto, List<MultipartFile> menuImageList) {

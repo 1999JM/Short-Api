@@ -15,6 +15,7 @@ public class ELearningQuestionDto {
 
     @Schema(description = "ELearning Id")
     @NotBlank(message = "ELearning Id 값을 입력해 주세요.")
-    private Long eLearningId;
-    private List<ELearningQuestionSetDto> eLearningQuestionSetDtos;
+    private Long eLearningSettingId;
+
+    private List<ELearningQuestionSetDto> eLearningQuestionSetDtoList;
 }

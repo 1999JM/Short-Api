@@ -14,9 +14,6 @@ import java.util.List;
 @ToString
 public class ELContentsUpdateDto {
 
-    @Schema(description = "ELearning Id")
-    private Long eLearningId;
-
     @Schema(description = "ELearningContent Id")
     private Long eLearningContentId;
 

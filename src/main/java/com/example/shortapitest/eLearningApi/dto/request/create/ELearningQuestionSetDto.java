@@ -23,7 +23,7 @@ public class ELearningQuestionSetDto {
 
     @Schema(description = "해당 문제에 대한 이미지 존재 여부")
     @NotBlank(message = "이미지가 존재하는지 설정해 주세요.")
-    private boolean questionImage;  //해당 문제에 이미지가 존재하는지 판별하는 판별기
+    private boolean questionImageCheck;  //해당 문제에 이미지가 존재하는지 판별하는 판별기
 
     private List<ELChoiceCreateDto> choiceDtoList;
 }

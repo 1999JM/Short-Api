@@ -6,22 +6,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Setter
 public class ImageUploadDto {
+
     private String upLoadPath;    //이미지 경로
     private String originalFileName; //원본 이미지 이름
     private byte[] fileData;
 
     public static ImageUploadDto createImageDto(String upLoadPath, MultipartFile image){
-        ImageUploadDto imageDto = null;
+        ImageUploadDto imageDto = new ImageUploadDto();
         try {
-            imageDto = ImageUploadDto.builder()
-                    .upLoadPath(upLoadPath)
-                    .originalFileName(image.getOriginalFilename())
-                    .fileData(image.getBytes())
-                    .build();
+            imageDto.setUpLoadPath(upLoadPath);
+            imageDto.setOriginalFileName(image.getOriginalFilename());
+            imageDto.setFileData(image.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

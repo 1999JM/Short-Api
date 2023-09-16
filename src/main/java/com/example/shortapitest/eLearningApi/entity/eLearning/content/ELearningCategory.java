@@ -38,7 +38,7 @@ public class ELearningCategory {
     )
     private List<ELearningMenu> eLearningMenuList = new ArrayList<>();  //수정완료.
 
-    public void setELearningMenu(ELearningMenu eLearningMenu){
+    public void addELearningMenu(ELearningMenu eLearningMenu){
         this.eLearningMenuList.add(eLearningMenu);
     }
 

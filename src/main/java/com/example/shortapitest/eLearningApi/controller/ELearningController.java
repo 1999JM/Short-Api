@@ -27,23 +27,23 @@ public class ELearningController {
     private final ELearningService eLearningService;
 
     @Operation(summary = "이러닝 Setting 등록")
-    @PostMapping("/create-setting")
-    public void createELearningSetting(@RequestPart ELSettingCreateDto elSettingCreateDto
+    @PostMapping("/settings")
+    public void createELearningSetting(@RequestPart ELSettingCreateDto eLSettingCreateDto
                                 ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile logoImage
                                 ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile coverImage
                                 ){
-        eLearningService.eLearningSettingCreate(elSettingCreateDto, logoImage, coverImage);
+        eLearningService.eLearningSettingCreate(eLSettingCreateDto, logoImage, coverImage);
     }
 
     @Operation(summary = "이러닝 Contents 등록")
-    @PostMapping("/create-contents")
-    public void createELearningContents(@RequestPart ELContentsCreateDto eLearningContentsDto
-            , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImage){
-        eLearningService.eLearningContentsCreate(eLearningContentsDto, menuImage);
+    @PostMapping("/contents")
+    public void createELearningContents(@RequestPart ELContentsCreateDto eLContentsCreateDto
+            , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImageList){
+        eLearningService.eLearningContentsCreate(eLContentsCreateDto, menuImageList);
     }
 
     @Operation(summary = "이러닝 Question 등록")
-    @PostMapping("/create-question")
+    @PostMapping("/question")
     public void createELearningQuestion(@RequestPart ELearningQuestionDto eLearningQuestionDto
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> questionImages){
         eLearningService.eLearningQuestionCreate(eLearningQuestionDto, questionImages);
@@ -52,7 +52,7 @@ public class ELearningController {
     // 이러닝 전체 조회 최신 생성순으로 조회 합니다.
     // 리스트로 리턴해줘야 하는 값들 이러닝 네임, 이러닝 별칭, 이러닝, 삭제 처리 여부
     @Operation(summary = "이러닝 전체 조회")
-    @GetMapping(value = "/select-setting")
+    @GetMapping(value = "/settings")
     public PageELSettingReturnDto selectELearningSettingPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int rows) {
         // page = 현재 페이지 번호를 받습니다.
         // rows = 한 페이지에 보여지는 행의 개수
@@ -61,7 +61,7 @@ public class ELearningController {
 
     //해당 ELearning Setting 수정
     @Operation(summary = "이러닝 Setting 업데이트")
-    @PutMapping("/update-setting")
+    @PutMapping("/setting")
     public void updateELearningSetting(@RequestPart ELSettingCreateDto eLearningSettingDto
             ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile logoImage
             ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile coverImage){
@@ -71,22 +71,22 @@ public class ELearningController {
 
     //해당 ELearning Contents 수정
     @Operation(summary = "이러닝 Contents 업데이트")
-    @PutMapping("/update-contents")
+    @PutMapping("/contents")
     public void updateELearningContents(@RequestPart ELContentsUpdateDto elContentsUpdateDto
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImageList){
 
         eLearningService.eLearningContentsUpdate(elContentsUpdateDto, menuImageList );
     }
 
-    @Operation(summary = "이러닝 Setting 삭제")
-    @DeleteMapping("/delete-setting/{}")
+/*    @Operation(summary = "이러닝 Setting 삭제")
+    @DeleteMapping("/setting/{}")
     public void deleteELearningSetting(@RequestParam() long eLearningSettingId){
         eLearningService.eLearningSettingDelete(eLearningSettingId);
     }
 
     @Operation(summary = "이러닝 Setting 복구")
-    @PostMapping("/Recovery-setting")
+    @PostMapping("/setting")
     public void createELearningQuestion(@RequestPart long eLearningSettingId){
         eLearningService.eLearningSettingRecovery(eLearningSettingId);
-    }
+    }*/
 }
