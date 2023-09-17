@@ -1,7 +1,7 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.question;
 
 import com.example.shortapitest.eLearningApi.constant.AnswerType;
-import com.example.shortapitest.eLearningApi.dto.request.create.ELearningQuestionSetDto;
+import com.example.shortapitest.eLearningApi.dto.request.create.ELQuestionDetailCreateDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import com.example.shortapitest.eLearningApi.entity.image.QuestionImage;
 import jakarta.persistence.*;
@@ -58,9 +58,9 @@ public class ELearningQuestion {
     }
 
 
-    public static ELearningQuestion createELearningQuestion(ELearningQuestionSetDto eLearningQuestionSetDto, ELearningSetting eLearningSetting) {
+    public static ELearningQuestion createELearningQuestion(ELQuestionDetailCreateDto eLearningQuestionSetDto, ELearningSetting eLearningSetting) {
 
-        String answerType = eLearningQuestionSetDto.getAnswer().toUpperCase();
+        String answerType = eLearningQuestionSetDto.getAnswerCheckType().toUpperCase();
 
         ELearningQuestion eLearningQuestion = ELearningQuestion.builder()
                 .questionName(eLearningQuestionSetDto.getQuestionName())

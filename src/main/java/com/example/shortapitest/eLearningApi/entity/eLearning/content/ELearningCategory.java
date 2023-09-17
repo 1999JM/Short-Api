@@ -42,11 +42,11 @@ public class ELearningCategory {
         this.eLearningMenuList.add(eLearningMenu);
     }
 
-    public static ELearningCategory createCategory(ELCategoryCreateDto eLearningCategoryDto, ELearningContent eLearningContent, int categorySequence) {
+    public static ELearningCategory createCategory(ELCategoryCreateDto eLearningCategoryDto, ELearningContent eLearningContent) {
 
         ELearningCategory eLearningCategory = ELearningCategory.builder()
                 .categoryName(eLearningCategoryDto.getCategoryName())
-                .categorySequence(categorySequence)
+                .categorySequence(eLearningCategoryDto.getCategorySequence())
                 .eLearningContent(eLearningContent)
                 .build();
 

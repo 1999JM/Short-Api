@@ -11,7 +11,6 @@ public class ImageUpload {
 
         String originalFileName = imageUploadDto.getOriginalFileName();
 
-        //구조 변경
         UUID uuid = UUID.randomUUID();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
         String savedFileName=uuid.toString()+extension;

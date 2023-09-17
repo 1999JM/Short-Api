@@ -1,12 +1,12 @@
-#coverImage: "/users/june/eLearning/eLearningCoverImage/"
-#logoImage: "/users/june/eLearning/eLearningLogoImage/"
-#menuImage: "/users/june/eLearning/eLearningMenu/"
-#questionImage: "/users/june/eLearning/eLearningQuestionImage/"
+coverImage: "/users/june/eLearning/eLearningCoverImage/"
+logoImage: "/users/june/eLearning/eLearningLogoImage/"
+menuImage: "/users/june/eLearning/eLearningMenu/"
+questionImage: "/users/june/eLearning/eLearningQuestionImage/"
 
-coverImage: "C:/eLearning/coverImage"
-logoImage: "C:/eLearning/logoImage"
-menuImage: "C:/eLearning/menuImage"
-questionImage: "C:/eLearning/eLeaning/questionImage"
+#coverImage: "C:/eLearning/coverImage"
+#logoImage: "C:/eLearning/logoImage"
+#menuImage: "C:/eLearning/menuImage"
+#questionImage: "C:/eLearning/eLeaning/questionImage"
 
 #이미지 저장 경로
 server:
@@ -26,8 +26,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/testapi?serverTimezone=Asia/Seoul
     username: root
-#    password: 9722
-    password: mysql
+    password: 9722
+#    password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true

@@ -2,6 +2,7 @@ package com.example.shortapitest.eLearningApi.repository.queryDsl;
 
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import com.example.shortapitest.eLearningApi.entity.eLearning.QELearningSetting;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -36,4 +37,15 @@ public class ELearningSettingRepositoryImpl implements ELearningSettingRepositor
         return new PageImpl<>(content, pageable, totalCount);
     }
 
+    // 검색 엔진을 위한 메소드 (사번과 이름별 조회)
+    private BooleanExpression searchByCondition(String searchBy, String searchQuery) {
+        if(StringUtils.equals("name", searchBy)){ // 회원 이름으로 검색
+            return QMember.member.name.like("%" + searchQuery + "%" ) ;
+
+        }else if(StringUtils.equals("id", searchBy)){ // 사번으로 검색
+            return QMember.member.id.like("%" + searchQuery + "%" ) ;
+        }
+
+        return null ;
+    }
 }

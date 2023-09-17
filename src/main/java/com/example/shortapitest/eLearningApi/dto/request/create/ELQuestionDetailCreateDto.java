@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class ELearningQuestionSetDto {
+public class ELQuestionDetailCreateDto {
 
     @Schema(description = "문제 내용")
     @NotBlank(message = "문제 내용을 작성해 주세요.")
@@ -19,7 +19,7 @@ public class ELearningQuestionSetDto {
 
     @Schema(description = "단일 정답 또는 복수 정답 설정")
     @NotBlank(message = "단일 정답 또는 복수 정답 설정을 해주세요.")
-    private String answer;
+    private String answerCheckType;
 
     @Schema(description = "해당 문제에 대한 이미지 존재 여부")
     @NotBlank(message = "이미지가 존재하는지 설정해 주세요.")

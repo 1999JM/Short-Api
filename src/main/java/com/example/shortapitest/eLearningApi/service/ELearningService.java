@@ -3,7 +3,6 @@ package com.example.shortapitest.eLearningApi.service;
 import com.example.shortapitest.eLearningApi.dto.request.create.*;
 import com.example.shortapitest.eLearningApi.dto.request.update.ELContentsUpdateDto;
 import com.example.shortapitest.eLearningApi.dto.response.PageELSettingReturnDto;
-import com.example.shortapitest.eLearningApi.dto.response.ELSettingReturnDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningCategory;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningContent;
@@ -22,7 +21,6 @@ import com.example.shortapitest.eLearningApi.repository.image.QuestionImageRepos
 import com.example.shortapitest.eLearningApi.utill.ImageUpload;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -78,69 +76,61 @@ public class ELearningService {
     @Transactional
     public void eLearningContentsCreate(ELContentsCreateDto eLContentsCreateDto, List<MultipartFile> menuImageList) {
 
-        System.out.println(eLContentsCreateDto.getELearningSettingId());
-
-        int categorySequence = 1;
-        int count = 0;
-
         // 1번 Dto에서 id 값을 추출하여 ELearningSetting에 해당하는 값이 있는지 조회
-        /*ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLContentsCreateDto.getELearningSettingId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLContentsCreateDto.getELSettingId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
 
         // 2번 ELearningContent 생성
         ELearningContent eLearningContent = ELearningContent.createELearningContent(eLearningSetting);
         eLearningContentRepository.save(eLearningContent);
         //Setting에 Content 연결
-        eLearningSetting.setELearningContent(eLearningContent);*/
+        eLearningSetting.setELearningContent(eLearningContent);
 
         // 3번 ELearningCategory 생성 및 해당 하는 ELearningMenu 생성
-        /*for (ELCategoryCreateDto eLearningCategoryDto : eLearningContentsDto.getELearningCategoryDtos()) {
-            int menuSequence = 1;
-            //Content에 Category 연결
-            ELearningCategory eLearningCategory = ELearningCategory.createCategory(eLearningCategoryDto, eLearningContent, categorySequence);
+        // 카테고리를 분해하고
+        // 카테고리 생성
+        // 메뉴를 생성하고 메뉴에 대한 정보를 카테고리 안에 넣어주는 작업
+        // 코드 간략화
+
+        eLContentsCreateDto.getELCategoryCreateDtoList().forEach(categoryDto -> {
+            ELearningCategory eLearningCategory = ELearningCategory.createCategory(categoryDto, eLearningContent);
             eLearningCategoryRepository.save(eLearningCategory);
             eLearningContent.setELearningCategory(eLearningCategory);
 
-            //메뉴
-            for (ELMenuCreateDto eLearningMenuDto : eLearningCategoryDto.getMenu()) {
-
-                ELearningMenu eLearningMenu = ELearningMenu.createManu(eLearningMenuDto, menuSequence, eLearningCategory);
+            categoryDto.getMenuList().forEach(menuDto -> {
+                ELearningMenu eLearningMenu = ELearningMenu.createManu(menuDto, eLearningCategory);
                 eLearningMenuRepository.save(eLearningMenu);
-
                 //Category와 menu 연걸
                 eLearningCategory.addELearningMenu(eLearningMenu);
 
-                for (int i = 0; i < eLearningMenuDto.getMenuImageCount(); i++) {
+                for (int i = 0; i < menuDto.getMenuImageCount(); i++) {
                     //이미지 저장 로직
                     //이미지를 저장하고 이미지 n건을 eLeanringMenu에 넣어줍니다.
-                    String oriMenuImageName = menuImageList.get(count).getOriginalFilename();
+                    MultipartFile menuImage = menuImageList.get(0);
                     try {
                         //파일 업로드
-                        if (!StringUtils.isEmpty(oriMenuImageName)) {//이름이 있으면 업로드
-                            String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, menuImageList.get(count))));
-                            MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImageList.get(count).getOriginalFilename(), questionImageLocation, eLearningMenu, (long) i + 1);
-                            menuImageRepository.save(saveMenuImage);
-                        }
+                        String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(menuImageLocation, menuImage)));
+                        MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImage.getOriginalFilename(), menuImageLocation, eLearningMenu, i);
+                        menuImageRepository.save(saveMenuImage);
+                        menuImageList.remove(0);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    count++;
                 }
-                menuSequence++;
-            }
-            categorySequence++;
-        }*/
+            });
+        });
     }
 
     @Transactional
-    public void eLearningQuestionCreate(ELearningQuestionDto eLearningQuestionDto, List<MultipartFile> questionImages) {
+    public void eLearningQuestionCreate(ELQuestionCreateDto elQuestionCreateDto, List<MultipartFile> questionImages) {
+
         //해당하는 이러닝에 대한 정보를 가져옵니다.
-       /* ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningQuestionDto.getELearningId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(elQuestionCreateDto.getELSettingId()).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
 
         // Question 생성후 이미지 검사 로직을 통하여 이미지 저장 여부를 확인합니다.
-        eLearningQuestionDto.getELearningQuestionSetDtos().forEach(questionDto -> {
+        elQuestionCreateDto.getElQuestionDetailCreateDtoList().forEach(questionDto -> {
             ELearningQuestion eLearningQuestion = eLearningQuestionRepository.save(ELearningQuestion.createELearningQuestion(questionDto, eLearningSetting));
             eLearningSetting.addQuestion(eLearningQuestion);
-            if (questionDto.isQuestionImage()) {
+            if (questionDto.isQuestionImageCheck()) {
                 MultipartFile questionImage = questionImages.get(0);
                 try {
                     String newQuestionImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, questionImage)));
@@ -152,24 +142,23 @@ public class ELearningService {
                     throw new RuntimeException(e);
                 }
             }
-            int count = 1;
             for (ELChoiceCreateDto choiceDto : questionDto.getChoiceDtoList()) {
-                eLearningQuestion.setChoice(eLearningChoiceRepository.save(ELearningChoice.createELearningChoice(choiceDto, eLearningQuestion, count)));
+                eLearningQuestion.addChoice(eLearningChoiceRepository.save(ELearningChoice.createELearningChoice(choiceDto, eLearningQuestion)));
             }
-        });*/
+        });
     }
-
+    // stream 사용
+    // 검색 기능 추가
+    // 검색 항목 2개 이상
+    // 항목 합쳐서 검색
+    // 생성 날짜 검색
+    // 페이징 처리 리턴 dto공용화 가능하도록 설계
+    // 프론트가 받기 좋은 데이터란...
     public PageELSettingReturnDto selectELearningSettingPage(Pageable pageable) {
 
         PageImpl<ELearningSetting> eLearningSettingResult = eLearningSettingRepository.selectELearningSetting(pageable);
 
-        // stream 사용
-        // 검색 기능 추가
-        // 검색 항목 2개 이상
-        // 항목 합쳐서 검색
-        // 생성 날짜 검색
-        // 페이징 처리 리턴 dto공용화 가능하도록 설계
-        // 프론트가 받기 좋은 데이터란...
+
         PageELSettingReturnDto pageELearningSetting = PageELSettingReturnDto.createPageELearningSetting(eLearningSettingResult);
 
         return pageELearningSetting;

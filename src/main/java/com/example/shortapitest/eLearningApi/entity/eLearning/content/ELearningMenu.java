@@ -41,10 +41,10 @@ public class ELearningMenu {
     private ELearningCategory eLearningCategory;
 
 
-    public static ELearningMenu createManu(ELMenuCreateDto eLearningMenuDto, int menuSequence, ELearningCategory eLearningCategory) {
+    public static ELearningMenu createManu(ELMenuCreateDto eLearningMenuDto, ELearningCategory eLearningCategory) {
         ELearningMenu eLearningMenu = ELearningMenu.builder()
                 .menuName(eLearningMenuDto.getMenuName())
-                .menuSequence(menuSequence)
+                .menuSequence(eLearningMenuDto.getMenuSequence())
                 .eLearningCategory(eLearningCategory)
                 .build();
         return eLearningMenu;

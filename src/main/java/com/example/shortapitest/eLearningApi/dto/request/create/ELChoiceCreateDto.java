@@ -18,4 +18,8 @@ public class ELChoiceCreateDto {
     @Schema(description = "보기 항목 정답 여부 설정")
     @NotBlank(message = "보기 항목의 정답 여부를 설정해 주세요.")
     private boolean answerCheck;
+
+    @Schema(description = "보기 항목에 대한 순번")
+    @NotBlank(message = "보기 항목에 대한 순번을 설정해 주세요.")
+    private int choiceSequence;
 }

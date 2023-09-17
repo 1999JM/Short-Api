@@ -27,14 +27,14 @@ public class MenuImage extends BaseImage {
     @JoinColumn(name = "e_learning_menu_id", updatable = false)
     private ELearningMenu eLearningMenu;
 
-    public static MenuImage createMenuImage(String newMenuImageName, String oriMenuImageName, String questionImageLocation, ELearningMenu eLearningMenu, long menuImageSequence) {
+    public static MenuImage createMenuImage(String newMenuImageName, String oriMenuImageName, String questionImageLocation, ELearningMenu eLearningMenu, int i) {
 
         MenuImage menuImage = MenuImage.builder()
                 .filename(newMenuImageName)
                 .fileOriName(oriMenuImageName)
                 .fileUrl(questionImageLocation)
                 .eLearningMenu(eLearningMenu)
-                .menuImageSequence(menuImageSequence)
+                .menuImageSequence(i + 1)
                 .build();
         return menuImage;
     }

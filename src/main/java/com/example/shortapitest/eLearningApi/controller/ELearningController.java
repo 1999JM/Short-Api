@@ -1,7 +1,7 @@
 package com.example.shortapitest.eLearningApi.controller;
 
 import com.example.shortapitest.eLearningApi.dto.request.create.ELContentsCreateDto;
-import com.example.shortapitest.eLearningApi.dto.request.create.ELearningQuestionDto;
+import com.example.shortapitest.eLearningApi.dto.request.create.ELQuestionCreateDto;
 import com.example.shortapitest.eLearningApi.dto.request.create.ELSettingCreateDto;
 import com.example.shortapitest.eLearningApi.dto.request.update.ELContentsUpdateDto;
 import com.example.shortapitest.eLearningApi.dto.response.PageELSettingReturnDto;
@@ -12,12 +12,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,20 +41,27 @@ public class ELearningController {
     }
 
     @Operation(summary = "이러닝 Question 등록")
-    @PostMapping("/question")
-    public void createELearningQuestion(@RequestPart ELearningQuestionDto eLearningQuestionDto
-            , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> questionImages){
-        eLearningService.eLearningQuestionCreate(eLearningQuestionDto, questionImages);
+    @PostMapping("/questions")
+    public void createELearningQuestion(@RequestPart ELQuestionCreateDto elQuestionCreateDto
+            , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> questionImageList){
+        eLearningService.eLearningQuestionCreate(elQuestionCreateDto, questionImageList);
     }
 
     // 이러닝 전체 조회 최신 생성순으로 조회 합니다.
+    // 조건 검색 항목은 여러개 입니다. 생성 날짜, 이러닝 네임
     // 리스트로 리턴해줘야 하는 값들 이러닝 네임, 이러닝 별칭, 이러닝, 삭제 처리 여부
     @Operation(summary = "이러닝 전체 조회")
     @GetMapping(value = "/settings")
-    public PageELSettingReturnDto selectELearningSettingPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int rows) {
+    public PageELSettingReturnDto selectELearningSettingPage(@RequestParam(defaultValue = "0") int page
+            , @RequestParam(defaultValue = "10") int rows
+            , @RequestParam(defaultValue = "") String searchCreateDate
+            , @RequestParam(defaultValue = "") String searchItem
+            , @RequestParam(defaultValue = "") String searchDetail) {
         // page = 현재 페이지 번호를 받습니다.
         // rows = 한 페이지에 보여지는 행의 개수
-        return eLearningService.selectELearningSettingPage(PageRequest.of(page,rows));
+        // search = 검색 항목
+        // searchDetail = 검색 내용
+        return eLearningService.selectELearningSettingPage(PageRequest.of(page,rows, searchItem, searchDetail));
     }
 
     //해당 ELearning Setting 수정

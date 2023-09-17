@@ -32,13 +32,13 @@ public class ELearningChoice {
     @JoinColumn(name = "e_learning_question_id")
     private ELearningQuestion eLearningQuestion;
 
-    public static ELearningChoice createELearningChoice(ELChoiceCreateDto choiceDto, ELearningQuestion eLearningQuestion, int count) {
+    public static ELearningChoice createELearningChoice(ELChoiceCreateDto choiceDto, ELearningQuestion eLearningQuestion) {
 
         ELearningChoice eLearningChoice = ELearningChoice.builder()
                 .choiceContent(choiceDto.getChoiceName())
                 .eLearningQuestion(eLearningQuestion)
                 .answer(choiceDto.isAnswerCheck())
-                .choiceSequence(count)
+                .choiceSequence(choiceDto.getChoiceSequence())
                 .build();
         return eLearningChoice;
 

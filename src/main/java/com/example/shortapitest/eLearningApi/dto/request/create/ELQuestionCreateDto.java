@@ -11,11 +11,11 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class ELearningQuestionDto {
+public class ELQuestionCreateDto {
 
     @Schema(description = "ELearning Id")
     @NotBlank(message = "ELearning Id 값을 입력해 주세요.")
-    private Long eLearningSettingId;
+    private Long eLSettingId;
 
-    private List<ELearningQuestionSetDto> eLearningQuestionSetDtoList;
+    private List<ELQuestionDetailCreateDto> elQuestionDetailCreateDtoList;
 }
