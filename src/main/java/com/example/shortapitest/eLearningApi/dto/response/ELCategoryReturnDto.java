@@ -1,9 +1,6 @@
 package com.example.shortapitest.eLearningApi.dto.response;
 
-import com.example.shortapitest.eLearningApi.dto.request.create.ELMenuCreateDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningCategory;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.ArrayList;

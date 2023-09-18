@@ -1,6 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.content;
 
-import com.example.shortapitest.eLearningApi.dto.request.create.ELMenuCreateDto;
+import com.example.shortapitest.eLearningApi.dto.request.ELMenuDto;
 import com.example.shortapitest.eLearningApi.entity.image.MenuImage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,12 +41,26 @@ public class ELearningMenu {
     private ELearningCategory eLearningCategory;
 
 
-    public static ELearningMenu createManu(ELMenuCreateDto eLearningMenuDto, ELearningCategory eLearningCategory) {
+    public static ELearningMenu createManu(ELMenuDto elMenuDto, ELearningCategory eLearningCategory) {
         ELearningMenu eLearningMenu = ELearningMenu.builder()
-                .menuName(eLearningMenuDto.getMenuName())
-                .menuSequence(eLearningMenuDto.getMenuSequence())
+                .menuName(elMenuDto.getMenuName())
+                .menuSequence(elMenuDto.getMenuSequence())
                 .eLearningCategory(eLearningCategory)
                 .build();
         return eLearningMenu;
+    }
+
+    public static ELearningMenu updateManu(ELMenuDto elMenuDto, ELearningCategory eLearningCategory) {
+        ELearningMenu eLearningMenu = ELearningMenu.builder()
+                .menuName(elMenuDto.getMenuName())
+                .menuSequence(elMenuDto.getMenuSequence())
+                .eLearningCategory(eLearningCategory)
+                .build();
+        return eLearningMenu;
+    }
+
+    public void setUpdateManu(ELMenuDto elMenuDto) {
+        this.menuName = elMenuDto.getMenuName();
+        this.menuSequence = elMenuDto.getMenuSequence();
     }
 }

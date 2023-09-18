@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.dto.request.update;
+package com.example.shortapitest.eLearningApi.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -8,10 +8,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ELSettingUpdateDto {
+public class ELSettingDto {
 
-    @Schema(description = "이러닝 id")
-    private Long eLearningSettingId;
+    @Schema(description = "이러닝 id 수정 요청시 값이 존재합니다")
+    private Long eLSettingId;
 
     @Schema(description = "이러닝 이름")
     @NotBlank(message = "이름을 작성해 주세요.")

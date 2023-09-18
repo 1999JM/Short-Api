@@ -1,7 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning;
 
-import com.example.shortapitest.eLearningApi.dto.request.create.ELSettingCreateDto;
-import com.example.shortapitest.eLearningApi.dto.request.update.ELSettingUpdateDto;
+import com.example.shortapitest.eLearningApi.dto.request.ELSettingDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningContent;
 import com.example.shortapitest.eLearningApi.entity.eLearning.question.ELearningQuestion;
 import com.example.shortapitest.eLearningApi.entity.image.CoverImage;
@@ -95,14 +94,14 @@ public class ELearningSetting extends BaseELearning {
         this.deleted = true;
     }
 
-    public static ELearningSetting createELearningSetting(ELSettingCreateDto eLSettingCreateDto, LogoImage logoImage, CoverImage coverImage) {
+    public static ELearningSetting createELearningSetting(ELSettingDto elSettingDto, LogoImage logoImage, CoverImage coverImage) {
 
         ELearningSetting eLearningSetting = ELearningSetting.builder()
-                .name(eLSettingCreateDto.getELearningName())
-                .alias(eLSettingCreateDto.getELearningAlias())
-                .testPassScore(eLSettingCreateDto.getTestPassScore())
-                .displayAnswer(eLSettingCreateDto.isDisplayAnswer())
-                .wrongAnswerSkip(eLSettingCreateDto.isWrongAnswerSkip())
+                .name(elSettingDto.getELearningName())
+                .alias(elSettingDto.getELearningAlias())
+                .testPassScore(elSettingDto.getTestPassScore())
+                .displayAnswer(elSettingDto.isDisplayAnswer())
+                .wrongAnswerSkip(elSettingDto.isWrongAnswerSkip())
                 .logoImage(logoImage)
                 .coverImage(coverImage)
                 .deleted(false)
@@ -111,12 +110,12 @@ public class ELearningSetting extends BaseELearning {
         return eLearningSetting;
     }
 
-    public void updateELearningSetting(ELSettingUpdateDto elSettingUpdateDto) {
+    public void updateELearningSetting(ELSettingDto elSettingDto) {
 
-        this.name = elSettingUpdateDto.getELearningName();
-        this.alias = elSettingUpdateDto.getELearningAlias();
-        this.wrongAnswerSkip = elSettingUpdateDto.isWrongAnswerSkip();
-        this.displayAnswer = elSettingUpdateDto.isDisplayAnswer();
-        this.testPassScore = elSettingUpdateDto.getTestPassScore();
+        this.name = elSettingDto.getELearningName();
+        this.alias = elSettingDto.getELearningAlias();
+        this.wrongAnswerSkip = elSettingDto.isWrongAnswerSkip();
+        this.displayAnswer = elSettingDto.isDisplayAnswer();
+        this.testPassScore = elSettingDto.getTestPassScore();
     }
 }

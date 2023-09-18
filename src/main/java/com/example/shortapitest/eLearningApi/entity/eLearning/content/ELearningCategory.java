@@ -1,7 +1,6 @@
 package com.example.shortapitest.eLearningApi.entity.eLearning.content;
 
-import com.example.shortapitest.eLearningApi.dto.request.create.ELCategoryCreateDto;
-import com.example.shortapitest.eLearningApi.dto.request.update.ELCategoryUpdateDto;
+import com.example.shortapitest.eLearningApi.dto.request.ELCategoryDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -43,30 +42,30 @@ public class ELearningCategory {
         this.eLearningMenuList.add(eLearningMenu);
     }
 
-    public static ELearningCategory createCategory(ELCategoryCreateDto eLearningCategoryDto, ELearningContent eLearningContent) {
+    public static ELearningCategory createCategory(ELCategoryDto elCategoryDto, ELearningContent eLearningContent) {
 
         ELearningCategory eLearningCategory = ELearningCategory.builder()
-                .categoryName(eLearningCategoryDto.getCategoryName())
-                .categorySequence(eLearningCategoryDto.getCategorySequence())
+                .categoryName(elCategoryDto.getCategoryName())
+                .categorySequence(elCategoryDto.getCategorySequence())
                 .eLearningContent(eLearningContent)
                 .build();
 
         return eLearningCategory;
     }
 
-    public static ELearningCategory updateDtoCategory(ELCategoryUpdateDto elCategoryUpdateDto, ELearningContent eLearningContent) {
+    public static ELearningCategory updateDtoCategory(ELCategoryDto elCategoryDto, ELearningContent eLearningContent) {
 
         ELearningCategory eLearningCategory = ELearningCategory.builder()
-                .categoryName(elCategoryUpdateDto.getCategoryName())
-                .categorySequence(elCategoryUpdateDto.getCategorySequence())
+                .categoryName(elCategoryDto.getCategoryName())
+                .categorySequence(elCategoryDto.getCategorySequence())
                 .eLearningContent(eLearningContent)
                 .build();
 
         return eLearningCategory;
     }
 
-    public void setELearningCategory(ELCategoryUpdateDto updateCategoryDto) {
-        this.categoryName = updateCategoryDto.getCategoryName();
-        this.categorySequence = updateCategoryDto.getCategorySequence();
+    public void setELearningCategory(ELCategoryDto elCategoryDto) {
+        this.categoryName = elCategoryDto.getCategoryName();
+        this.categorySequence = elCategoryDto.getCategorySequence();
     }
 }

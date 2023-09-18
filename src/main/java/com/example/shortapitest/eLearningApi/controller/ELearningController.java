@@ -1,13 +1,10 @@
 package com.example.shortapitest.eLearningApi.controller;
 
-import com.example.shortapitest.eLearningApi.dto.request.create.ELContentsCreateDto;
-import com.example.shortapitest.eLearningApi.dto.request.create.ELQuestionCreateDto;
-import com.example.shortapitest.eLearningApi.dto.request.create.ELSettingCreateDto;
-import com.example.shortapitest.eLearningApi.dto.request.update.ELContentsUpdateDto;
-import com.example.shortapitest.eLearningApi.dto.request.update.ELSettingUpdateDto;
+import com.example.shortapitest.eLearningApi.dto.request.ELContentsDto;
+import com.example.shortapitest.eLearningApi.dto.request.ELQuestionDto;
+import com.example.shortapitest.eLearningApi.dto.request.ELSettingDto;
 import com.example.shortapitest.eLearningApi.dto.response.ELContentsReturnDto;
 import com.example.shortapitest.eLearningApi.dto.response.ELQuestionReturnDto;
-import com.example.shortapitest.eLearningApi.dto.response.ELSettingReturnDto;
 import com.example.shortapitest.eLearningApi.dto.response.PageReturnDto;
 import com.example.shortapitest.eLearningApi.service.ELearningService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +12,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,26 +27,25 @@ public class ELearningController {
 
     @Operation(summary = "이러닝 Setting 등록")
     @PostMapping("/settings")
-    public void createELearningSetting(@RequestPart ELSettingCreateDto eLSettingCreateDto
+    public void createELearningSetting(@RequestPart ELSettingDto elSettingDto
                                 ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile logoImage
                                 ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile coverImage
                                 ){
-        eLearningService.eLearningSettingCreate(eLSettingCreateDto, logoImage, coverImage);
+        eLearningService.eLearningSettingCreate(elSettingDto, logoImage, coverImage);
     }
 
     @Operation(summary = "이러닝 Contents 등록")
     @PostMapping("/contents")
-    public void createELearningContents(@RequestPart ELContentsCreateDto eLContentsCreateDto
+    public void createELearningContents(@RequestPart ELContentsDto elContentsDto
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImageList){
-        System.out.println(menuImageList.size());
-        eLearningService.eLearningContentsCreate(eLContentsCreateDto, menuImageList);
+        eLearningService.eLearningContentsCreate(elContentsDto, menuImageList);
     }
 
     @Operation(summary = "이러닝 Question 등록")
     @PostMapping("/questions")
-    public void createELearningQuestion(@RequestPart ELQuestionCreateDto elQuestionCreateDto
+    public void createELearningQuestion(@RequestPart ELQuestionDto elQuestionDto
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> questionImageList){
-        eLearningService.eLearningQuestionCreate(elQuestionCreateDto, questionImageList);
+        eLearningService.eLearningQuestionCreate(elQuestionDto, questionImageList);
     }
 
     // 이러닝 전체 조회 최신 생성순으로 조회 합니다.
@@ -88,19 +83,19 @@ public class ELearningController {
     //해당 ELearning Setting 수정
     @Operation(summary = "이러닝 Setting 업데이트")
     @PutMapping("/settings")
-    public void updateELearningSetting(@RequestPart ELSettingUpdateDto elSettingUpdateDto
+    public void updateELearningSetting(@RequestPart ELSettingDto elSettingDto
             ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile logoImage
             ,@RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) MultipartFile coverImage){
         //이러닝 수정 모든 데이터를 받는다.
-        eLearningService.eLearningSettingUpdate(elSettingUpdateDto, logoImage, coverImage);
+        eLearningService.eLearningSettingUpdate(elSettingDto, logoImage, coverImage);
     }
 
     //해당 ELearning Contents 수정
     @Operation(summary = "이러닝 Contents 업데이트")
     @PutMapping("/contents")
-    public void updateELearningContents(@RequestPart ELContentsUpdateDto elContentsUpdateDto
+    public void updateELearningContents(@RequestPart ELContentsDto elContentsDto
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImageList){
-        eLearningService.eLearningContentsUpdate(elContentsUpdateDto, menuImageList );
+        eLearningService.eLearningContentsUpdate(elContentsDto, menuImageList );
     }
 
 /*    @Operation(summary = "이러닝 Setting 삭제")

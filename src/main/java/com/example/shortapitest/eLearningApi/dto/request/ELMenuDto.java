@@ -1,4 +1,4 @@
-package com.example.shortapitest.eLearningApi.dto.request.update;
+package com.example.shortapitest.eLearningApi.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -9,10 +9,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ELMenuUpdateDto {
+public class ELMenuDto {
 
-    @Schema(description = "메뉴 아이디")
-    private String menuId;
+    @Schema(description = "수정 요청시 메뉴 아이디")
+    private Long menuId;
 
     @Schema(description = "메뉴 이름")
     @NotBlank(message = "메뉴 이름을 작성해 주세요.")
