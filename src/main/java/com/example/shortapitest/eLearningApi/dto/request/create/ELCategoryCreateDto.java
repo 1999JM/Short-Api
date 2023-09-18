@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 public class ELCategoryCreateDto {
 
     @Schema(description = "카테고리 이름")

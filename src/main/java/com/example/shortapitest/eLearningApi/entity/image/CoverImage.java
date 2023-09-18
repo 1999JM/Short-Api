@@ -33,4 +33,7 @@ public class CoverImage extends BaseImage {
         return saveCoverImage;
     }
 
+    public void updateCoverImage(String newCoverImageName, String originalFilename) {
+        super.updateLogoImage(newCoverImageName,originalFilename );
+    }
 }

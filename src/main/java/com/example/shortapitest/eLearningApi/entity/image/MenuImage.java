@@ -21,7 +21,7 @@ public class MenuImage extends BaseImage {
 
 
     @Column(nullable = false)
-    private long menuImageSequence;
+    private int menuImageSequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "e_learning_menu_id", updatable = false)

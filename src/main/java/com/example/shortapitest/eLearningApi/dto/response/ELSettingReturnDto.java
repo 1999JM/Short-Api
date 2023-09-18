@@ -2,9 +2,13 @@ package com.example.shortapitest.eLearningApi.dto.response;
 
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import lombok.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ELSettingReturnDto {
 
     private Long id;
@@ -12,13 +16,15 @@ public class ELSettingReturnDto {
     private String eLearningAlias;
     private boolean deleted;
 
-    public static ELSettingReturnDto createResponseSetting(ELearningSetting dto) {
-        ELSettingReturnDto responseSetting = new ELSettingReturnDto();
-        responseSetting.setId(dto.getId());
-        responseSetting.setELearningName(dto.getName());
-        responseSetting.setELearningAlias(dto.getAlias());
-        responseSetting.setDeleted(dto.isDeleted());
-        return responseSetting;
+    public static Page<ELSettingReturnDto> createResponseSetting(PageImpl<ELearningSetting> eLearningSettingList) {
+
+        Page<ELSettingReturnDto> eLSettingReturnDtoList =  eLearningSettingList.map(eLearningSetting -> ELSettingReturnDto.builder()
+                .id(eLearningSetting.getId())
+                .eLearningName(eLearningSetting.getName())
+                .eLearningAlias(eLearningSetting.getAlias())
+                .deleted(eLearningSetting.isDeleted())
+                .build());
+        return eLSettingReturnDtoList;
     }
 }
 

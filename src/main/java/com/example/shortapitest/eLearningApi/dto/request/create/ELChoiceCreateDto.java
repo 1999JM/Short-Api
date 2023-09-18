@@ -8,7 +8,6 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 public class ELChoiceCreateDto {
 
     @Schema(description = "문제에 대한 보기")

@@ -2,7 +2,8 @@ package com.example.shortapitest.eLearningApi.service;
 
 import com.example.shortapitest.eLearningApi.dto.request.create.*;
 import com.example.shortapitest.eLearningApi.dto.request.update.ELContentsUpdateDto;
-import com.example.shortapitest.eLearningApi.dto.response.PageELSettingReturnDto;
+import com.example.shortapitest.eLearningApi.dto.request.update.ELSettingUpdateDto;
+import com.example.shortapitest.eLearningApi.dto.response.*;
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningCategory;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningContent;
@@ -22,7 +23,7 @@ import com.example.shortapitest.eLearningApi.utill.ImageUpload;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -149,24 +150,62 @@ public class ELearningService {
     }
     // stream 사용
     // 검색 기능 추가
-    // 검색 항목 2개 이상
-    // 항목 합쳐서 검색
-    // 생성 날짜 검색
-    // 페이징 처리 리턴 dto공용화 가능하도록 설계
-    // 프론트가 받기 좋은 데이터란...
-    public PageELSettingReturnDto selectELearningSettingPage(Pageable pageable) {
+    public Page<ELSettingReturnDto> selectELearningSettingPage(Pageable pageable, String createDate, String endDate, String keyword) {
 
-        PageImpl<ELearningSetting> eLearningSettingResult = eLearningSettingRepository.selectELearningSetting(pageable);
+        Page<ELSettingReturnDto> elSettingReturnDtoList = ELSettingReturnDto.createResponseSetting(eLearningSettingRepository.selectELearningSetting(pageable, createDate, endDate, keyword));
+        return elSettingReturnDtoList;
+    }
 
+    public ELContentsReturnDto selectELearningContent(Long eLSettingId) {
 
-        PageELSettingReturnDto pageELearningSetting = PageELSettingReturnDto.createPageELearningSetting(eLearningSettingResult);
+        //해당하는 이러닝에 대한 정보를 가져옵니다.
+        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLSettingId).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
 
-        return pageELearningSetting;
+        ELContentsReturnDto elContentsReturnDto = new ELContentsReturnDto();
+
+        //해당하는 아이디에 콘텐츠를 가져온다
+        eLearningSetting.getELearningContent().getELearningCategoryList().forEach(
+                categoryDto -> {
+                    ELCategoryReturnDto elCategoryReturnDto = ELCategoryReturnDto.setELCategoryReturnDto(categoryDto);
+                    categoryDto.getELearningMenuList().forEach(
+                            menuDto -> {
+                                ELMenuReturnDto elMenuReturnDto = ELMenuReturnDto.setELMenuReturnDto(menuDto);
+                                List<MenuImage> menuImageList = menuImageRepository.findByMenuId(menuDto.getId());
+
+                                menuImageList.forEach(menuImage -> elMenuReturnDto.addELImageReturnDto(ELImageReturnDto.setELImageReturnDto(menuImage)));
+                                elCategoryReturnDto.addMenuReturnDto(elMenuReturnDto);
+                        }
+
+                    );
+                    elContentsReturnDto.addELCategoryReturnDtoList(elCategoryReturnDto,eLearningSetting.getId());
+                }
+        );
+
+        return elContentsReturnDto;
+    }
+
+    public ELQuestionReturnDto selectELearningQuestion(Long eLSettingId) {
+
+        //해당하는 이러닝에 대한 정보를 가져옵니다.
+        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLSettingId).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+        ELQuestionReturnDto elQuestionReturnDto = ELQuestionReturnDto.setELQuestionReturnDto(eLearningSetting);
+
+        eLearningSetting.getELearningQuestionList().forEach(
+                questionDto -> {
+                    ELImageReturnDto elImageReturnDto = ELImageReturnDto.setELImageReturnDto(questionImageRepository.findByQuestionId(questionDto.getId()));
+                    ELQuestionDetailReturnDto elQuestionDetailReturnDto = ELQuestionDetailReturnDto.setQuestionDetailReturnDto(questionDto,elImageReturnDto);
+
+                    questionDto.getELearningChoiceList().forEach(choiceDto -> elQuestionDetailReturnDto.addELChoiceReturnDto(ELChoiceReturnDto.setELChoiceReturnDto(choiceDto)));
+                    elQuestionReturnDto.addELQuestionDetailReturnDto(elQuestionDetailReturnDto);
+                }
+        );
+
+        return elQuestionReturnDto;
     }
 
     @Transactional
-    public void eLearningSettingUpdate(ELSettingCreateDto eLearningSettingDto, MultipartFile logoImage, MultipartFile coverImage) {
-        /*Long eLearningSettingId = eLearningSettingDto.getELearningSettingId();
+    public void eLearningSettingUpdate(ELSettingUpdateDto elSettingUpdateDto, MultipartFile logoImage, MultipartFile coverImage) {
+        Long eLearningSettingId = elSettingUpdateDto.getELearningSettingId();
 
         ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningSettingId).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
         LogoImage existingLogoImage = logoImageRepository.findById(eLearningSettingId).orElseThrow(() -> new EntityNotFoundException("ELearning에 이미지가 존재하지 않습니다."));
@@ -182,50 +221,37 @@ public class ELearningService {
             existingLogoImage.updateLogoImage(newLogoImageName, logoImage.getOriginalFilename());
 
             String newCoverImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(coverImageLocation, coverImage)));
-            CoverImage createCoverImage = CoverImage.createCoverImage(newCoverImageName, coverImage.getOriginalFilename(), coverImageLocation);
-            coverImageRepository.save(createCoverImage);
+            existingCoverImage.updateCoverImage(newCoverImageName, coverImage.getOriginalFilename());
 
-            eLearningSetting.updateELearningSetting(eLearningSettingDto);
+            eLearningSetting.updateELearningSetting(elSettingUpdateDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
 
+    @Transactional
     public void eLearningContentsUpdate(ELContentsUpdateDto elContentsUpdateDto, List<MultipartFile> menuImageList) {
-        //로직 순서
 
         //id의 값으로 Contents 확인.
         ELearningContent eLearningContent = eLearningContentRepository.findById(elContentsUpdateDto.getELearningContentId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningContents가 없습니다."));
 
-        elContentsUpdateDto.getELearningCategoryDtos().forEach(categoryDto -> {
-                  /*  if (elContentsUpdateDto.getDeleteCategoryId() == categoryDto.g) {
+        // 1번 기존 카테고리에서 삭제 되는 항목이 있는지 검사 후 존재하면 삭제
+        elContentsUpdateDto.getDeleteCategoryId().forEach(categoryId -> eLearningCategoryRepository.deleteById(categoryId));
 
-                    }*/
+        elContentsUpdateDto.getElCategoryUpdateDtoList().forEach(updateCategoryDto -> {
+            if (updateCategoryDto.getCategoryId() == null) {
+                //카테고리 생성로직
+                ELearningCategory eLearningCategory = ELearningCategory.updateDtoCategory(updateCategoryDto, eLearningContent);
+                eLearningCategoryRepository.save(eLearningCategory);
+                eLearningContent.setELearningCategory(eLearningCategory);
+            }else {
+                //카테고리 업데이트 로직
+                ELearningCategory eLearningCategory = eLearningCategoryRepository.findById(updateCategoryDto.getCategoryId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningCategoru가 없습니다."));
+                eLearningCategory.setELearningCategory(updateCategoryDto);
+            }
+
+            if (updateCategoryDto.getDeleteMenuId() == null) {}
         });
-        // step 1 : 삭제되는 카테고리의 id 값을 찾
-
-        // 또는 메뉴 삭제 또는 메뉴 생성의 경우가 있다.
-        // 수정의 개념이 있지만 행삭제 이미지 삭제등이 내장되어 있다.
-
-        //프론트에서 삭제 되는 항목의 pk 값을 추가로 받아옵니다.
-
-/*^
-
-        eLearningContentsDto.getELearningCategoryDtos().forEach(
-                //여기서 행해지는 로직 카테고리 값을 수정
-                //순차적으로 데이터 베이스에 있는 카테고리 값을 가져옵니다.
-                elearningCategoryDto -> {
-                    // 사이즈 값으로 카테고리의 마지막 순번 값을 알 수 있음으로 마지막 순번 이상의 카테고리 시퀀스 값을 가지는 카테고리 들은 모두 지워버려야합니다.
-                    if (elearningCategoryDto.) {
-
-                    }
-
-                    // eLearningContent id 와 시퀀스가 1번인 것부터 순차적으로 데이터를 가져오는 로직 필요.
-                    // eLearningCategoryDtos가 1번부터 순차적으로 들어온다고 가정하였을때
-                    ELearningCategory eLearningCategory = eLearningCategoryRepository.findByCategory(eLearningContent.getId(), elearningCategoryDto.getCategorySequence());
-                }
-        );
-*/
     }
 
 
@@ -242,4 +268,5 @@ public class ELearningService {
         ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLearningSettingId).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
         eLearningSetting.setDeletedFalse();
     }
+
 }
