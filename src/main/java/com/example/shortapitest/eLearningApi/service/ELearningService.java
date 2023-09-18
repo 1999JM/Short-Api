@@ -148,6 +148,7 @@ public class ELearningService {
             }
         });
     }
+
     // stream 사용
     // 검색 기능 추가
     public Page<ELSettingReturnDto> selectELearningSettingPage(Pageable pageable, String createDate, String endDate, String keyword) {
@@ -174,10 +175,9 @@ public class ELearningService {
 
                                 menuImageList.forEach(menuImage -> elMenuReturnDto.addELImageReturnDto(ELImageReturnDto.setELImageReturnDto(menuImage)));
                                 elCategoryReturnDto.addMenuReturnDto(elMenuReturnDto);
-                        }
-
+                            }
                     );
-                    elContentsReturnDto.addELCategoryReturnDtoList(elCategoryReturnDto,eLearningSetting.getId());
+                    elContentsReturnDto.addELCategoryReturnDtoList(elCategoryReturnDto, eLearningSetting.getId());
                 }
         );
 
@@ -193,7 +193,7 @@ public class ELearningService {
         eLearningSetting.getELearningQuestionList().forEach(
                 questionDto -> {
                     ELImageReturnDto elImageReturnDto = ELImageReturnDto.setELImageReturnDto(questionImageRepository.findByQuestionId(questionDto.getId()));
-                    ELQuestionDetailReturnDto elQuestionDetailReturnDto = ELQuestionDetailReturnDto.setQuestionDetailReturnDto(questionDto,elImageReturnDto);
+                    ELQuestionDetailReturnDto elQuestionDetailReturnDto = ELQuestionDetailReturnDto.setQuestionDetailReturnDto(questionDto, elImageReturnDto);
 
                     questionDto.getELearningChoiceList().forEach(choiceDto -> elQuestionDetailReturnDto.addELChoiceReturnDto(ELChoiceReturnDto.setELChoiceReturnDto(choiceDto)));
                     elQuestionReturnDto.addELQuestionDetailReturnDto(elQuestionDetailReturnDto);
@@ -235,7 +235,7 @@ public class ELearningService {
         //id의 값으로 Contents 확인.
         ELearningContent eLearningContent = eLearningContentRepository.findById(elContentsUpdateDto.getELearningContentId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningContents가 없습니다."));
 
-        // 1번 기존 카테고리에서 삭제 되는 항목이 있는지 검사 후 존재하면 삭제
+        // 1번 기존 카테고리에서 삭제되는 항목이 있는지 검사 후 존재하면 삭제
         elContentsUpdateDto.getDeleteCategoryId().forEach(categoryId -> eLearningCategoryRepository.deleteById(categoryId));
 
         elContentsUpdateDto.getElCategoryUpdateDtoList().forEach(updateCategoryDto -> {
@@ -244,13 +244,21 @@ public class ELearningService {
                 ELearningCategory eLearningCategory = ELearningCategory.updateDtoCategory(updateCategoryDto, eLearningContent);
                 eLearningCategoryRepository.save(eLearningCategory);
                 eLearningContent.setELearningCategory(eLearningCategory);
-            }else {
+            } else {
                 //카테고리 업데이트 로직
                 ELearningCategory eLearningCategory = eLearningCategoryRepository.findById(updateCategoryDto.getCategoryId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningCategoru가 없습니다."));
                 eLearningCategory.setELearningCategory(updateCategoryDto);
             }
 
-            if (updateCategoryDto.getDeleteMenuId() == null) {}
+            //메뉴 삭제 이미지 삭제 로직 추후 추가 필요.
+            updateCategoryDto.getDeleteMenuId().forEach(menuId -> eLearningMenuRepository.deleteById(menuId));
+
+            //메뉴 추가 및 수정 로직
+            updateCategoryDto.getMenuUpdateDtoList().forEach(
+                    menuUpdateDto -> {
+
+                    }
+            );
         });
     }
 

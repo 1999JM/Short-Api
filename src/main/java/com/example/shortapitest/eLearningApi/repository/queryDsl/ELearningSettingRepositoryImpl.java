@@ -45,7 +45,6 @@ public class ELearningSettingRepositoryImpl implements ELearningSettingRepositor
         return new PageImpl<>(content, pageable, totalCount);
     }
 
-    // BooleanBuilder
     // 검색 조건은 여기에 추가해주세요.
     private BooleanBuilder searchByCondition(String startDate, String endDate, String keyword) {
         BooleanBuilder builder = new BooleanBuilder();
@@ -56,11 +55,8 @@ public class ELearningSettingRepositoryImpl implements ELearningSettingRepositor
     }
 
     //생성 날짜 검색
-    private BooleanExpression withCreateDays(final String startDate, String endDate) {
-
-        //DateTimeTemplate dateTime = Expressions.dateTimeTemplate(LocalDateTime.class, "DATE_FORMAT({0}, {1})", QELearningSetting.eLearningSetting.createDate , "YYYY-MM-DD HH24:MI:SS");
-
-        if (startDate != null && endDate != null) {
+    private BooleanExpression withCreateDays(String startDate, String endDate) {
+        if (!isStringEmpty(startDate) && !isStringEmpty(endDate)) {
             StringExpression formattedDate = Expressions.stringTemplate("FUNCTION('DATE_FORMAT', {0}, '%Y-%m-%d')", QELearningSetting.eLearningSetting.createDate);
             return formattedDate.between(startDate, endDate);
         }else {
@@ -70,6 +66,10 @@ public class ELearningSettingRepositoryImpl implements ELearningSettingRepositor
 
     //ELearning Name으로 검색
     private BooleanExpression nameLike(final String keyword) {
-        return keyword.equals("") ? null : QELearningSetting.eLearningSetting.name.like("%" + keyword + "%");
+        return isStringEmpty(keyword) ? null : QELearningSetting.eLearningSetting.name.like("%" + keyword + "%");
+    }
+
+    static boolean isStringEmpty(String str) {
+        return str == null || str.isEmpty();
     }
 }

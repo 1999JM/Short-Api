@@ -65,7 +65,6 @@ public class ELearningController {
         // rows = 한 페이지에 보여지는 행의 개수
         // filter = 검색 조건
         // searchDetail = 검색 키워드
-        System.out.println(startDate.toString());
         return eLearningService.selectELearningSettingPage(PageRequest.of(page, rows), startDate, endDate, keyword);
     }
 
@@ -98,7 +97,6 @@ public class ELearningController {
     @PutMapping("/contents")
     public void updateELearningContents(@RequestPart ELContentsUpdateDto elContentsUpdateDto
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImageList){
-
         eLearningService.eLearningContentsUpdate(elContentsUpdateDto, menuImageList );
     }
 
