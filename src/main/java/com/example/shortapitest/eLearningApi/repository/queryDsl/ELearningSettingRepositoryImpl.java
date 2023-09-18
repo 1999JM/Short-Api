@@ -40,6 +40,7 @@ public class ELearningSettingRepositoryImpl implements ELearningSettingRepositor
         Long totalCount = queryFactory
                 .select(eLearningSetting.count())
                 .from(eLearningSetting)
+                .where(searchByCondition(startDate, endDate, keyword))
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, totalCount);
@@ -59,14 +60,13 @@ public class ELearningSettingRepositoryImpl implements ELearningSettingRepositor
         if (!isStringEmpty(startDate) && !isStringEmpty(endDate)) {
             StringExpression formattedDate = Expressions.stringTemplate("FUNCTION('DATE_FORMAT', {0}, '%Y-%m-%d')", QELearningSetting.eLearningSetting.createDate);
             return formattedDate.between(startDate, endDate);
-        }else {
-            return null;
         }
+            return null;
     }
 
     //ELearning Name으로 검색
     private BooleanExpression nameLike(final String keyword) {
-        return isStringEmpty(keyword) ? null : QELearningSetting.eLearningSetting.name.like("%" + keyword + "%");
+        return isStringEmpty(keyword) ? null : QELearningSetting.eLearningSetting.name.contains(keyword);
     }
 
     static boolean isStringEmpty(String str) {

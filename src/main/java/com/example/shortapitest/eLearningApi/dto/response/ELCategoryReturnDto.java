@@ -4,15 +4,15 @@ import com.example.shortapitest.eLearningApi.dto.request.create.ELMenuCreateDto;
 import com.example.shortapitest.eLearningApi.entity.eLearning.content.ELearningCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ELCategoryReturnDto {
 
     private Long categoryId;
@@ -29,7 +29,9 @@ public class ELCategoryReturnDto {
         elCategoryReturnDto.setCategoryId(eLearningCategory.getId());
         elCategoryReturnDto.setCategoryName(eLearningCategory.getCategoryName());
         elCategoryReturnDto.setCategorySequence(eLearningCategory.getCategorySequence());
-
+        elCategoryReturnDto.setMenuList(
+                eLearningCategory.getELearningMenuList().stream().map(ELMenuReturnDto::setELMenuReturnDto).toList()
+        );
         return elCategoryReturnDto;
     }
 

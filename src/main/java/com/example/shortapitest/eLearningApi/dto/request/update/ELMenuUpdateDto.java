@@ -11,6 +11,9 @@ import lombok.ToString;
 @ToString
 public class ELMenuUpdateDto {
 
+    @Schema(description = "메뉴 아이디")
+    private String menuId;
+
     @Schema(description = "메뉴 이름")
     @NotBlank(message = "메뉴 이름을 작성해 주세요.")
     private String menuName;

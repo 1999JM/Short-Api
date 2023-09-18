@@ -27,7 +27,7 @@ public class ELMenuReturnDto {
         elMenuReturnDto.setMenuId(menuDto.getId());
         elMenuReturnDto.setMenuName(menuDto.getMenuName());
         elMenuReturnDto.setMenuSequence(menuDto.getMenuSequence());
-
+        elMenuReturnDto.setElImageReturnDtoList(menuDto.getMenuImageList().stream().map(ELImageReturnDto::setELImageReturnDto).toList());
         return elMenuReturnDto;
     }
 

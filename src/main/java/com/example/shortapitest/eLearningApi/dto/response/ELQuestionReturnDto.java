@@ -1,6 +1,7 @@
 package com.example.shortapitest.eLearningApi.dto.response;
 
 import com.example.shortapitest.eLearningApi.entity.eLearning.ELearningSetting;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class ELQuestionReturnDto {
     private Long eLSettingId;
 
@@ -20,19 +22,11 @@ public class ELQuestionReturnDto {
 
     private List<ELQuestionDetailReturnDto> elQuestionReturnDetailDtoList = new ArrayList<>();
 
-    public static ELQuestionReturnDto setELQuestionReturnDto(ELearningSetting eLearningSetting) {
-
-        ELQuestionReturnDto elQuestionReturnDto = new ELQuestionReturnDto();
-
-        elQuestionReturnDto.setELSettingId(eLearningSetting.getId());
-        elQuestionReturnDto.setWrongAnswerSkip(eLearningSetting.isWrongAnswerSkip());
-        elQuestionReturnDto.setDisplayAnswer(eLearningSetting.isDisplayAnswer());
-        elQuestionReturnDto.setTestPassScore(eLearningSetting.getTestPassScore());
-
-        return elQuestionReturnDto;
-    }
-
-    public void addELQuestionDetailReturnDto(ELQuestionDetailReturnDto elQuestionDetailReturnDto) {
-        this.elQuestionReturnDetailDtoList.add(elQuestionDetailReturnDto);
+    public ELQuestionReturnDto(List<ELQuestionDetailReturnDto> elQuestionDetailReturnDtos, ELearningSetting eLearningSetting) {
+        this.eLSettingId = eLearningSetting.getId();
+        this.wrongAnswerSkip = eLearningSetting.isWrongAnswerSkip();
+        this.displayAnswer = eLearningSetting.isDisplayAnswer();
+        this.testPassScore = eLearningSetting.getTestPassScore();
+        this.elQuestionReturnDetailDtoList = elQuestionDetailReturnDtos;
     }
 }

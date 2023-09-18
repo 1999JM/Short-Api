@@ -30,11 +30,16 @@ spring:
 #    password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    properties:
+      hibernate:
+        format_sql: true
+#        default_batch_fetch_size: 30
     show-sql: true
     open-in-view: true
     generate-ddl: true
     hibernate:
       ddl-auto: update
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

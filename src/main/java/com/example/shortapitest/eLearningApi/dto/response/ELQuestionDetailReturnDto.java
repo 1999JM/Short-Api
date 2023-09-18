@@ -22,13 +22,17 @@ public class ELQuestionDetailReturnDto {
 
     private List<ELChoiceReturnDto> choiceDtoList = new ArrayList<>();
 
-    public static ELQuestionDetailReturnDto setQuestionDetailReturnDto(ELearningQuestion questionDto, ELImageReturnDto elImageReturnDto) {
+    public static ELQuestionDetailReturnDto setQuestionDetailReturnDto(ELearningQuestion eLearningQuestion ) {
         ELQuestionDetailReturnDto elQuestionDetailReturnDto = new ELQuestionDetailReturnDto();
 
-        elQuestionDetailReturnDto.setQuestionId(questionDto.getId());
-        elQuestionDetailReturnDto.setQuestionName(questionDto.getQuestionName());
-        elQuestionDetailReturnDto.setAnswerCheckType(questionDto.getAnswerType().toString());
-        elQuestionDetailReturnDto.setElImageReturnDto(elImageReturnDto);
+        elQuestionDetailReturnDto.setQuestionId(eLearningQuestion.getId());
+        elQuestionDetailReturnDto.setQuestionName(eLearningQuestion.getQuestionName());
+        elQuestionDetailReturnDto.setAnswerCheckType(eLearningQuestion.getAnswerType().toString());
+        elQuestionDetailReturnDto.setElImageReturnDto(ELImageReturnDto.setELImageReturnDto(eLearningQuestion.getQuestionImage()));
+        elQuestionDetailReturnDto.setChoiceDtoList(
+                eLearningQuestion.getELearningChoiceList().stream().map(ELChoiceReturnDto::setELChoiceReturnDto).toList()
+        );
+
 
         return elQuestionDetailReturnDto;
     }

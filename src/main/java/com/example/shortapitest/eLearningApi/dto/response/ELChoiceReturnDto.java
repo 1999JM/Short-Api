@@ -16,14 +16,14 @@ public class ELChoiceReturnDto {
 
     private int choiceSequence;
 
-    public static ELChoiceReturnDto setELChoiceReturnDto(ELearningChoice choiceDto) {
+    public static ELChoiceReturnDto setELChoiceReturnDto(ELearningChoice eLearningChoice) {
 
         ELChoiceReturnDto elChoiceReturnDto = new ELChoiceReturnDto();
 
-        elChoiceReturnDto.setChoiceId(choiceDto.getId());
-        elChoiceReturnDto.setChoiceName(choiceDto.getChoiceContent());
-        elChoiceReturnDto.setAnswerCheck(choiceDto.isAnswer());
-        elChoiceReturnDto.setChoiceSequence(choiceDto.getChoiceSequence());
+        elChoiceReturnDto.setChoiceId(eLearningChoice.getId());
+        elChoiceReturnDto.setChoiceName(eLearningChoice.getChoiceContent());
+        elChoiceReturnDto.setAnswerCheck(eLearningChoice.isAnswer());
+        elChoiceReturnDto.setChoiceSequence(eLearningChoice.getChoiceSequence());
 
         return elChoiceReturnDto;
     }

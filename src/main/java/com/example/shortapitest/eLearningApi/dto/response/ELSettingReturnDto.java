@@ -18,13 +18,12 @@ public class ELSettingReturnDto {
 
     public static Page<ELSettingReturnDto> createResponseSetting(PageImpl<ELearningSetting> eLearningSettingList) {
 
-        Page<ELSettingReturnDto> eLSettingReturnDtoList =  eLearningSettingList.map(eLearningSetting -> ELSettingReturnDto.builder()
+        return eLearningSettingList.map(eLearningSetting -> ELSettingReturnDto.builder()
                 .id(eLearningSetting.getId())
                 .eLearningName(eLearningSetting.getName())
                 .eLearningAlias(eLearningSetting.getAlias())
                 .deleted(eLearningSetting.isDeleted())
                 .build());
-        return eLSettingReturnDtoList;
     }
 }
 

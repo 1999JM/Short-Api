@@ -19,6 +19,7 @@ import com.example.shortapitest.eLearningApi.repository.image.CoverImageReposito
 import com.example.shortapitest.eLearningApi.repository.image.LogoImageRepository;
 import com.example.shortapitest.eLearningApi.repository.image.MenuImageRepository;
 import com.example.shortapitest.eLearningApi.repository.image.QuestionImageRepository;
+import com.example.shortapitest.eLearningApi.repository.queryDsl.ELQuery;
 import com.example.shortapitest.eLearningApi.utill.ImageUpload;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,6 +55,8 @@ public class ELearningService {
     private final LogoImageRepository logoImageRepository;
     private final MenuImageRepository menuImageRepository;
     private final QuestionImageRepository questionImageRepository;
+
+    private final ELQuery elQuery;
 
     @Transactional
     public void eLearningSettingCreate(ELSettingCreateDto eLSettingCreateDto, MultipartFile logoImage, MultipartFile coverImage) {
@@ -90,7 +94,6 @@ public class ELearningService {
         // 카테고리를 분해하고
         // 카테고리 생성
         // 메뉴를 생성하고 메뉴에 대한 정보를 카테고리 안에 넣어주는 작업
-        // 코드 간략화
 
         eLContentsCreateDto.getELCategoryCreateDtoList().forEach(categoryDto -> {
             ELearningCategory eLearningCategory = ELearningCategory.createCategory(categoryDto, eLearningContent);
@@ -151,56 +154,29 @@ public class ELearningService {
 
     // stream 사용
     // 검색 기능 추가
-    public Page<ELSettingReturnDto> selectELearningSettingPage(Pageable pageable, String createDate, String endDate, String keyword) {
-
-        Page<ELSettingReturnDto> elSettingReturnDtoList = ELSettingReturnDto.createResponseSetting(eLearningSettingRepository.selectELearningSetting(pageable, createDate, endDate, keyword));
-        return elSettingReturnDtoList;
+    public PageReturnDto selectELearningSettingPage(Pageable pageable, String createDate, String endDate, String keyword) {
+        PageReturnDto pageReturnDto = new PageReturnDto(ELSettingReturnDto.createResponseSetting(eLearningSettingRepository.selectELearningSetting(pageable, createDate, endDate, keyword)));
+        return pageReturnDto;
     }
 
     public ELContentsReturnDto selectELearningContent(Long eLSettingId) {
 
-        //해당하는 이러닝에 대한 정보를 가져옵니다.
-        ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLSettingId).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
+        ELearningContent eLearningContent = elQuery.findBySetting(eLSettingId);
+        List<ELearningCategory> eLearningCategories = elQuery.findByContentId(eLearningContent.getId());
+        List<ELCategoryReturnDto> dtoList = eLearningCategories.stream().map(ELCategoryReturnDto::setELCategoryReturnDto).toList();
 
-        ELContentsReturnDto elContentsReturnDto = new ELContentsReturnDto();
-
-        //해당하는 아이디에 콘텐츠를 가져온다
-        eLearningSetting.getELearningContent().getELearningCategoryList().forEach(
-                categoryDto -> {
-                    ELCategoryReturnDto elCategoryReturnDto = ELCategoryReturnDto.setELCategoryReturnDto(categoryDto);
-                    categoryDto.getELearningMenuList().forEach(
-                            menuDto -> {
-                                ELMenuReturnDto elMenuReturnDto = ELMenuReturnDto.setELMenuReturnDto(menuDto);
-                                List<MenuImage> menuImageList = menuImageRepository.findByMenuId(menuDto.getId());
-
-                                menuImageList.forEach(menuImage -> elMenuReturnDto.addELImageReturnDto(ELImageReturnDto.setELImageReturnDto(menuImage)));
-                                elCategoryReturnDto.addMenuReturnDto(elMenuReturnDto);
-                            }
-                    );
-                    elContentsReturnDto.addELCategoryReturnDtoList(elCategoryReturnDto, eLearningSetting.getId());
-                }
-        );
-
-        return elContentsReturnDto;
+        return new ELContentsReturnDto(eLSettingId, dtoList);
     }
 
     public ELQuestionReturnDto selectELearningQuestion(Long eLSettingId) {
 
         //해당하는 이러닝에 대한 정보를 가져옵니다.
         ELearningSetting eLearningSetting = eLearningSettingRepository.findById(eLSettingId).orElseThrow(() -> new EntityNotFoundException("해당하는 ELearning이 없습니다."));
-        ELQuestionReturnDto elQuestionReturnDto = ELQuestionReturnDto.setELQuestionReturnDto(eLearningSetting);
 
-        eLearningSetting.getELearningQuestionList().forEach(
-                questionDto -> {
-                    ELImageReturnDto elImageReturnDto = ELImageReturnDto.setELImageReturnDto(questionImageRepository.findByQuestionId(questionDto.getId()));
-                    ELQuestionDetailReturnDto elQuestionDetailReturnDto = ELQuestionDetailReturnDto.setQuestionDetailReturnDto(questionDto, elImageReturnDto);
+        List<ELearningQuestion> eLearningQuestionList = elQuery.findByQuestionId(eLearningSetting.getId());
 
-                    questionDto.getELearningChoiceList().forEach(choiceDto -> elQuestionDetailReturnDto.addELChoiceReturnDto(ELChoiceReturnDto.setELChoiceReturnDto(choiceDto)));
-                    elQuestionReturnDto.addELQuestionDetailReturnDto(elQuestionDetailReturnDto);
-                }
-        );
-
-        return elQuestionReturnDto;
+        List<ELQuestionDetailReturnDto> elQuestionDetailReturnDtos = eLearningQuestionList.stream().map(ELQuestionDetailReturnDto::setQuestionDetailReturnDto).toList();
+        return new ELQuestionReturnDto(elQuestionDetailReturnDtos, eLearningSetting);
     }
 
     @Transactional
@@ -235,31 +211,48 @@ public class ELearningService {
         //id의 값으로 Contents 확인.
         ELearningContent eLearningContent = eLearningContentRepository.findById(elContentsUpdateDto.getELearningContentId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningContents가 없습니다."));
 
-        // 1번 기존 카테고리에서 삭제되는 항목이 있는지 검사 후 존재하면 삭제
-        elContentsUpdateDto.getDeleteCategoryId().forEach(categoryId -> eLearningCategoryRepository.deleteById(categoryId));
-
-        elContentsUpdateDto.getElCategoryUpdateDtoList().forEach(updateCategoryDto -> {
-            if (updateCategoryDto.getCategoryId() == null) {
-                //카테고리 생성로직
-                ELearningCategory eLearningCategory = ELearningCategory.updateDtoCategory(updateCategoryDto, eLearningContent);
-                eLearningCategoryRepository.save(eLearningCategory);
-                eLearningContent.setELearningCategory(eLearningCategory);
-            } else {
-                //카테고리 업데이트 로직
-                ELearningCategory eLearningCategory = eLearningCategoryRepository.findById(updateCategoryDto.getCategoryId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningCategoru가 없습니다."));
-                eLearningCategory.setELearningCategory(updateCategoryDto);
-            }
-
-            //메뉴 삭제 이미지 삭제 로직 추후 추가 필요.
-            updateCategoryDto.getDeleteMenuId().forEach(menuId -> eLearningMenuRepository.deleteById(menuId));
-
-            //메뉴 추가 및 수정 로직
-            updateCategoryDto.getMenuUpdateDtoList().forEach(
-                    menuUpdateDto -> {
-
-                    }
-            );
+        // 1번 기존 카테고리에서 삭제되는 항목이 존재하면 삭제
+        elContentsUpdateDto.getDeleteCategoryId().forEach(categoryId -> {
+            List<ELearningMenu> eLearningMenuList = elQuery.findByMenuId(categoryId);
+            eLearningMenuList.forEach(menu -> menu.getMenuImageList().forEach(menuImage -> {
+                try {
+                    ImageUpload.deleteFile(menuImage.getFileUrl(), menuImage.getFilename());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }));
+            eLearningCategoryRepository.deleteById(categoryId);
         });
+        //카테고리가 아닌 메뉴 단일 삭제시
+        elContentsUpdateDto.getElCategoryUpdateDtoList().forEach(updateCategoryDto -> {
+            updateCategoryDto.getDeleteMenuId().forEach(menuId -> {
+                List<MenuImage> deleteMenuImageList = menuImageRepository.findByMenuId(menuId);
+                deleteMenuImageList.forEach(
+                    menuImage -> {
+                        try {
+                            ImageUpload.deleteFile(menuImage.getFileUrl(), menuImage.getFilename());
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                );
+                eLearningMenuRepository.deleteById(menuId);
+            });
+        });
+        //여기서 부턴 생성 또는 수정 로직
+        elContentsUpdateDto.getElCategoryUpdateDtoList().forEach(
+            updateCategoryDto -> {
+                if (updateCategoryDto.getCategoryId() == null) {//카테고리 생성로직
+                    ELearningCategory eLearningCategory = ELearningCategory.updateDtoCategory(updateCategoryDto, eLearningContent);
+                    eLearningCategoryRepository.save(eLearningCategory);
+                    eLearningContent.setELearningCategory(eLearningCategory);
+                } else {//카테고리 업데이트 로직
+                    ELearningCategory eLearningCategory = eLearningCategoryRepository.findById(updateCategoryDto.getCategoryId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningCategoru가 없습니다."));
+                    eLearningCategory.setELearningCategory(updateCategoryDto);
+                }
+            }
+        );
+
     }
 
 

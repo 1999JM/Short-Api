@@ -8,6 +8,7 @@ import com.example.shortapitest.eLearningApi.dto.request.update.ELSettingUpdateD
 import com.example.shortapitest.eLearningApi.dto.response.ELContentsReturnDto;
 import com.example.shortapitest.eLearningApi.dto.response.ELQuestionReturnDto;
 import com.example.shortapitest.eLearningApi.dto.response.ELSettingReturnDto;
+import com.example.shortapitest.eLearningApi.dto.response.PageReturnDto;
 import com.example.shortapitest.eLearningApi.service.ELearningService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,6 +42,7 @@ public class ELearningController {
     @PostMapping("/contents")
     public void createELearningContents(@RequestPart ELContentsCreateDto eLContentsCreateDto
             , @RequestPart @Parameter(schema = @Schema(name = "json", type = "string", format = "binary")) List<MultipartFile> menuImageList){
+        System.out.println(menuImageList.size());
         eLearningService.eLearningContentsCreate(eLContentsCreateDto, menuImageList);
     }
 
@@ -56,19 +58,20 @@ public class ELearningController {
     // 리스트로 리턴해줘야 하는 값들 이러닝 네임, 이러닝 별칭, 이러닝, 삭제 처리 여부
     @Operation(summary = "이러닝 전체 조회")
     @GetMapping(value = "/search")
-    public Page<ELSettingReturnDto> selectELearningSettingPage(@RequestParam(defaultValue = "0") int page
+    public PageReturnDto selectELearningSettingPage(@RequestParam(defaultValue = "1") int page
             , @RequestParam(defaultValue = "10") int rows
-            , @RequestParam(defaultValue = "") String startDate
-            , @RequestParam(defaultValue = "") String endDate
-            , @RequestParam(defaultValue = "") String keyword ) {
+            , @RequestParam String startDate
+            , @RequestParam String endDate
+            , @RequestParam String keyword ) {
         // page = 현재 페이지 번호를 받습니다.
         // rows = 한 페이지에 보여지는 행의 개수
         // filter = 검색 조건
         // searchDetail = 검색 키워드
-        return eLearningService.selectELearningSettingPage(PageRequest.of(page, rows), startDate, endDate, keyword);
+        return eLearningService.selectELearningSettingPage(PageRequest.of(page , rows), startDate, endDate, keyword);
     }
 
     //이러닝 콘텐츠 조회
+    //데이터 많이 넣고 테스트
     @Operation(summary = "이러닝 Contents 조회")
     @GetMapping(value = "/contents")
     public ELContentsReturnDto selectELearningContents(@RequestParam Long eLSettingId) {
