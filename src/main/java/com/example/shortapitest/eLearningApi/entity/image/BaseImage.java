@@ -19,8 +19,12 @@ public class BaseImage {
     @Column(nullable = false)
     private String fileUrl;    //저장소 경로
 
-    protected void updateLogoImage(String newLogoImageName, String originalFilename) {
-        this.filename = newLogoImageName;
+    @Column(nullable = false)
+    private boolean deleted;            //Delete 삭제 여부
+
+    protected void updateImage(String newImageName, String originalFilename) {
+        this.filename = newImageName;
         this.fileOriName = originalFilename;
     }
+
 }

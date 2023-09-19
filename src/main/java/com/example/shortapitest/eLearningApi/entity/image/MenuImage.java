@@ -19,7 +19,6 @@ public class MenuImage extends BaseImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false)
     private int menuImageSequence;
 
@@ -27,16 +26,21 @@ public class MenuImage extends BaseImage {
     @JoinColumn(name = "e_learning_menu_id", updatable = false)
     private ELearningMenu eLearningMenu;
 
-    public static MenuImage createMenuImage(String newMenuImageName, String oriMenuImageName, String questionImageLocation, ELearningMenu eLearningMenu, int i) {
+    public static MenuImage createMenuImage(String newMenuImageName, String oriMenuImageName, String menuImageLocation, ELearningMenu eLearningMenu, int i) {
 
         MenuImage menuImage = MenuImage.builder()
                 .filename(newMenuImageName)
                 .fileOriName(oriMenuImageName)
-                .fileUrl(questionImageLocation)
+                .fileUrl(menuImageLocation)
                 .eLearningMenu(eLearningMenu)
+                .deleted(false)
                 .menuImageSequence(i + 1)
                 .build();
         return menuImage;
     }
 
+    public void updateMenuImage(String newMenuImageName, String oriMenuImageName, int i) {
+        super.updateImage(newMenuImageName, oriMenuImageName);
+        this.menuImageSequence = (i+1);
+    }
 }

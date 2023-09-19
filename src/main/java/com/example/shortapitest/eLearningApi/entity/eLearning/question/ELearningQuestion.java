@@ -28,6 +28,9 @@ public class ELearningQuestion {
     @Column(nullable = false)
     private String questionName;
 
+    @Column(nullable = false)
+    private boolean deleted;            //Delete 삭제 여부
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "e_learning_Setting_id", updatable = false)
     private ELearningSetting eLearningSetting;
@@ -66,6 +69,7 @@ public class ELearningQuestion {
                 .questionName(eLearningQuestionSetDto.getQuestionName())
                 .answerType((answerType.equals(AnswerType.RADIO.toString()) ? AnswerType.RADIO : AnswerType.CHECKBOX))
                 .eLearningSetting(eLearningSetting)
+                .deleted(false)
                 .build();
         return eLearningQuestion;
     }

@@ -12,14 +12,21 @@ import java.util.List;
 public class ELContentsDto {
 
     @Schema(description = "ELearning Id")
-    @NotBlank(message = "ELearning Id 값을 입력해 주세요.")
     private Long eLSettingId;
+
+    @Schema(description = "ELearning Contents Id")
+    private Long eLContentsId;
 
     @Schema(description = "수정 요청시 삭제할 카테고리 id")
     private List<Long> deleteCategoryId;
 
+    @Schema(description = "수정 요청시 삭제할 메뉴 id")
+    private List<Long> deleteMenuId;
+
+    @Schema(description = "수정 요청시 삭제할 이미지 id")
+    private List<Long> deleteMenuImageId;
+
     @Schema(description = "카테고리 정보")
-    @NotBlank(message = "카테고리 정보를 입력해 주세요.")
     private List<ELCategoryDto> eLCategoryDtoList;
 
 }

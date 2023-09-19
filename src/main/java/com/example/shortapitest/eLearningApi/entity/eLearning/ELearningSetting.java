@@ -50,7 +50,7 @@ public class ELearningSetting extends BaseELearning {
             orphanRemoval = true
     )
     @JoinColumn(name = "cover_image_id")
-    private CoverImage coverImage;      //커버 이미지 1건 (수정완료)
+    private CoverImage coverImage;      //커버 이미지 1건
 
     @OneToOne(
             fetch = FetchType.LAZY,
@@ -58,7 +58,7 @@ public class ELearningSetting extends BaseELearning {
             orphanRemoval = true
     )
     @JoinColumn(name = "logo_image_id")
-    private LogoImage logoImage;        //로고 이미지 1건 (수정완료)
+    private LogoImage logoImage;        //로고 이미지 1건
 
     @OneToOne(
             fetch = FetchType.LAZY,
@@ -66,7 +66,7 @@ public class ELearningSetting extends BaseELearning {
             orphanRemoval = true
     )
     @JoinColumn(name = "e_learning_content_id")
-    private ELearningContent eLearningContent;  //(수정완료)
+    private ELearningContent eLearningContent;
 
     @Builder.Default
     @OneToMany(
@@ -75,7 +75,7 @@ public class ELearningSetting extends BaseELearning {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningQuestion> eLearningQuestionList = new ArrayList<>();  //수정 완료.
+    private List<ELearningQuestion> eLearningQuestionList = new ArrayList<>();
 
     public void setELearningContent (ELearningContent eLearningContent){
         this.eLearningContent = eLearningContent;
@@ -94,7 +94,7 @@ public class ELearningSetting extends BaseELearning {
         this.deleted = true;
     }
 
-    public static ELearningSetting createELearningSetting(ELSettingDto elSettingDto, LogoImage logoImage, CoverImage coverImage) {
+    public static ELearningSetting createSetting(ELSettingDto elSettingDto, LogoImage logoImage, CoverImage coverImage) {
 
         ELearningSetting eLearningSetting = ELearningSetting.builder()
                 .name(elSettingDto.getELearningName())
@@ -110,7 +110,7 @@ public class ELearningSetting extends BaseELearning {
         return eLearningSetting;
     }
 
-    public void updateELearningSetting(ELSettingDto elSettingDto) {
+    public void updateSetting(ELSettingDto elSettingDto) {
 
         this.name = elSettingDto.getELearningName();
         this.alias = elSettingDto.getELearningAlias();

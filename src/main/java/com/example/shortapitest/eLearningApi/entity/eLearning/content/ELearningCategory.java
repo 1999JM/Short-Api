@@ -25,6 +25,9 @@ public class ELearningCategory {
     @Column(nullable = false)
     private int categorySequence;
 
+    @Column(nullable = false)
+    private boolean deleted;            //Delete 삭제 여부
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "e_learning_content_id", updatable = false)
     private ELearningContent eLearningContent;
@@ -36,9 +39,9 @@ public class ELearningCategory {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ELearningMenu> eLearningMenuList = new ArrayList<>();  //수정완료.
+    private List<ELearningMenu> eLearningMenuList = new ArrayList<>();
 
-    public void addELearningMenu(ELearningMenu eLearningMenu){
+    public void addELearningMenuList(ELearningMenu eLearningMenu){
         this.eLearningMenuList.add(eLearningMenu);
     }
 
@@ -48,23 +51,13 @@ public class ELearningCategory {
                 .categoryName(elCategoryDto.getCategoryName())
                 .categorySequence(elCategoryDto.getCategorySequence())
                 .eLearningContent(eLearningContent)
+                .deleted(false)
                 .build();
 
         return eLearningCategory;
     }
 
-    public static ELearningCategory updateDtoCategory(ELCategoryDto elCategoryDto, ELearningContent eLearningContent) {
-
-        ELearningCategory eLearningCategory = ELearningCategory.builder()
-                .categoryName(elCategoryDto.getCategoryName())
-                .categorySequence(elCategoryDto.getCategorySequence())
-                .eLearningContent(eLearningContent)
-                .build();
-
-        return eLearningCategory;
-    }
-
-    public void setELearningCategory(ELCategoryDto elCategoryDto) {
+    public void updateCategory(ELCategoryDto elCategoryDto) {
         this.categoryName = elCategoryDto.getCategoryName();
         this.categorySequence = elCategoryDto.getCategorySequence();
     }

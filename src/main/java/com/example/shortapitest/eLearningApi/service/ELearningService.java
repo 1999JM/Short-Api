@@ -57,21 +57,17 @@ public class ELearningService {
     @Transactional
     public void eLearningSettingCreate(ELSettingDto elSettingDto, MultipartFile logoImage, MultipartFile coverImage) {
 
-        try {
-            //파일 업로드
-            String newLogoImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(logoImageLocation, logoImage)));
-            LogoImage createLogoImage = LogoImage.createLogoImage(newLogoImageName, logoImage.getOriginalFilename(), logoImageLocation);
-            logoImageRepository.save(createLogoImage);
+        //파일 업로드
+        String newLogoImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(logoImageLocation, logoImage)));
+        LogoImage createLogoImage = LogoImage.createLogoImage(newLogoImageName, logoImage.getOriginalFilename(), logoImageLocation);
+        logoImageRepository.save(createLogoImage);
 
-            String newCoverImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(coverImageLocation, coverImage)));
-            CoverImage createCoverImage = CoverImage.createCoverImage(newCoverImageName, coverImage.getOriginalFilename(), coverImageLocation);
-            coverImageRepository.save(createCoverImage);
+        String newCoverImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(coverImageLocation, coverImage)));
+        CoverImage createCoverImage = CoverImage.createCoverImage(newCoverImageName, coverImage.getOriginalFilename(), coverImageLocation);
+        coverImageRepository.save(createCoverImage);
 
-            ELearningSetting eLearningSetting = ELearningSetting.createELearningSetting(elSettingDto, createLogoImage, createCoverImage);
-            eLearningSettingRepository.save(eLearningSetting);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ELearningSetting eLearningSetting = ELearningSetting.createSetting(elSettingDto, createLogoImage, createCoverImage);
+        eLearningSettingRepository.save(eLearningSetting);
     }
 
     @Transactional
@@ -97,24 +93,20 @@ public class ELearningService {
             eLearningContent.setELearningCategory(eLearningCategory);
 
             categoryDto.getMenuDtoList().forEach(menuDto -> {
-                ELearningMenu eLearningMenu = ELearningMenu.createManu(menuDto, eLearningCategory);
+                ELearningMenu eLearningMenu = ELearningMenu.createMenu(menuDto, eLearningCategory);
                 eLearningMenuRepository.save(eLearningMenu);
                 //Category와 menu 연걸
-                eLearningCategory.addELearningMenu(eLearningMenu);
+                eLearningCategory.addELearningMenuList(eLearningMenu);
 
                 for (int i = 0; i < menuDto.getMenuImageCount(); i++) {
                     //이미지 저장 로직
                     //이미지를 저장하고 이미지 n건을 eLeanringMenu에 넣어줍니다.
                     MultipartFile menuImage = menuImageList.get(0);
-                    try {
                         //파일 업로드
-                        String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(menuImageLocation, menuImage)));
-                        MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImage.getOriginalFilename(), menuImageLocation, eLearningMenu, i);
-                        menuImageRepository.save(saveMenuImage);
-                        menuImageList.remove(0);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(menuImageLocation, menuImage)));
+                    MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImage.getOriginalFilename(), menuImageLocation, eLearningMenu, i);
+                    menuImageRepository.save(saveMenuImage);
+                    menuImageList.remove(0);
                 }
             });
         });
@@ -132,15 +124,11 @@ public class ELearningService {
             eLearningSetting.addQuestion(eLearningQuestion);
             if (questionDto.isQuestionImageCheck()) {
                 MultipartFile questionImage = questionImages.get(0);
-                try {
-                    String newQuestionImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, questionImage)));
-                    QuestionImage saveQuestionImage = QuestionImage.createLogoImage(newQuestionImageName, questionImage.getOriginalFilename(), questionImageLocation, eLearningQuestion);
-                    questionImageRepository.save(saveQuestionImage);
-                    eLearningQuestion.setQuestionImage(saveQuestionImage);
-                    questionImages.remove(0);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                String newQuestionImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(questionImageLocation, questionImage)));
+                QuestionImage saveQuestionImage = QuestionImage.createLogoImage(newQuestionImageName, questionImage.getOriginalFilename(), questionImageLocation, eLearningQuestion);
+                questionImageRepository.save(saveQuestionImage);
+                eLearningQuestion.setQuestionImage(saveQuestionImage);
+                questionImages.remove(0);
             }
             for (ELChoiceDto choiceDto : questionDto.getChoiceDtoList()) {
                 eLearningQuestion.addChoice(eLearningChoiceRepository.save(ELearningChoice.createELearningChoice(choiceDto, eLearningQuestion)));
@@ -184,38 +172,30 @@ public class ELearningService {
         CoverImage existingCoverImage = coverImageRepository.findById(eLearningSettingId).orElseThrow(() -> new EntityNotFoundException("ELearning에 이미지가 존재하지 않습니다."));
 
         //이미지 삭제
-        try {
-            ImageUpload.deleteFile(existingLogoImage.getFileUrl(), existingLogoImage.getFilename());
-            ImageUpload.deleteFile(existingCoverImage.getFileUrl(), existingCoverImage.getFilename());
+        ImageUpload.deleteFile(existingLogoImage.getFileUrl(), existingLogoImage.getFilename());
+        ImageUpload.deleteFile(existingCoverImage.getFileUrl(), existingCoverImage.getFilename());
 
-            //파일 업로드
-            String newLogoImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(logoImageLocation, logoImage)));
-            existingLogoImage.updateLogoImage(newLogoImageName, logoImage.getOriginalFilename());
+        //파일 업로드
+        String newLogoImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(logoImageLocation, logoImage)));
+        existingLogoImage.updateLogoImage(newLogoImageName, logoImage.getOriginalFilename());
 
-            String newCoverImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(coverImageLocation, coverImage)));
-            existingCoverImage.updateCoverImage(newCoverImageName, coverImage.getOriginalFilename());
+        String newCoverImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(coverImageLocation, coverImage)));
+        existingCoverImage.updateCoverImage(newCoverImageName, coverImage.getOriginalFilename());
 
-            eLearningSetting.updateELearningSetting(elSettingDto);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        eLearningSetting.updateSetting(elSettingDto);
     }
 
     @Transactional
     public void eLearningContentsUpdate(ELContentsDto elContentsDto, List<MultipartFile> menuImageList) {
 
         //id의 값으로 Contents 확인.
-        ELearningContent eLearningContent = eLearningContentRepository.findById(elContentsDto.getELSettingId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningContents가 없습니다."));
+        ELearningContent eLearningContent = eLearningContentRepository.findById(elContentsDto.getELContentsId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningContents가 없습니다."));
 
         // 1번 기존 카테고리에서 삭제되는 항목이 존재하면 삭제
         elContentsDto.getDeleteCategoryId().forEach(categoryId -> {
             List<ELearningMenu> eLearningMenuList = elQuery.findByMenuId(categoryId);
             eLearningMenuList.forEach(menu -> menu.getMenuImageList().forEach(menuImage -> {
-                try {
                     ImageUpload.deleteFile(menuImage.getFileUrl(), menuImage.getFilename());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
             }));
             eLearningCategoryRepository.deleteById(categoryId);
         });
@@ -225,11 +205,7 @@ public class ELearningService {
                 List<MenuImage> deleteMenuImageList = menuImageRepository.findByMenuId(menuId);
                 deleteMenuImageList.forEach(
                     menuImage -> {
-                        try {
-                            ImageUpload.deleteFile(menuImage.getFileUrl(), menuImage.getFilename());
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
+                        ImageUpload.deleteFile(menuImage.getFileUrl(), menuImage.getFilename());
                     }
                 );
                 eLearningMenuRepository.deleteById(menuId);
@@ -237,64 +213,58 @@ public class ELearningService {
         });
         //여기서 부턴 생성 또는 수정 로직
         elContentsDto.getELCategoryDtoList().forEach(
-            updateCategoryDto -> {
-                if (updateCategoryDto.getCategoryId() == null) {//카테고리 생성로직
-                    ELearningCategory eLearningCategory = ELearningCategory.updateDtoCategory(updateCategoryDto, eLearningContent);
+            categoryDto -> {
+                if (categoryDto.getCategoryId() == null) {//카테고리 생성로직
+                    ELearningCategory eLearningCategory = ELearningCategory.createCategory(categoryDto, eLearningContent);
                     eLearningCategoryRepository.save(eLearningCategory);
                     eLearningContent.setELearningCategory(eLearningCategory);
 
                     //매뉴 생성
-                    updateCategoryDto.getMenuDtoList().forEach( menuDto -> {
-                        ELearningMenu eLearningMenu = ELearningMenu.updateManu(menuDto, eLearningCategory);
+                    categoryDto.getMenuDtoList().forEach( menuDto -> {
+                        ELearningMenu eLearningMenu = ELearningMenu.createMenu(menuDto, eLearningCategory);
                         eLearningMenuRepository.save(eLearningMenu);
                         //Category와 menu 연걸
-                        eLearningCategory.addELearningMenu(eLearningMenu);
+                        eLearningCategory.addELearningMenuList(eLearningMenu);
                         for (int i = 0; i < menuDto.getMenuImageCount(); i++) {
                             //이미지 저장 로직
                             //이미지를 저장하고 이미지 n건을 eLeanringMenu에 넣어줍니다.
                             MultipartFile menuImage = menuImageList.get(0);
-                            try {
-                                //파일 업로드
-                                String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(menuImageLocation, menuImage)));
-                                MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImage.getOriginalFilename(), menuImageLocation, eLearningMenu, i);
-                                menuImageRepository.save(saveMenuImage);
-                                menuImageList.remove(0);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            //파일 업로드
+                            String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(menuImageLocation, menuImage)));
+                            MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImage.getOriginalFilename(), menuImageLocation, eLearningMenu, i);
+                            menuImageRepository.save(saveMenuImage);
+                            menuImageList.remove(0);
                         }
                     });
                 } else {//카테고리 업데이트 로직
-                    ELearningCategory eLearningCategory = eLearningCategoryRepository.findById(updateCategoryDto.getCategoryId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningCategoru가 없습니다."));
-                    eLearningCategory.setELearningCategory(updateCategoryDto);
+                    ELearningCategory eLearningCategory = eLearningCategoryRepository.findById(categoryDto.getCategoryId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningCategoru가 없습니다."));
+                    eLearningCategory.updateCategory(categoryDto);
 
-                    updateCategoryDto.getMenuDtoList().forEach(
-                        menuUpdateDto -> {
-                            ELearningMenu eLearningMenu = eLearningMenuRepository.findById(menuUpdateDto.getMenuId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningMenu가 없습니다."));
-                            eLearningMenu.setUpdateManu(menuUpdateDto);
-                            //기존 메뉴 삭제 로직 필요
-                            for (int i = 0; i < menuUpdateDto.getMenuImageCount(); i++) {
-                                //이미지 저장 로직
-                                //이미지를 저장하고 이미지 n건을 eLeanringMenu에 넣어줍니다.
-                                MultipartFile menuImage = menuImageList.get(0);
-                                try {
-                                    //파일 업로드
-                                    String newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(menuImageLocation, menuImage)));
-                                    MenuImage saveMenuImage = MenuImage.createMenuImage(newMenuImageName, menuImage.getOriginalFilename(), menuImageLocation, eLearningMenu, i);
-                                    menuImageRepository.save(saveMenuImage);
-                                    menuImageList.remove(0);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                    categoryDto.getMenuDtoList().forEach(
+                        menuDto -> {
+                            menuDto.getDeleteImageId().forEach(
+                                imageId ->{
+                                    MenuImage deleteMenuImageList = menuImageRepository.findById(imageId).orElseThrow(() -> new RuntimeException("해당는 이미지가 없습니다."));
+                                    ImageUpload.deleteFile(deleteMenuImageList.getFileUrl(), deleteMenuImageList.getFilename());
+                                    menuImageRepository.deleteById(imageId);
                                 }
+                            );
+                            ELearningMenu eLearningMenu = eLearningMenuRepository.findById(menuDto.getMenuId()).orElseThrow(() -> new RuntimeException("해당하는 eLearningMenu가 없습니다."));
+                            eLearningMenu.updateManu(menuDto);
+
+                            for (int i = 0; i < menuDto.getUpdateImageId().size(); i++ ) {
+                                MenuImage updateMenuImage = menuImageRepository.findById(menuDto.getUpdateImageId().get(i)).orElseThrow(() -> new RuntimeException("해당하는 이미지가 없습니다."));
+                                String newMenuImageName = "";
+                                newMenuImageName = ImageUpload.uploadFile((ImageUploadDto.createImageDto(menuImageLocation, menuImageList.get(0))));
+                                updateMenuImage.updateMenuImage(newMenuImageName, menuImageList.get(0).getOriginalFilename() , i);
+                                menuImageList.remove(0);
                             }
                         }
                     );
                 }
             }
         );
-
     }
-
 
     @Transactional
     public void eLearningSettingDelete(long eLearningSettingId) {

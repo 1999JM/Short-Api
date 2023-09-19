@@ -19,7 +19,6 @@ public class ELContentsReturnDto {
     private List<ELCategoryReturnDto> elCategoryReturnDtoList = new ArrayList<>();
 
     public void addELCategoryReturnDtoList (ELCategoryReturnDto elCategoryReturnDto, Long eLSettingId,List<ELCategoryReturnDto> elCategoryReturnDtoList) {
-        //this.elCategoryReturnDtoList.add(elCategoryReturnDto);
         this.eLSettingId = eLSettingId;
         this.elCategoryReturnDtoList = elCategoryReturnDtoList;
     }

@@ -28,6 +28,7 @@ public class QuestionImage extends BaseImage{
                 .fileOriName(originalFilename)
                 .fileUrl(questionImageLocation)
                 .eLearningQuestion(eLearningQuestion)
+                .deleted(false)
                 .build();
         return questionImage;
     }

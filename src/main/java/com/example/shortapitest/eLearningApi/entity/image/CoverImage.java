@@ -28,12 +28,13 @@ public class CoverImage extends BaseImage {
                 .filename(newCoverImageName)
                 .fileOriName(coverOriImageName)
                 .fileUrl(coverImageLocation)
+                .deleted(false)
                 .build();
 
         return saveCoverImage;
     }
 
     public void updateCoverImage(String newCoverImageName, String originalFilename) {
-        super.updateLogoImage(newCoverImageName,originalFilename );
+        super.updateImage(newCoverImageName,originalFilename );
     }
 }

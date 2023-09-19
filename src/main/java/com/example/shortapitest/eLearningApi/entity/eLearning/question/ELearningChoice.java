@@ -28,6 +28,9 @@ public class ELearningChoice {
     @Column(nullable = false)
     private int choiceSequence;
 
+    @Column(nullable = false)
+    private boolean deleted;            //Delete 삭제 여부
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "e_learning_question_id")
     private ELearningQuestion eLearningQuestion;
@@ -39,6 +42,7 @@ public class ELearningChoice {
                 .eLearningQuestion(eLearningQuestion)
                 .answer(choiceDto.isAnswerCheck())
                 .choiceSequence(choiceDto.getChoiceSequence())
+                .deleted(false)
                 .build();
         return eLearningChoice;
 

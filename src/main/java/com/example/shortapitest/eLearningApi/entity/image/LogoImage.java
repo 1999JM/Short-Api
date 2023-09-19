@@ -30,12 +30,13 @@ public class LogoImage extends BaseImage {
                 .filename(newLogoImageName)
                 .fileOriName(logoOriImageName)
                 .fileUrl(logoImageLocation)
+                .deleted(false)
                 .build();
 
         return saveLogoImage;
     }
 
     public void updateLogoImage(String newLogoImageName, String originalFilename) {
-        super.updateLogoImage(newLogoImageName,originalFilename );
+        super.updateImage(newLogoImageName,originalFilename);
     }
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -25,4 +27,11 @@ public class ELMenuDto {
     @Schema(description = "해당 메뉴에 대한 이미지 개수")
     @NotBlank(message = "이미지 개수를 입력해 주세요.")
     private int menuImageCount;
+
+    @Schema(description = "해당 메뉴에서 수정 시킬 이미지 아이디")
+    private List<Long> updateImageId;
+
+    @Schema(description = "해당 메뉴에서 삭제 시킬 이미지 아이디")
+    private List<Long> deleteImageId;
+
 }

@@ -28,6 +28,9 @@ public class ELearningMenu {
     @Column(nullable = false)
     private int menuSequence;
 
+    @Column(nullable = false)
+    private boolean deleted;            //Delete 삭제 여부
+
     @OneToMany(
             mappedBy = "eLearningMenu",
             fetch = FetchType.LAZY,
@@ -41,25 +44,17 @@ public class ELearningMenu {
     private ELearningCategory eLearningCategory;
 
 
-    public static ELearningMenu createManu(ELMenuDto elMenuDto, ELearningCategory eLearningCategory) {
+    public static ELearningMenu createMenu(ELMenuDto elMenuDto, ELearningCategory eLearningCategory) {
         ELearningMenu eLearningMenu = ELearningMenu.builder()
                 .menuName(elMenuDto.getMenuName())
                 .menuSequence(elMenuDto.getMenuSequence())
                 .eLearningCategory(eLearningCategory)
+                .deleted(false)
                 .build();
         return eLearningMenu;
     }
 
-    public static ELearningMenu updateManu(ELMenuDto elMenuDto, ELearningCategory eLearningCategory) {
-        ELearningMenu eLearningMenu = ELearningMenu.builder()
-                .menuName(elMenuDto.getMenuName())
-                .menuSequence(elMenuDto.getMenuSequence())
-                .eLearningCategory(eLearningCategory)
-                .build();
-        return eLearningMenu;
-    }
-
-    public void setUpdateManu(ELMenuDto elMenuDto) {
+    public void updateManu(ELMenuDto elMenuDto) {
         this.menuName = elMenuDto.getMenuName();
         this.menuSequence = elMenuDto.getMenuSequence();
     }
